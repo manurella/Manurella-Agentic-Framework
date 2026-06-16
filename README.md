@@ -1,6 +1,6 @@
 # Manurella Agentic Framework
 
-Manurella Agentic Framework is a runtime-agnostic agent framework for getting stronger, more reliable output from weaker or cheaper models through better task framing, specialist domain packs, eval-driven iteration, controlled memory, and runtime adapters.
+Manurella Agentic Framework is a runtime-agnostic agent framework for producing stronger, more reliable output from weaker or cheaper models through better task framing, specialist domain packs, eval-driven iteration, controlled memory, and runtime adapters.
 
 The project starts from the lessons of `Family System v13`, but it is not another monolithic prompt file. The framework is built around portable specifications that can be compiled into Kilo Code agents first, then later into Codex instructions/skills, ChatGPT/Gemini workflows, and a custom Python runtime.
 
