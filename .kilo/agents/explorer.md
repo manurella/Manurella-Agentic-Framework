@@ -11,10 +11,10 @@ permission:
   websearch: ask
   todowrite: ask
   todoread: allow
-  task: deny
+  task: ask
 temperature: 0.2
 color: '#7C3AED'
-steps: 16
+steps: 30
 ---
 
 # explorer
@@ -81,18 +81,18 @@ Respect the Kilo frontmatter permissions. If a needed action is denied, return a
 
 ## Runtime Control
 
-Execution profile: `quick`
+Execution profile: `standard`
 
-- Target latency: under 5 minutes
-- Specialist calls: 0 by default
-- Repair loops: 0
-- Deep reasoning: disabled unless the user explicitly asks
+- Target latency: 5-15 minutes
+- Specialist calls: up to 3
+- Repair loops: 1
+- Deep reasoning: allowed for planning, diagnosis, or critique
 
 Profile rules:
 
-- Do not delegate by default.
-- Use one direct verification check when applicable.
-- Stop and report if the task is larger than a quick run.
+- Delegate only when the specialist has a narrow task slice.
+- Run or design verification for objective changes.
+- Stop after one failed repair loop unless new evidence appears.
 
 
 ## Evaluation Rubric
