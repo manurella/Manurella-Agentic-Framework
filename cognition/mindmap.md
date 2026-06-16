@@ -14,10 +14,21 @@ mindmap
           Editor
           Verifier
           Critic
+          Frontend Experimental
+            Frontend Architect
+            Component Implementer
+            State Flow Specialist
+            Accessibility Auditor
+            Visual QA Specialist
+            Performance Reviewer
         Failure Modes
           Scope Expansion
           Timeout
           Weak Verification
+          Inaccessible UI
+          Visual Drift
+          State Flow Regression
+          Frontend Performance Regression
     Runtime Control
       Modes
         Fast
@@ -59,3 +70,7 @@ Build -> frontend work -> specialist topology -> verification -> eval feedback
 ```
 
 This slice is intentionally not complete yet. The graph should grow from evaluated behavior, not from speculative completeness.
+
+## Experimental Frontend Slice
+
+The frontend nodes are draft graph candidates only. They are not accepted agents, not exported runtime agents, and not official routing targets until benchmark evidence supports promotion.

@@ -86,6 +86,78 @@ nodes:
     evidence:
       - domains/build/agents/verifier.md
     updated_at: 2026-06-16
+  - id: sub.frontend-architect
+    type: subagent
+    label: Frontend Architect
+    status: draft
+    summary: Experimental Build/frontend planner for screen structure, component boundaries, state ownership, accessibility strategy, and verification path.
+    owners:
+      - dom.build
+    evidence:
+      - docs/agent-authoring-doctrine.md
+      - docs/build-agent-doctrine-audit.md
+      - research/inputs/manurella-agent-authoring-doctrine.md
+    updated_at: 2026-06-16
+  - id: sub.component-implementer
+    type: subagent
+    label: Component Implementer
+    status: draft
+    summary: Experimental Build/frontend worker for implementing scoped UI components from an accepted plan and existing project conventions.
+    owners:
+      - dom.build
+    evidence:
+      - docs/agent-authoring-doctrine.md
+      - docs/build-agent-doctrine-audit.md
+      - research/inputs/manurella-agent-authoring-doctrine.md
+    updated_at: 2026-06-16
+  - id: sub.state-flow-specialist
+    type: subagent
+    label: State Flow Specialist
+    status: draft
+    summary: Experimental Build/frontend reviewer for client, server, URL, form, async, cache, and mutation state boundaries.
+    owners:
+      - dom.build
+    evidence:
+      - docs/agent-authoring-doctrine.md
+      - docs/build-agent-doctrine-audit.md
+      - research/inputs/manurella-agent-authoring-doctrine.md
+    updated_at: 2026-06-16
+  - id: sub.accessibility-auditor
+    type: subagent
+    label: Accessibility Auditor
+    status: draft
+    summary: Experimental Build/frontend auditor for semantics, keyboard flow, focus behavior, labels, contrast, and assistive-technology affordances.
+    owners:
+      - dom.build
+    evidence:
+      - docs/agent-authoring-doctrine.md
+      - docs/build-agent-doctrine-audit.md
+      - research/inputs/manurella-agent-authoring-doctrine.md
+    updated_at: 2026-06-16
+  - id: sub.visual-qa-specialist
+    type: subagent
+    label: Visual QA Specialist
+    status: draft
+    summary: Experimental Build/frontend auditor for visual fidelity, responsive fit, layout stability, screenshot checks, and design-reference alignment.
+    owners:
+      - dom.build
+    evidence:
+      - docs/agent-authoring-doctrine.md
+      - docs/build-agent-doctrine-audit.md
+      - research/inputs/manurella-agent-authoring-doctrine.md
+    updated_at: 2026-06-16
+  - id: sub.performance-reviewer
+    type: subagent
+    label: Performance Reviewer
+    status: draft
+    summary: Experimental Build/frontend reviewer for bundle impact, render cost, data loading, Core Web Vitals risk, and unnecessary client work.
+    owners:
+      - dom.build
+    evidence:
+      - docs/agent-authoring-doctrine.md
+      - docs/build-agent-doctrine-audit.md
+      - research/inputs/manurella-agent-authoring-doctrine.md
+    updated_at: 2026-06-16
   - id: fail.scope-expansion
     type: failure_mode
     label: Scope Expansion
@@ -96,6 +168,50 @@ nodes:
     evidence:
       - specs/runtime-control.md
       - evals/results/build-kilo-smoke.md
+    updated_at: 2026-06-16
+  - id: fail.inaccessible-ui
+    type: failure_mode
+    label: Inaccessible UI
+    status: draft
+    summary: Frontend output lacks semantic structure, keyboard access, focus behavior, contrast, labels, or screen-reader support.
+    owners:
+      - dom.build
+    evidence:
+      - docs/agent-authoring-doctrine.md
+      - docs/build-agent-doctrine-audit.md
+    updated_at: 2026-06-16
+  - id: fail.visual-drift
+    type: failure_mode
+    label: Visual Drift
+    status: draft
+    summary: Frontend output deviates from the design intent, breaks responsive layout, causes overlap, or creates unverified visual changes.
+    owners:
+      - dom.build
+    evidence:
+      - docs/agent-authoring-doctrine.md
+      - docs/build-agent-doctrine-audit.md
+    updated_at: 2026-06-16
+  - id: fail.state-flow-regression
+    type: failure_mode
+    label: State Flow Regression
+    status: draft
+    summary: Frontend output mixes client, server, URL, async, cache, or form state in a way that creates stale data or broken interactions.
+    owners:
+      - dom.build
+    evidence:
+      - docs/agent-authoring-doctrine.md
+      - docs/build-agent-doctrine-audit.md
+    updated_at: 2026-06-16
+  - id: fail.frontend-performance-regression
+    type: failure_mode
+    label: Frontend Performance Regression
+    status: draft
+    summary: Frontend output increases bundle cost, render work, layout shift, or data-loading latency without a justified trade-off.
+    owners:
+      - dom.build
+    evidence:
+      - docs/agent-authoring-doctrine.md
+      - docs/build-agent-doctrine-audit.md
     updated_at: 2026-06-16
   - id: eval.build-kilo-smoke
     type: eval
@@ -170,4 +286,152 @@ edges:
     weight: 0.6
     evidence:
       - evals/results/build-kilo-smoke.md
+    updated_at: 2026-06-16
+  - id: edge.build.owns.frontend-architect
+    type: owns
+    source: dom.build
+    target: sub.frontend-architect
+    status: draft
+    confidence: 0.3
+    weight: 0.2
+    evidence:
+      - docs/agent-authoring-doctrine.md
+      - docs/build-agent-doctrine-audit.md
+    updated_at: 2026-06-16
+  - id: edge.build.owns.component-implementer
+    type: owns
+    source: dom.build
+    target: sub.component-implementer
+    status: draft
+    confidence: 0.3
+    weight: 0.2
+    evidence:
+      - docs/agent-authoring-doctrine.md
+      - docs/build-agent-doctrine-audit.md
+    updated_at: 2026-06-16
+  - id: edge.build.owns.state-flow-specialist
+    type: owns
+    source: dom.build
+    target: sub.state-flow-specialist
+    status: draft
+    confidence: 0.3
+    weight: 0.2
+    evidence:
+      - docs/agent-authoring-doctrine.md
+      - docs/build-agent-doctrine-audit.md
+    updated_at: 2026-06-16
+  - id: edge.build.owns.accessibility-auditor
+    type: owns
+    source: dom.build
+    target: sub.accessibility-auditor
+    status: draft
+    confidence: 0.3
+    weight: 0.2
+    evidence:
+      - docs/agent-authoring-doctrine.md
+      - docs/build-agent-doctrine-audit.md
+    updated_at: 2026-06-16
+  - id: edge.build.owns.visual-qa-specialist
+    type: owns
+    source: dom.build
+    target: sub.visual-qa-specialist
+    status: draft
+    confidence: 0.3
+    weight: 0.2
+    evidence:
+      - docs/agent-authoring-doctrine.md
+      - docs/build-agent-doctrine-audit.md
+    updated_at: 2026-06-16
+  - id: edge.build.owns.performance-reviewer
+    type: owns
+    source: dom.build
+    target: sub.performance-reviewer
+    status: draft
+    confidence: 0.3
+    weight: 0.2
+    evidence:
+      - docs/agent-authoring-doctrine.md
+      - docs/build-agent-doctrine-audit.md
+    updated_at: 2026-06-16
+  - id: edge.orchestrator.frontend-architect
+    type: orchestrates
+    source: agt.build-orchestrator
+    target: sub.frontend-architect
+    status: draft
+    confidence: 0.2
+    weight: 0.1
+    evidence:
+      - docs/agent-authoring-doctrine.md
+      - docs/build-agent-doctrine-audit.md
+    updated_at: 2026-06-16
+  - id: edge.orchestrator.component-implementer
+    type: orchestrates
+    source: agt.build-orchestrator
+    target: sub.component-implementer
+    status: draft
+    confidence: 0.2
+    weight: 0.1
+    evidence:
+      - docs/agent-authoring-doctrine.md
+      - docs/build-agent-doctrine-audit.md
+    updated_at: 2026-06-16
+  - id: edge.frontend-architect.can-fail.visual-drift
+    type: can_fail_with
+    source: sub.frontend-architect
+    target: fail.visual-drift
+    status: draft
+    confidence: 0.3
+    weight: 0.2
+    evidence:
+      - docs/agent-authoring-doctrine.md
+    updated_at: 2026-06-16
+  - id: edge.component-implementer.can-fail.state-flow
+    type: can_fail_with
+    source: sub.component-implementer
+    target: fail.state-flow-regression
+    status: draft
+    confidence: 0.3
+    weight: 0.2
+    evidence:
+      - docs/agent-authoring-doctrine.md
+    updated_at: 2026-06-16
+  - id: edge.accessibility-auditor.mitigates.inaccessible-ui
+    type: mitigates
+    source: sub.accessibility-auditor
+    target: fail.inaccessible-ui
+    status: draft
+    confidence: 0.3
+    weight: 0.2
+    evidence:
+      - docs/agent-authoring-doctrine.md
+    updated_at: 2026-06-16
+  - id: edge.visual-qa-specialist.mitigates.visual-drift
+    type: mitigates
+    source: sub.visual-qa-specialist
+    target: fail.visual-drift
+    status: draft
+    confidence: 0.3
+    weight: 0.2
+    evidence:
+      - docs/agent-authoring-doctrine.md
+    updated_at: 2026-06-16
+  - id: edge.state-flow-specialist.mitigates.state-flow
+    type: mitigates
+    source: sub.state-flow-specialist
+    target: fail.state-flow-regression
+    status: draft
+    confidence: 0.3
+    weight: 0.2
+    evidence:
+      - docs/agent-authoring-doctrine.md
+    updated_at: 2026-06-16
+  - id: edge.performance-reviewer.mitigates.frontend-performance
+    type: mitigates
+    source: sub.performance-reviewer
+    target: fail.frontend-performance-regression
+    status: draft
+    confidence: 0.3
+    weight: 0.2
+    evidence:
+      - docs/agent-authoring-doctrine.md
     updated_at: 2026-06-16
