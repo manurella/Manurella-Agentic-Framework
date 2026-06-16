@@ -11,10 +11,10 @@ permission:
   websearch: ask
   todowrite: ask
   todoread: allow
-  task: ask
+  task: deny
 temperature: 0.2
-steps: 30
 color: '#2563EB'
+steps: 16
 ---
 
 # architect
@@ -78,6 +78,22 @@ Retrieved context:
 ## Permission Policy
 
 Respect the Kilo frontmatter permissions. If a needed action is denied, return a blocked result with the missing capability instead of working around it.
+
+## Runtime Control
+
+Execution profile: `quick`
+
+- Target latency: under 5 minutes
+- Specialist calls: 0 by default
+- Repair loops: 0
+- Deep reasoning: disabled unless the user explicitly asks
+
+Profile rules:
+
+- Do not delegate by default.
+- Use one direct verification check when applicable.
+- Stop and report if the task is larger than a quick run.
+
 
 ## Evaluation Rubric
 

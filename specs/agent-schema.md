@@ -97,6 +97,13 @@ runtime:
     temperature: number
     steps: integer
     color: string
+    profiles:
+      quick:
+        steps: integer
+      standard:
+        steps: integer
+      deep:
+        steps: integer
 memory:
   reads:
     - string
@@ -142,4 +149,3 @@ The Kilo adapter should map:
 - `permissions.web` to Kilo `webfetch` and `websearch`.
 
 The adapter must fail closed on missing permissions.
-

@@ -139,9 +139,15 @@ Usage:
 ```powershell
 python adapters/kilo/export_agents.py --domain build --output .kilo/agents
 python adapters/kilo/export_agents.py --all --output .kilo/agents
-python adapters/kilo/export_agents.py --domain build --output .kilo/agents --dry-run
+python adapters/kilo/export_agents.py --domain build --output .kilo/agents --profile quick --dry-run
 ```
 
 The exporter requires PyYAML and intentionally fails closed on missing schema keys or unsafe permission expansion.
 
 Runtime budget policy is defined in `specs/runtime-control.md`.
+
+Supported profiles:
+
+- `quick`: caps Kilo `steps`, denies `task`, and instructs agents to avoid delegation by default.
+- `standard`: preserves source `steps` and uses the normal v0 agent workflow.
+- `deep`: keeps source `steps` unchanged but adds deep-profile checkpoint and timeout instructions.

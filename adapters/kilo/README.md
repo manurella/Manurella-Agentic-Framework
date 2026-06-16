@@ -32,16 +32,22 @@ Generate Build agents into the project-local Kilo target:
 python adapters/kilo/export_agents.py --domain build --output .kilo/agents
 ```
 
+Generate a faster smoke-test profile:
+
+```powershell
+python adapters/kilo/export_agents.py --domain build --output .kilo/agents --profile quick
+```
+
 Generate all domains:
 
 ```powershell
-python adapters/kilo/export_agents.py --all --output .kilo/agents
+python adapters/kilo/export_agents.py --all --output .kilo/agents --profile standard
 ```
 
 Validate without writing:
 
 ```powershell
-python adapters/kilo/export_agents.py --domain build --output .kilo/agents --dry-run
+python adapters/kilo/export_agents.py --domain build --output .kilo/agents --profile quick --dry-run
 ```
 
 ## Export Rules
@@ -57,6 +63,9 @@ python adapters/kilo/export_agents.py --domain build --output .kilo/agents --dry
 - Creative, visual, and mentor agents deny `bash` by default.
 - Prompt bodies include references to source files instead of embedding large research inputs.
 - Runtime budgets follow `specs/runtime-control.md`; Kilo's `steps` field is the first adapter-level budget knob.
+- `--profile quick` narrows `steps` and denies `task` delegation to prevent small smoke tests from fanning out.
+- `--profile standard` preserves each source agent's configured `steps`.
+- `--profile deep` does not increase source `steps`; it only changes the generated runtime-control instructions.
 
 ## Generated Prompt Shape
 
@@ -68,9 +77,10 @@ The Kilo prompt body uses this order:
 4. Workflow
 5. Context policy
 6. Permission policy
-7. Evaluation rubric
-8. Failure modes
-9. Source references
+7. Runtime control
+8. Evaluation rubric
+9. Failure modes
+10. Source references
 
 ## First Runtime Sample
 

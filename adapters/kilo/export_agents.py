@@ -33,6 +33,49 @@ REQUIRED_KEYS = {
 KNOWN_DOMAINS = {"build", "pixel", "muse", "mentor"}
 TOP_LEVEL = "top_level"
 INTERNAL = "internal"
+PROFILE_NAMES = {"quick", "standard", "deep"}
+
+PROFILE_CONFIG: dict[str, dict[str, Any]] = {
+    "quick": {
+        "target_latency": "under 5 minutes",
+        "max_specialist_calls": "0 by default",
+        "max_repair_loops": "0",
+        "deep_reasoning": "disabled unless the user explicitly asks",
+        "top_level_step_cap": 16,
+        "internal_step_cap": 8,
+        "rules": [
+            "Do not delegate by default.",
+            "Use one direct verification check when applicable.",
+            "Stop and report if the task is larger than a quick run.",
+        ],
+    },
+    "standard": {
+        "target_latency": "5-15 minutes",
+        "max_specialist_calls": "up to 3",
+        "max_repair_loops": "1",
+        "deep_reasoning": "allowed for planning, diagnosis, or critique",
+        "top_level_step_cap": None,
+        "internal_step_cap": None,
+        "rules": [
+            "Delegate only when the specialist has a narrow task slice.",
+            "Run or design verification for objective changes.",
+            "Stop after one failed repair loop unless new evidence appears.",
+        ],
+    },
+    "deep": {
+        "target_latency": "agreed before the run",
+        "max_specialist_calls": "explicitly planned",
+        "max_repair_loops": "explicitly planned",
+        "deep_reasoning": "allowed with compact intermediate artifacts",
+        "top_level_step_cap": None,
+        "internal_step_cap": None,
+        "rules": [
+            "State the checkpoint before doing worker calls.",
+            "Keep intermediate reasoning compact and artifact-shaped.",
+            "Stop on timeout, repeated blockers, or the agreed checkpoint.",
+        ],
+    },
+}
 
 
 class ExportError(Exception):
@@ -112,7 +155,7 @@ def same_domain_internal_agents(agents: list[dict[str, Any]], domain: str) -> li
     )
 
 
-def map_permissions(agent: dict[str, Any], all_agents: list[dict[str, Any]]) -> dict[str, Any]:
+def map_permissions(agent: dict[str, Any], all_agents: list[dict[str, Any]], profile: str) -> dict[str, Any]:
     source = agent.get("permissions") or {}
     for key in ("read", "edit", "shell", "web", "delegate"):
         if key not in source:
@@ -144,21 +187,49 @@ def map_permissions(agent: dict[str, Any], all_agents: list[dict[str, Any]]) -> 
     if agent["domain"] in {"pixel", "muse", "mentor"} and permission["bash"] == "allow":
         raise ExportError(f"{agent['id']}: non-build agents must not export bash: allow in v0")
 
+    if profile == "quick":
+        permission["task"] = "deny"
+
     return permission
 
 
-def frontmatter(agent: dict[str, Any], all_agents: list[dict[str, Any]]) -> dict[str, Any]:
+def profile_steps(agent: dict[str, Any], kilo: dict[str, Any], profile: str) -> int | None:
+    raw_steps = kilo.get("steps")
+    cap_key = "top_level_step_cap" if agent["tier"] == TOP_LEVEL else "internal_step_cap"
+    cap = PROFILE_CONFIG[profile][cap_key]
+
+    if raw_steps is None:
+        return cap
+
+    try:
+        steps = int(raw_steps)
+    except (TypeError, ValueError) as exc:
+        raise ExportError(f"{agent['id']}: Kilo steps must be an integer") from exc
+
+    if steps <= 0:
+        raise ExportError(f"{agent['id']}: Kilo steps must be positive")
+
+    if cap is None:
+        return steps
+    return min(steps, int(cap))
+
+
+def frontmatter(agent: dict[str, Any], all_agents: list[dict[str, Any]], profile: str) -> dict[str, Any]:
     runtime = agent.get("runtime") or {}
     kilo = runtime.get("kilo") or {}
     data: dict[str, Any] = {
         "description": one_line(agent["purpose"]),
         "mode": kilo_mode(agent),
-        "permission": map_permissions(agent, all_agents),
+        "permission": map_permissions(agent, all_agents, profile),
     }
 
-    for key in ("model", "temperature", "top_p", "steps", "color", "variant", "hidden", "disable"):
+    for key in ("model", "temperature", "top_p", "color", "variant", "hidden", "disable"):
         if key in kilo:
             data[key] = kilo[key]
+
+    steps = profile_steps(agent, kilo, profile)
+    if steps is not None:
+        data["steps"] = steps
 
     if data["mode"] not in {"primary", "subagent", "all"}:
         raise ExportError(f"{agent['id']}: invalid Kilo mode '{data['mode']}'")
@@ -183,7 +254,25 @@ def input_list(items: list[dict[str, Any]]) -> str:
     return "\n".join(lines) if lines else "- None"
 
 
-def prompt_body(agent: dict[str, Any], source_path: pathlib.Path) -> str:
+def runtime_control_section(profile: str) -> str:
+    config = PROFILE_CONFIG[profile]
+    rules = bullet_list(list_items(config["rules"]))
+    return f"""## Runtime Control
+
+Execution profile: `{profile}`
+
+- Target latency: {config['target_latency']}
+- Specialist calls: {config['max_specialist_calls']}
+- Repair loops: {config['max_repair_loops']}
+- Deep reasoning: {config['deep_reasoning']}
+
+Profile rules:
+
+{rules}
+"""
+
+
+def prompt_body(agent: dict[str, Any], source_path: pathlib.Path, profile: str) -> str:
     outputs = agent.get("outputs") or {}
     context = agent.get("context") or {}
     evaluation = agent.get("evaluation") or {}
@@ -237,6 +326,8 @@ Retrieved context:
 
 Respect the Kilo frontmatter permissions. If a needed action is denied, return a blocked result with the missing capability instead of working around it.
 
+{runtime_control_section(profile)}
+
 ## Evaluation Rubric
 
 {bullet_list(list_items(evaluation.get('rubric')))}
@@ -272,7 +363,13 @@ def discover_agents(root: pathlib.Path, domains: list[str]) -> list[tuple[pathli
     return records
 
 
-def export_agents(root: pathlib.Path, domains: list[str], output: pathlib.Path, dry_run: bool) -> list[pathlib.Path]:
+def export_agents(
+    root: pathlib.Path,
+    domains: list[str],
+    output: pathlib.Path,
+    dry_run: bool,
+    profile: str,
+) -> list[pathlib.Path]:
     records = discover_agents(root, domains)
     all_agents = [record[1] for record in records]
     written: list[pathlib.Path] = []
@@ -280,7 +377,11 @@ def export_agents(root: pathlib.Path, domains: list[str], output: pathlib.Path, 
     for source_path, agent, _source_body in records:
         relative_source = source_path.relative_to(root)
         target = output / f"{agent['id']}.md"
-        content = yaml_block(frontmatter(agent, all_agents)) + "\n" + prompt_body(agent, relative_source)
+        content = yaml_block(frontmatter(agent, all_agents, profile)) + "\n" + prompt_body(
+            agent,
+            relative_source,
+            profile,
+        )
         if not dry_run:
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(content, encoding="utf-8", newline="\n")
@@ -295,6 +396,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     group.add_argument("--all", action="store_true")
     parser.add_argument("--repo", type=pathlib.Path, default=pathlib.Path.cwd())
     parser.add_argument("--output", type=pathlib.Path, default=pathlib.Path(".kilo/agents"))
+    parser.add_argument("--profile", choices=sorted(PROFILE_NAMES), default="standard")
     parser.add_argument("--dry-run", action="store_true")
     return parser.parse_args(argv)
 
@@ -306,7 +408,7 @@ def main(argv: list[str]) -> int:
     domains = sorted(KNOWN_DOMAINS) if args.all else args.domain
 
     try:
-        written = export_agents(root, domains, output, args.dry_run)
+        written = export_agents(root, domains, output, args.dry_run, args.profile)
     except ExportError as exc:
         print(f"export failed: {exc}", file=sys.stderr)
         return 1
@@ -319,4 +421,3 @@ def main(argv: list[str]) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main(sys.argv[1:]))
-

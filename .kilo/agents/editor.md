@@ -13,8 +13,8 @@ permission:
   todoread: deny
   task: deny
 temperature: 0.1
-steps: 25
 color: '#F97316'
+steps: 8
 ---
 
 # editor
@@ -74,6 +74,22 @@ Retrieved context:
 ## Permission Policy
 
 Respect the Kilo frontmatter permissions. If a needed action is denied, return a blocked result with the missing capability instead of working around it.
+
+## Runtime Control
+
+Execution profile: `quick`
+
+- Target latency: under 5 minutes
+- Specialist calls: 0 by default
+- Repair loops: 0
+- Deep reasoning: disabled unless the user explicitly asks
+
+Profile rules:
+
+- Do not delegate by default.
+- Use one direct verification check when applicable.
+- Stop and report if the task is larger than a quick run.
+
 
 ## Evaluation Rubric
 
