@@ -17,6 +17,8 @@ The purpose is to turn runtime behavior into evidence:
 ```text
 evals/
   README.md
+  prompts/
+    build-frontend-accessibility-visual-qa.md
   results/
     build-kilo-smoke.md
   templates/
@@ -30,6 +32,7 @@ evals/
 - Do not overwrite earlier results after tuning. Add a new dated run or section.
 - Record unknown fields as `unknown`, not guessed values.
 - Keep raw transcripts outside the result file if they are long; link or summarize them.
+- Keep reusable benchmark prompts in `evals/prompts/`.
 
 ## Minimum Record
 
