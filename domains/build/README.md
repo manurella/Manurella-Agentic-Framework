@@ -14,7 +14,7 @@ It supersedes the first role-flavored skeletons.
 
 - The user wants to build, modify, debug, audit, test, deploy, or document software.
 - The task has concrete files, commands, systems, or technical requirements.
-- The output should be verifiable by tests, builds, linters, diffs, logs, or specs.
+- The output should be verifiable using tests, builds, linters, diffs, logs, or specs.
 
 ## Do Not Use When
 
