@@ -49,7 +49,8 @@ Required fields:
 - `risk_level`: `low`, `medium`, `high`, or `blocked`.
 - `allowed_tools`: tools the task may use.
 - `expected_output`: response or artifact format.
-- `execution_profile`: `quick`, `standard`, or `deep`.
+- `mode`: `fast` or `standard`.
+- `effort`: `low`, `medium`, `high`, `extra-high`, `max`, or `ultra`.
 
 ### Permission Policy
 
@@ -97,7 +98,8 @@ Every benchmark run should record:
 - `scores`
 - `cost_notes`
 - `latency_notes`
-- `execution_profile`
+- `mode`
+- `effort`
 - `timeout_status`
 - `specialist_call_count`
 - `repair_loop_count`

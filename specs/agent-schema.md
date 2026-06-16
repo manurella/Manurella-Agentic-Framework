@@ -97,13 +97,18 @@ runtime:
     temperature: number
     steps: integer
     color: string
-    profiles:
-      quick:
-        steps: integer
+    modes:
+      fast:
+        step_cap: integer
       standard:
-        steps: integer
-      deep:
-        steps: integer
+        step_cap: integer | null
+    efforts:
+      low: string
+      medium: string
+      high: string
+      extra-high: string
+      max: string
+      ultra: string
 memory:
   reads:
     - string

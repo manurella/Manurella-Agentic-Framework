@@ -33,10 +33,11 @@ REQUIRED_KEYS = {
 KNOWN_DOMAINS = {"build", "pixel", "muse", "mentor"}
 TOP_LEVEL = "top_level"
 INTERNAL = "internal"
-PROFILE_NAMES = {"quick", "standard", "deep"}
+MODE_NAMES = {"fast", "standard"}
+EFFORT_NAMES = {"low", "medium", "high", "extra-high", "max", "ultra"}
 
-PROFILE_CONFIG: dict[str, dict[str, Any]] = {
-    "quick": {
+MODE_CONFIG: dict[str, dict[str, Any]] = {
+    "fast": {
         "target_latency": "under 5 minutes",
         "max_specialist_calls": "0 by default",
         "max_repair_loops": "0",
@@ -46,7 +47,7 @@ PROFILE_CONFIG: dict[str, dict[str, Any]] = {
         "rules": [
             "Do not delegate by default.",
             "Use one direct verification check when applicable.",
-            "Stop and report if the task is larger than a quick run.",
+            "Stop and report if the task is larger than Fast Mode.",
         ],
     },
     "standard": {
@@ -62,18 +63,32 @@ PROFILE_CONFIG: dict[str, dict[str, Any]] = {
             "Stop after one failed repair loop unless new evidence appears.",
         ],
     },
-    "deep": {
-        "target_latency": "agreed before the run",
-        "max_specialist_calls": "explicitly planned",
-        "max_repair_loops": "explicitly planned",
-        "deep_reasoning": "allowed with compact intermediate artifacts",
-        "top_level_step_cap": None,
-        "internal_step_cap": None,
-        "rules": [
-            "State the checkpoint before doing worker calls.",
-            "Keep intermediate reasoning compact and artifact-shaped.",
-            "Stop on timeout, repeated blockers, or the agreed checkpoint.",
-        ],
+}
+
+EFFORT_CONFIG: dict[str, dict[str, Any]] = {
+    "low": {
+        "display": "Low",
+        "behavior": "minimal reasoning, terse tool use, fastest acceptable path",
+    },
+    "medium": {
+        "display": "Medium",
+        "behavior": "balanced reasoning with moderate verification and concise explanations",
+    },
+    "high": {
+        "display": "High",
+        "behavior": "default high-quality reasoning for non-trivial work",
+    },
+    "extra-high": {
+        "display": "Extra High",
+        "behavior": "extended reasoning for difficult coding, research, and multi-step agentic work",
+    },
+    "max": {
+        "display": "Max",
+        "behavior": "maximum single-run reasoning depth; use when quality matters more than latency",
+    },
+    "ultra": {
+        "display": "Ultra",
+        "behavior": "frontier-style deepest mode with explicit orchestration, broader verification, and checkpointing",
     },
 }
 
@@ -155,7 +170,7 @@ def same_domain_internal_agents(agents: list[dict[str, Any]], domain: str) -> li
     )
 
 
-def map_permissions(agent: dict[str, Any], all_agents: list[dict[str, Any]], profile: str) -> dict[str, Any]:
+def map_permissions(agent: dict[str, Any], all_agents: list[dict[str, Any]], mode: str) -> dict[str, Any]:
     source = agent.get("permissions") or {}
     for key in ("read", "edit", "shell", "web", "delegate"):
         if key not in source:
@@ -187,16 +202,16 @@ def map_permissions(agent: dict[str, Any], all_agents: list[dict[str, Any]], pro
     if agent["domain"] in {"pixel", "muse", "mentor"} and permission["bash"] == "allow":
         raise ExportError(f"{agent['id']}: non-build agents must not export bash: allow in v0")
 
-    if profile == "quick":
+    if mode == "fast":
         permission["task"] = "deny"
 
     return permission
 
 
-def profile_steps(agent: dict[str, Any], kilo: dict[str, Any], profile: str) -> int | None:
+def mode_steps(agent: dict[str, Any], kilo: dict[str, Any], mode: str) -> int | None:
     raw_steps = kilo.get("steps")
     cap_key = "top_level_step_cap" if agent["tier"] == TOP_LEVEL else "internal_step_cap"
-    cap = PROFILE_CONFIG[profile][cap_key]
+    cap = MODE_CONFIG[mode][cap_key]
 
     if raw_steps is None:
         return cap
@@ -214,20 +229,20 @@ def profile_steps(agent: dict[str, Any], kilo: dict[str, Any], profile: str) -> 
     return min(steps, int(cap))
 
 
-def frontmatter(agent: dict[str, Any], all_agents: list[dict[str, Any]], profile: str) -> dict[str, Any]:
+def frontmatter(agent: dict[str, Any], all_agents: list[dict[str, Any]], mode: str) -> dict[str, Any]:
     runtime = agent.get("runtime") or {}
     kilo = runtime.get("kilo") or {}
     data: dict[str, Any] = {
         "description": one_line(agent["purpose"]),
         "mode": kilo_mode(agent),
-        "permission": map_permissions(agent, all_agents, profile),
+        "permission": map_permissions(agent, all_agents, mode),
     }
 
     for key in ("model", "temperature", "top_p", "color", "variant", "hidden", "disable"):
         if key in kilo:
             data[key] = kilo[key]
 
-    steps = profile_steps(agent, kilo, profile)
+    steps = mode_steps(agent, kilo, mode)
     if steps is not None:
         data["steps"] = steps
 
@@ -254,17 +269,24 @@ def input_list(items: list[dict[str, Any]]) -> str:
     return "\n".join(lines) if lines else "- None"
 
 
-def runtime_control_section(profile: str) -> str:
-    config = PROFILE_CONFIG[profile]
-    rules = bullet_list(list_items(config["rules"]))
+def runtime_control_section(mode: str, effort: str) -> str:
+    mode_config = MODE_CONFIG[mode]
+    effort_config = EFFORT_CONFIG[effort]
+    rules = bullet_list(list_items(mode_config["rules"]))
     return f"""## Runtime Control
 
-Execution profile: `{profile}`
+Mode: `{mode}`
+Effort: `{effort}` ({effort_config['display']})
 
-- Target latency: {config['target_latency']}
-- Specialist calls: {config['max_specialist_calls']}
-- Repair loops: {config['max_repair_loops']}
-- Deep reasoning: {config['deep_reasoning']}
+Mode budget:
+
+- Target latency: {mode_config['target_latency']}
+- Specialist calls: {mode_config['max_specialist_calls']}
+- Repair loops: {mode_config['max_repair_loops']}
+
+Effort behavior:
+
+- {effort_config['behavior']}
 
 Profile rules:
 
@@ -272,7 +294,7 @@ Profile rules:
 """
 
 
-def prompt_body(agent: dict[str, Any], source_path: pathlib.Path, profile: str) -> str:
+def prompt_body(agent: dict[str, Any], source_path: pathlib.Path, mode: str, effort: str) -> str:
     outputs = agent.get("outputs") or {}
     context = agent.get("context") or {}
     evaluation = agent.get("evaluation") or {}
@@ -326,7 +348,7 @@ Retrieved context:
 
 Respect the Kilo frontmatter permissions. If a needed action is denied, return a blocked result with the missing capability instead of working around it.
 
-{runtime_control_section(profile)}
+{runtime_control_section(mode, effort)}
 
 ## Evaluation Rubric
 
@@ -368,7 +390,8 @@ def export_agents(
     domains: list[str],
     output: pathlib.Path,
     dry_run: bool,
-    profile: str,
+    mode: str,
+    effort: str,
 ) -> list[pathlib.Path]:
     records = discover_agents(root, domains)
     all_agents = [record[1] for record in records]
@@ -377,10 +400,11 @@ def export_agents(
     for source_path, agent, _source_body in records:
         relative_source = source_path.relative_to(root)
         target = output / f"{agent['id']}.md"
-        content = yaml_block(frontmatter(agent, all_agents, profile)) + "\n" + prompt_body(
+        content = yaml_block(frontmatter(agent, all_agents, mode)) + "\n" + prompt_body(
             agent,
             relative_source,
-            profile,
+            mode,
+            effort,
         )
         if not dry_run:
             target.parent.mkdir(parents=True, exist_ok=True)
@@ -396,7 +420,8 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     group.add_argument("--all", action="store_true")
     parser.add_argument("--repo", type=pathlib.Path, default=pathlib.Path.cwd())
     parser.add_argument("--output", type=pathlib.Path, default=pathlib.Path(".kilo/agents"))
-    parser.add_argument("--profile", choices=sorted(PROFILE_NAMES), default="standard")
+    parser.add_argument("--mode", choices=sorted(MODE_NAMES), default="standard")
+    parser.add_argument("--effort", choices=sorted(EFFORT_NAMES), default="high")
     parser.add_argument("--dry-run", action="store_true")
     return parser.parse_args(argv)
 
@@ -408,7 +433,7 @@ def main(argv: list[str]) -> int:
     domains = sorted(KNOWN_DOMAINS) if args.all else args.domain
 
     try:
-        written = export_agents(root, domains, output, args.dry_run, args.profile)
+        written = export_agents(root, domains, output, args.dry_run, args.mode, args.effort)
     except ExportError as exc:
         print(f"export failed: {exc}", file=sys.stderr)
         return 1

@@ -8,7 +8,8 @@
 - `benchmark_ref`:
 - `runtime`:
 - `model`:
-- `execution_profile`:
+- `mode`:
+- `effort`:
 - `adapter_version`:
 - `prompt_version`:
 - `agent_ids`:

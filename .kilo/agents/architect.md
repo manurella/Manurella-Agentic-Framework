@@ -81,12 +81,18 @@ Respect the Kilo frontmatter permissions. If a needed action is denied, return a
 
 ## Runtime Control
 
-Execution profile: `standard`
+Mode: `standard`
+Effort: `high` (High)
+
+Mode budget:
 
 - Target latency: 5-15 minutes
 - Specialist calls: up to 3
 - Repair loops: 1
-- Deep reasoning: allowed for planning, diagnosis, or critique
+
+Effort behavior:
+
+- default high-quality reasoning for non-trivial work
 
 Profile rules:
 

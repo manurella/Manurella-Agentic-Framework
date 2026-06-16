@@ -14,9 +14,11 @@ The goal is not to make every task shallow. The goal is to reserve deep reasonin
 - A run that times out without a useful artifact is a failure, even if intermediate reasoning was strong.
 - Runtime adapters may narrow budgets but must not silently remove required verification.
 
-## Execution Profiles
+## Runtime Modes
 
-### Quick
+Modes control the workflow envelope: whether the run should be direct and lightweight or use the normal agentic loop.
+
+### Fast Mode
 
 Use for low-risk answers, tiny documentation edits, straightforward explanations, and single-agent checks.
 
@@ -33,7 +35,7 @@ Stop when:
 - the direct verifier passes
 - the task turns out to be higher risk than declared
 
-### Standard
+### Standard Mode
 
 Use for normal Build tasks, creative drafting with critique, image prompt repair, and teaching tasks with diagnosis.
 
@@ -50,23 +52,36 @@ Stop when:
 - one repair loop fails to improve the result
 - the task needs research, external context, or a higher budget
 
-### Deep
+## Effort Levels
 
-Use for architecture decisions, complex debugging, long-context creative continuity, high-stakes tutoring design, multi-stage research synthesis, or benchmark-grade runs.
+Effort controls reasoning depth separately from mode. It follows the Claude-Code-style user experience requested for Manurella.
 
-Budget:
+Effort levels:
 
-- target latency: agreed before the run
-- delegation: explicit plan required before worker calls
-- verification: required; may include multiple checks
-- deep reasoning: allowed, but must produce compact intermediate artifacts
+- `low`: fastest acceptable reasoning for simple or latency-sensitive work
+- `medium`: balanced reasoning for routine agentic tasks
+- `high`: default high-quality reasoning for non-trivial work
+- `extra-high`: extended reasoning for difficult coding, research, and multi-step work
+- `max`: maximum single-run reasoning depth when quality matters more than latency
+- `ultra`: deepest orchestration mode for frontier-grade work, broad verification, and checkpointed multi-agent execution
 
-Stop when:
+Effort is not a hard token budget in v0. It is a routing and prompt-policy signal until a runtime exposes a native effort control.
 
-- the agreed checkpoint is reached
-- the run hits the latency budget
-- the same blocker recurs twice without new evidence
-- the runtime reports timeout or idle failure
+Use higher effort when:
+
+- the task has ambiguous requirements
+- multiple valid architectures compete
+- the cost of a wrong answer is high
+- a verifier failed and the cause is unclear
+- creative or teaching quality depends on hidden structure
+
+Use lower effort when:
+
+- the task is mechanical
+- the verifier is direct and cheap
+- the edit is already localized
+- the model is producing repetitive analysis
+- the user prioritizes speed or cost
 
 ## Delegation Budget
 
@@ -80,11 +95,10 @@ Every delegated call must include:
 
 Default v0 limits:
 
-| Profile | Max specialist calls | Max repair loops | Main use |
+| Mode | Max specialist calls | Max repair loops | Main use |
 | --- | ---: | ---: | --- |
-| Quick | 0 | 0 | direct answer or tiny edit |
+| Fast | 0 | 0 | direct answer or tiny edit |
 | Standard | 3 | 1 | normal guided work |
-| Deep | planned | planned | research, architecture, difficult repair |
 
 If a specialist needs broader context than assigned, it should return `blocked: insufficient_context` instead of searching freely.
 
@@ -100,27 +114,7 @@ When a runtime reports timeout, idle timeout, or upstream failure:
 
 The next prompt after a timeout should prefer continuation from artifacts over re-running the full workflow.
 
-## Reasoning Depth Policy
-
-Extended reasoning is useful when it improves plan quality, diagnosis, critique, or synthesis. It is wasteful when applied uniformly to every action.
-
-Use deeper reasoning when:
-
-- the task has ambiguous requirements
-- multiple valid architectures compete
-- the cost of a wrong answer is high
-- a verifier failed and the cause is unclear
-- creative or teaching quality depends on hidden structure
-
-Avoid deeper reasoning when:
-
-- the task is mechanical
-- the verifier is direct and cheap
-- the edit is already localized
-- the model is producing repetitive analysis
-- the latency budget is nearly exhausted
-
-Deep reasoning outputs should be summarized into compact artifacts: plans, hypotheses, decision records, checklists, rubrics, or diffs.
+Extended reasoning outputs should be summarized into compact artifacts: plans, hypotheses, decision records, checklists, rubrics, or diffs.
 
 ## Adapter Obligations
 
@@ -131,7 +125,8 @@ Runtime adapters should expose control through whatever knobs the runtime provid
 - temperature/top-p
 - permission prompts
 - task/delegation limits
-- profile-specific prompt text
+- mode-specific prompt text
+- effort-specific reasoning policy
 - timeout/resume guidance
 
 Adapters must record unsupported controls explicitly instead of pretending they exist.
@@ -140,7 +135,8 @@ Adapters must record unsupported controls explicitly instead of pretending they 
 
 Every scored run should record:
 
-- execution profile: `quick`, `standard`, or `deep`
+- mode: `fast` or `standard`
+- effort: `low`, `medium`, `high`, `extra-high`, `max`, or `ultra`
 - target latency
 - actual latency
 - timeout status
@@ -155,19 +151,21 @@ Every scored run should record:
 
 Until enough benchmark data exists:
 
-- default Build profile: `standard`
-- default Muse profile: `standard`
-- default Pixel profile: `standard`
-- default Mentor profile: `standard`
-- default casual chat profile: `quick`
-- default research synthesis profile: `deep`
+- default Build mode: `standard`
+- default Muse mode: `standard`
+- default Pixel mode: `standard`
+- default Mentor mode: `standard`
+- default casual chat mode: `fast`
+- default effort: `high`
+- default research synthesis effort: `extra-high`
 
-The profile can be overridden by the user, benchmark definition, or domain orchestrator.
+Mode and effort can be overridden by the user, benchmark definition, or domain orchestrator.
 
 ## Research Hooks
 
 - Measure whether stricter `steps` values reduce Kilo timeout without hurting quality.
+- Compare `fast` versus `standard` mode outcomes rather than treating time as a universal hard limit.
 - Test whether specialist descriptions or prompt-body delegation rules have more impact on Kilo routing.
 - Compare single-agent Standard runs against delegated Standard runs for latency and score.
-- Study extended-reasoning policies from current leading coding-agent workflows before promoting them into adapter defaults.
+- Study effort levels from current leading coding-agent workflows before promoting them into adapter defaults.
 - Decide when a custom MCP/eval runner should enforce budgets externally instead of relying on prompts.

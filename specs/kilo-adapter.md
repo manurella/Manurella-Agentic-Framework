@@ -139,15 +139,26 @@ Usage:
 ```powershell
 python adapters/kilo/export_agents.py --domain build --output .kilo/agents
 python adapters/kilo/export_agents.py --all --output .kilo/agents
-python adapters/kilo/export_agents.py --domain build --output .kilo/agents --profile quick --dry-run
+python adapters/kilo/export_agents.py --domain build --output .kilo/agents --mode fast --effort low --dry-run
+python adapters/kilo/export_agents.py --domain build --output .kilo/agents --mode standard --effort high
 ```
 
 The exporter requires PyYAML and intentionally fails closed on missing schema keys or unsafe permission expansion.
 
 Runtime budget policy is defined in `specs/runtime-control.md`.
 
-Supported profiles:
+Supported modes:
 
-- `quick`: caps Kilo `steps`, denies `task`, and instructs agents to avoid delegation by default.
-- `standard`: preserves source `steps` and uses the normal v0 agent workflow.
-- `deep`: keeps source `steps` unchanged but adds deep-profile checkpoint and timeout instructions.
+- `fast`: caps Kilo `steps`, denies `task`, and instructs agents to avoid delegation by default.
+- `standard`: preserves source `steps` and uses the default v0 agent workflow.
+
+Supported effort levels:
+
+- `low`
+- `medium`
+- `high`
+- `extra-high`
+- `max`
+- `ultra`
+
+Kilo does not currently expose a native effort frontmatter field. The adapter exports effort as prompt policy.

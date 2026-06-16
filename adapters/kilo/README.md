@@ -32,22 +32,22 @@ Generate Build agents into the project-local Kilo target:
 python adapters/kilo/export_agents.py --domain build --output .kilo/agents
 ```
 
-Generate a faster smoke-test profile:
+Generate Fast Mode for smoke tests:
 
 ```powershell
-python adapters/kilo/export_agents.py --domain build --output .kilo/agents --profile quick
+python adapters/kilo/export_agents.py --domain build --output .kilo/agents --mode fast --effort low
 ```
 
 Generate all domains:
 
 ```powershell
-python adapters/kilo/export_agents.py --all --output .kilo/agents --profile standard
+python adapters/kilo/export_agents.py --all --output .kilo/agents --mode standard --effort high
 ```
 
 Validate without writing:
 
 ```powershell
-python adapters/kilo/export_agents.py --domain build --output .kilo/agents --profile quick --dry-run
+python adapters/kilo/export_agents.py --domain build --output .kilo/agents --mode fast --effort low --dry-run
 ```
 
 ## Export Rules
@@ -62,10 +62,11 @@ python adapters/kilo/export_agents.py --domain build --output .kilo/agents --pro
 - Internal agents cannot delegate by default.
 - Creative, visual, and mentor agents deny `bash` by default.
 - Prompt bodies include references to source files instead of embedding large research inputs.
-- Runtime budgets follow `specs/runtime-control.md`; Kilo's `steps` field is the first adapter-level budget knob.
-- `--profile quick` narrows `steps` and denies `task` delegation to prevent small smoke tests from fanning out.
-- `--profile standard` preserves each source agent's configured `steps`.
-- `--profile deep` does not increase source `steps`; it only changes the generated runtime-control instructions.
+- Runtime controls follow `specs/runtime-control.md`.
+- `--mode fast` narrows `steps` and denies `task` delegation to prevent small smoke tests from fanning out.
+- `--mode standard` preserves each source agent's configured `steps`.
+- `--effort low|medium|high|extra-high|max|ultra` controls reasoning depth in the generated prompt.
+- Kilo does not currently expose a first-class effort field, so effort is exported as prompt policy rather than YAML frontmatter.
 
 ## Generated Prompt Shape
 
@@ -77,7 +78,7 @@ The Kilo prompt body uses this order:
 4. Workflow
 5. Context policy
 6. Permission policy
-7. Runtime control
+7. Runtime control mode and effort
 8. Evaluation rubric
 9. Failure modes
 10. Source references
