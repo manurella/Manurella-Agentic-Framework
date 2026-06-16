@@ -161,6 +161,8 @@ Until enough benchmark data exists:
 
 Mode and effort can be overridden by the user, benchmark definition, or domain orchestrator.
 
+Build-specific inheritance rules live in `domains/build/runtime-policy.md`. Other domains should add equivalent runtime policy docs before promoting agents to `accepted`.
+
 ## Research Hooks
 
 - Measure whether stricter `steps` values reduce Kilo timeout without hurting quality.

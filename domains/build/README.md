@@ -54,6 +54,10 @@ Specialized concerns such as frontend, backend, QA, security, DevOps, and docume
 
 Read project guidance first. Then inspect only the files needed for the task. Prefer targeted search over reading whole large files. Never claim completion without verifier evidence.
 
+## Runtime Policy
+
+Build agents inherit `domains/build/runtime-policy.md` for default Fast Mode, Standard Mode, and Low through Ultra effort behavior unless an agent definition explicitly overrides it with benchmark-backed reasoning.
+
 ## Permission Baseline
 
 - `read`: allow project files

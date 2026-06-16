@@ -132,6 +132,8 @@ promotion_requirements:
   - string
 ```
 
+`mode_behavior` and `effort_behavior` may be inherited from a documented domain default, such as `domains/build/runtime-policy.md`. Inheritance is valid only when the agent definition or domain README names the source. Agent-local behavior should override the domain default only when evals show that the general policy is insufficient.
+
 ## Context Tiering
 
 Agent definitions must separate context into three tiers:
@@ -150,7 +152,7 @@ An agent cannot move to `accepted` until it has:
 2. Clear top-level/internal tier classification.
 3. Strict input and output contracts.
 4. Permission boundaries.
-5. Explicit mode and effort behavior, either directly in the agent or inherited from a documented domain default.
+5. Explicit mode and effort behavior, either directly in the agent or inherited from a named documented domain default.
 6. At least two benchmark tasks.
 7. Known failure modes.
 8. A baseline-vs-guided evaluation plan.
