@@ -6,7 +6,10 @@ The Kilo adapter compiles Manurella's runtime-neutral agent definitions into Kil
 
 The target is current Kilo Code agent files, not legacy `custom_modes.yaml`.
 
-Source checked: <https://kilo.ai/docs/customize/custom-modes>
+Sources checked:
+
+- <https://kilo.ai/docs/customize/custom-modes>
+- <https://kilo.ai/docs/customize/custom-subagents>
 
 ## Target Path
 
@@ -112,10 +115,30 @@ Before writing exported Kilo agents, validate:
 - no `bash: allow` on creative, pixel, or mentor specialists
 - prompt body exists
 - generated file is deterministic from source specs
+- top-level agents with `delegate: allow` scope `permission.task` to internal agents from the same domain
+- internal agents export `permission.task: deny` by default
+- generated files include a source-file warning and should not be edited directly
 
 ## Research Hooks
 
-- Confirm whether Kilo accepts `ask` on all permission types.
-- Confirm how Kilo merges nested `.kilo/agents/` files with `kilo.jsonc`.
+- Test Kilo's exact behavior for generated `permission.task` maps in real sessions.
 - Test whether Kilo uses `description` strongly enough for delegation or whether prompt body trigger text matters more.
+- Decide whether generated `.kilo/agents` should be committed, ignored, or treated as release artifacts after v0 experiments.
 
+## Exporter
+
+The initial exporter lives at:
+
+```text
+adapters/kilo/export_agents.py
+```
+
+Usage:
+
+```powershell
+python adapters/kilo/export_agents.py --domain build --output .kilo/agents
+python adapters/kilo/export_agents.py --all --output .kilo/agents
+python adapters/kilo/export_agents.py --domain build --output .kilo/agents --dry-run
+```
+
+The exporter requires PyYAML and intentionally fails closed on missing schema keys or unsafe permission expansion.
