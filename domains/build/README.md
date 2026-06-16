@@ -6,7 +6,9 @@ The Build domain handles software project work: architecture, implementation, QA
 
 ## Status
 
-Research candidate. The current v0 topology is based on the Build domain research input and the cross-domain synthesis. It supersedes the first role-flavored skeletons.
+This domain is a research candidate.
+The current v0 topology is based on the Build domain research input and the cross-domain synthesis.
+It supersedes the first role-flavored skeletons.
 
 ## Use When
 
@@ -77,4 +79,3 @@ Read project guidance first. Then inspect only the files needed for the task. Pr
 - What is the minimum Kilo prompt needed for reliable Build-domain behavior?
 - Can Kilo technically prevent supervisors from editing directly, or must this be enforced by prompt and eval only?
 - Which specialist concerns deserve skills first versus agents first?
-

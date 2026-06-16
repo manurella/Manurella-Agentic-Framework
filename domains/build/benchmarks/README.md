@@ -20,6 +20,7 @@ Metrics:
 
 1. Small bugfix trajectory: coordinate localization, patching, verification, and critique for a contained failing test.
 2. Failed verifier recovery: respond to a failing test result by choosing a different repair path without looping.
+3. Kilo runtime smoke test: perform a minimal documentation-only edit while reporting which agents were used, what each did, and what verification was performed.
 
 Metrics:
 
@@ -27,6 +28,14 @@ Metrics:
 - number of worker calls
 - evidence quality
 - error recovery rate
+
+Observed v0 Kilo smoke result:
+
+- Build agents loaded and produced a bounded documentation edit.
+- Runtime behavior showed good signs for agent routing, scoped editing, verifier evidence, and critic-style reporting.
+- Latency was high at roughly 30-40 minutes and the run hit `504 Upstream idle timeout exceeded`.
+- The verifier confirmed only the targeted README lines and did not perform a broader baseline comparison.
+- Future runtime policy should investigate explicit extended-reasoning controls comparable to strong coding-agent workflows, while keeping those controls measurable through latency and quality evals.
 
 ## Explorer Benchmarks
 
@@ -86,4 +95,3 @@ Metrics:
 - false-positive rate
 - severity calibration
 - evidence quality
-
