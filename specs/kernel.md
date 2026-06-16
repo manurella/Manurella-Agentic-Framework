@@ -49,6 +49,7 @@ Required fields:
 - `risk_level`: `low`, `medium`, `high`, or `blocked`.
 - `allowed_tools`: tools the task may use.
 - `expected_output`: response or artifact format.
+- `execution_profile`: `quick`, `standard`, or `deep`.
 
 ### Permission Policy
 
@@ -96,6 +97,10 @@ Every benchmark run should record:
 - `scores`
 - `cost_notes`
 - `latency_notes`
+- `execution_profile`
+- `timeout_status`
+- `specialist_call_count`
+- `repair_loop_count`
 - `failure_modes`
 - `reviewer`
 - `created_at`
@@ -107,6 +112,7 @@ Every benchmark run should record:
 - A task without success criteria is not executable as an eval task.
 - Research claims must stay in `research/` until promoted into specs or ADRs.
 - Runtime-generated files are outputs, not the source of truth.
+- Runtime depth is budgeted by `specs/runtime-control.md`.
 - Full RL/fine-tuning is out of scope until enough scored trajectories exist.
 
 ## Research Hooks
@@ -118,4 +124,3 @@ These areas need deeper research before implementation hardens:
 - practical router features for small benchmark sets
 - memory decay and conflict resolution
 - MCP security patterns for local developer machines
-

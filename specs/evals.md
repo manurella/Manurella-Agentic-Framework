@@ -12,7 +12,7 @@ For each benchmark task:
 2. Run the same model through the relevant Manurella adapter/domain pack.
 3. Save both outputs.
 4. Score both outputs using the same rubric.
-5. Record model, runtime, prompt/domain version, score, notes, and failure type.
+5. Record model, runtime, execution profile, prompt/domain version, score, latency, timeout status, notes, and failure type.
 
 ## Score Dimensions
 
@@ -70,3 +70,4 @@ Manurella-guided output should beat baseline output by at least 0.5 average rubr
 
 This threshold is provisional. It should be revisited after the first real Kilo runs.
 
+Runtime-control fields are defined in `specs/runtime-control.md`.

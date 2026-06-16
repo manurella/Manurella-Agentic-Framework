@@ -80,6 +80,7 @@ Default export policy:
 - Export creative and mentor agents as non-shell agents.
 - Export checker/auditor agents with read-first permissions.
 - Use `ask` for risky capabilities when Kilo supports it.
+- Treat `steps` as the first Kilo-side runtime-control budget knob.
 
 ## Mode Mapping
 
@@ -142,3 +143,5 @@ python adapters/kilo/export_agents.py --domain build --output .kilo/agents --dry
 ```
 
 The exporter requires PyYAML and intentionally fails closed on missing schema keys or unsafe permission expansion.
+
+Runtime budget policy is defined in `specs/runtime-control.md`.

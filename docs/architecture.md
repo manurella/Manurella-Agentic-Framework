@@ -84,7 +84,22 @@ The eval layer is the scoreboard:
 
 The first eval target is Kilo because it gives practical access to free models.
 
-### 7. Runtime Adapters
+### 7. Runtime Control Layer
+
+The runtime control layer defines how much reasoning, delegation, tool use, and wall-clock time a run may spend.
+
+It exists because Manurella's claim is not "think forever." The claim is better output per model, cost, and time budget.
+
+V0 control dimensions:
+
+- execution profile: quick, standard, or deep
+- specialist-call budget
+- repair-loop budget
+- verifier requirement
+- timeout and resume policy
+- adapter-supported runtime knobs
+
+### 8. Runtime Adapters
 
 Adapters compile the portable specs into runtime-specific formats.
 
@@ -104,4 +119,3 @@ Adapters should be one-way exports. Runtime quirks must not leak back into the k
 - Defer custom Python runtime until the Kilo adapter and eval loop prove the abstractions.
 - Defer real RL and fine-tuning until scored trajectories exist.
 - Prefer small specialist prompts plus retrieved references over massive always-on prompts.
-

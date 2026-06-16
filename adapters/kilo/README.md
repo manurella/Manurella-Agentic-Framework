@@ -56,6 +56,7 @@ python adapters/kilo/export_agents.py --domain build --output .kilo/agents --dry
 - Internal agents cannot delegate by default.
 - Creative, visual, and mentor agents deny `bash` by default.
 - Prompt bodies include references to source files instead of embedding large research inputs.
+- Runtime budgets follow `specs/runtime-control.md`; Kilo's `steps` field is the first adapter-level budget knob.
 
 ## Generated Prompt Shape
 
@@ -79,4 +80,3 @@ Build is the first sample export because it has the cleanest verifier loop:
 architect / build-orchestrator / explorer
 localizer / editor / verifier / critic
 ```
-
