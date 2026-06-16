@@ -8,6 +8,8 @@ This schema defines the runtime-neutral shape of a Manurella agent. Runtime adap
 
 Agents are not personas. Agents are bounded workflow components with explicit responsibilities, context needs, permissions, output contracts, evaluation rubrics, and failure modes.
 
+Canonical authoring standards live in `docs/agent-authoring-doctrine.md`. This schema defines the machine-readable shape; the doctrine defines the quality bar for writing and promoting the agent.
+
 ## Agent Tiers
 
 ### Top-Level Agent
@@ -116,6 +118,16 @@ memory:
     - string
 tool_contracts:
   - string
+mode_behavior:
+  fast: string
+  standard: string
+effort_behavior:
+  low: string
+  medium: string
+  high: string
+  extra-high: string
+  max: string
+  ultra: string
 promotion_requirements:
   - string
 ```
@@ -138,10 +150,11 @@ An agent cannot move to `accepted` until it has:
 2. Clear top-level/internal tier classification.
 3. Strict input and output contracts.
 4. Permission boundaries.
-5. At least two benchmark tasks.
-6. Known failure modes.
-7. A baseline-vs-guided evaluation plan.
-8. Runtime adapter validation for the first target runtime.
+5. Explicit mode and effort behavior, either directly in the agent or inherited from a documented domain default.
+6. At least two benchmark tasks.
+7. Known failure modes.
+8. A baseline-vs-guided evaluation plan.
+9. Runtime adapter validation for the first target runtime.
 
 ## Kilo Adapter Notes
 

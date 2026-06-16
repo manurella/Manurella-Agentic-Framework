@@ -15,6 +15,7 @@ It is intentionally small in v0. The first goal is to make relationships inspect
 
 - Keep raw research in `research/inputs/`.
 - Promote stable claims through `research/synthesis/` before changing the graph.
+- Use `docs/agent-authoring-doctrine.md` before promoting any new agent or subagent.
 - Prefer `draft` status until a node or edge has eval evidence.
 - Do not hard delete nodes or edges. Deprecate them.
 - Keep runtime-generated artifacts out of the graph source of truth.

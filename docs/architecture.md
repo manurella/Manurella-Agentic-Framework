@@ -14,6 +14,7 @@ The kernel defines invariants shared by every runtime:
 
 - task contract shape
 - specialist/domain-pack shape
+- agent authoring doctrine
 - permission model
 - memory categories
 - evaluation metadata
@@ -109,7 +110,8 @@ It exists because Manurella's claim is not "think forever." The claim is better 
 
 V0 control dimensions:
 
-- execution profile: quick, standard, or deep
+- mode: fast or standard
+- effort: low, medium, high, extra-high, max, or ultra
 - specialist-call budget
 - repair-loop budget
 - verifier requirement
@@ -136,3 +138,4 @@ Adapters should be one-way exports. Runtime quirks must not leak back into the k
 - Defer custom Python runtime until the Kilo adapter and eval loop prove the abstractions.
 - Defer real RL and fine-tuning until scored trajectories exist.
 - Prefer small specialist prompts plus retrieved references over massive always-on prompts.
+- Treat `Family System v13.yaml` as a legacy benchmark source to audit for structural patterns, not as a canonical artifact to copy.
