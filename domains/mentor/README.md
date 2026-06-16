@@ -2,56 +2,79 @@
 
 ## Purpose
 
-Mentor handles teaching and learning workflows. V0 focuses on language tutoring, then expands to broader learning domains after the evaluation loop is working.
+Mentor handles adaptive tutoring, starting with language learning and expanding later into general learning systems. It covers placement, curriculum sequencing, conversational practice, targeted drills, linguistic diagnostics, pedagogical policy, comprehensible input, and learner-state tracking.
+
+## Status
+
+Research candidate. The current v0 topology is based on the Mentor domain research input and the cross-domain synthesis. It supersedes the first generic tutor skeletons.
 
 ## Use When
 
-- The user wants to learn a language or skill.
-- The task involves placement, explanation, practice, correction, curriculum, or feedback.
-- The output should adapt to the user's current level and goal.
+- The user wants language learning, practice, placement, correction, curriculum planning, or tutoring.
+- The task requires adaptive feedback, scaffolding, learner-state awareness, or spaced review.
+- The output should improve learning, not merely answer a question.
 
 ## Do Not Use When
 
-- The user wants a translation only, with no learning component.
-- The task is creative writing rather than pedagogy.
-- The task is technical implementation work.
-- The system cannot assess the learner's level and the answer would be misleading.
+- The task is primarily software building.
+- The task is creative writing without an instructional purpose.
+- The task is visual art direction or image prompting.
+- The user asks for medical, legal, or high-stakes advice outside an educational framing.
+
+## V0 Topology
+
+Top-level selectable agents:
+
+- `macro-placement-director`: onboarding, placement, CEFR-style baseline, and profile initialization.
+- `curriculum-planner-sequencer`: skill graph planning, prerequisites, unit progression, and review scheduling.
+- `conversational-interlocutor`: live role-play and communicative practice.
+- `targeted-practice-drillmaster`: focused drills, active recall, and controlled practice.
+
+Internal sub-agents:
+
+- `linguistic-diagnostic-specialist`: classifies learner responses as optimal, valid-suboptimal, or incorrect and extracts errors.
+- `sla-pedagogical-policy-engine`: chooses correction/scaffolding strategy from learner state and diagnostic payload.
+- `comprehensible-input-synthesizer`: creates student-facing language at the right difficulty level.
+- `asynchronous-state-tracer`: updates learner state with BKT/HLR-style mastery and recall estimates outside the live loop.
 
 ## Core Outputs
 
-- placement diagnosis
-- learning roadmap
-- practice exercise
-- correction with explanation
-- spaced review plan
-- resource recommendation
-- progress note
+- placement profile
+- curriculum sequence
+- role-play response
+- drill item
+- diagnostic payload
+- pedagogical policy decision
+- comprehensible input response
+- learner-state update
 
 ## Context Policy
 
-Track learner level, goals, known weaknesses, and prior corrections. Do not overload beginners with advanced terminology. Ask one clarifying question when level or goal materially changes the plan.
+Do not pretend learner state is more precise than the evidence supports. Use compact learner-state vectors, skill IDs, recent-turn summaries, and explicit uncertainty. Keep live tutoring latency low by moving state tracing out of the synchronous response loop.
 
 ## Permission Baseline
 
-- `read`: allow learning notes/reference files
-- `edit`: ask/allow only learning progress files
+- `read`: allow learner profile, curriculum, and language references
+- `edit`: ask/allow only learner-state or curriculum artifacts
 - `shell`: deny by default
-- `web`: ask for current resource research
-- `mcp`: allow named dictionary/translation/reference tools only
+- `web`: ask for current language/SLA references
+- `delegate`: allow for top-level agents, deny for internal workers
 
 ## Evaluation Rubric
 
-- correctness
-- level fit
-- pedagogical pacing
-- correction quality
-- encouragement without false praise
-- actionable next step
-- retention support
+- placement calibration
+- prerequisite integrity
+- correction precision
+- valid-alternative recall
+- scaffolding appropriateness
+- comprehensible-input control
+- learner-state calibration
+- affective safety
 
 ## Research Questions
 
-- Which language-learning frameworks should shape the first Lingua successor?
-- How should CEFR/ACTFL style placement be represented without overclaiming?
-- How can Mentor branch from language tutoring into general learning without becoming vague?
+- Should language learning start with one language pair or a language-neutral schema?
+- Which learner-state math is appropriate for v0 without overclaiming precision?
+- How should Mentor test correction quality and avoid false negatives on valid alternate phrasing?
+- What parts of the tutoring loop can be deterministic before invoking a model?
 
