@@ -81,4 +81,6 @@ Each node starts with `draft` status and links to the authoring doctrine, Build 
 
 ## Next Checkpoint
 
-Design the first frontend eval before promoting any frontend graph node. The eval should compare baseline output against Build-guided output and score accessibility, visual stability, state correctness, implementation minimality, and verification evidence.
+Run the first frontend eval before promoting any frontend graph node. The eval should compare baseline output against Build-guided output and score accessibility, visual stability, state correctness, implementation minimality, and verification evidence.
+
+The benchmark design lives in `domains/build/benchmarks/frontend-eval.md` and includes industry-standard checks such as WCAG 2.2-oriented review, axe/Lighthouse automation, Core Web Vitals thresholds, and Playwright behavior or visual evidence.

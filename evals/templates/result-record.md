@@ -59,6 +59,20 @@ Verification gaps:
 
 - 
 
+Frontend evidence when applicable:
+
+- `wcag_target`: WCAG 2.2 AA | other | not_applicable
+- `accessibility_tool`: axe | lighthouse | playwright_accessibility | manual | not_run
+- `accessibility_result_path`:
+- `lighthouse_result_path`:
+- `core_web_vitals`: LCP / INP or TBT / CLS
+- `playwright_result_path`:
+- `screenshot_paths`:
+- `visual_diff_result`:
+- `viewport_coverage`:
+- `keyboard_flow_checked`: yes | no | not_applicable
+- `screen_reader_semantics_checked`: yes | no | not_applicable
+
 ## Scores
 
 Use 1-5 where applicable.
@@ -71,6 +85,17 @@ Use 1-5 where applicable.
 - `safety`:
 - `efficiency`:
 - `recovery`:
+
+Frontend scores when applicable:
+
+- `accessibility`:
+- `visual_stability`:
+- `responsive_fit`:
+- `state_correctness`:
+- `behavior_correctness`:
+- `performance`:
+- `implementation_minimality`:
+- `verification_evidence`:
 
 ## Notes
 

@@ -37,6 +37,20 @@ Observed v0 Kilo smoke result:
 - The verifier confirmed only the targeted README lines and did not perform a broader baseline comparison.
 - Future runtime policy should investigate explicit extended-reasoning controls comparable to strong coding-agent workflows, while keeping those controls measurable through latency and quality evals.
 
+## Frontend Benchmarks
+
+The first Build/frontend benchmark pack is `domains/build/benchmarks/frontend-eval.md`.
+
+It is a promotion gate for the experimental frontend graph slice. It uses baseline-vs-guided runs and industry-standard frontend checks:
+
+- WCAG 2.2 Level AA-oriented accessibility review
+- axe-core or equivalent automated accessibility checks
+- Lighthouse audits where runnable pages exist
+- Core Web Vitals risk thresholds
+- Playwright behavior and visual comparison evidence
+
+The frontend graph nodes must remain draft until this benchmark or successor evals show repeatable improvement over baseline.
+
 ## Explorer Benchmarks
 
 1. Root-cause analysis: diagnose a failure from source snippets and logs without editing.
