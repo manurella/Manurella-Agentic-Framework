@@ -1,0 +1,173 @@
+version: 0
+updated_at: 2026-06-16
+status: draft
+nodes:
+  - id: dom.build
+    type: domain
+    label: Build
+    status: active
+    summary: Software architecture, implementation, QA, security, deployment, debugging, and technical planning.
+    owners:
+      - manurella
+    evidence:
+      - domains/build/README.md
+      - research/synthesis/domain-architecture-synthesis.md
+    updated_at: 2026-06-16
+  - id: mode.fast
+    type: mode
+    label: Fast Mode
+    status: active
+    summary: Shortest workflow that can still satisfy the same acceptance bar.
+    owners:
+      - manurella
+    evidence:
+      - specs/runtime-control.md
+      - evals/results/build-kilo-smoke.md
+    updated_at: 2026-06-16
+  - id: mode.standard
+    type: mode
+    label: Standard Mode
+    status: active
+    summary: Default serious workflow with bounded delegation and verification.
+    owners:
+      - manurella
+    evidence:
+      - specs/runtime-control.md
+      - evals/results/build-kilo-smoke.md
+    updated_at: 2026-06-16
+  - id: effort.high
+    type: effort
+    label: High Effort
+    status: active
+    summary: Default high-quality reasoning for non-trivial work.
+    owners:
+      - manurella
+    evidence:
+      - specs/runtime-control.md
+    updated_at: 2026-06-16
+  - id: agt.build-orchestrator
+    type: agent
+    label: Build Orchestrator
+    status: active
+    summary: Coordinates implementation from a bounded task contract by delegating localization, editing, verification, and critique.
+    owners:
+      - dom.build
+    evidence:
+      - domains/build/agents/build-orchestrator.md
+      - domains/build/benchmarks/README.md
+    updated_at: 2026-06-16
+  - id: sub.localizer
+    type: subagent
+    label: Localizer
+    status: active
+    summary: Finds exact files, symbols, and line ranges relevant to a bounded technical task.
+    owners:
+      - dom.build
+    evidence:
+      - domains/build/agents/localizer.md
+    updated_at: 2026-06-16
+  - id: sub.editor
+    type: subagent
+    label: Editor
+    status: active
+    summary: Produces precise, minimal source changes from localized context and a task contract.
+    owners:
+      - dom.build
+    evidence:
+      - domains/build/agents/editor.md
+    updated_at: 2026-06-16
+  - id: sub.verifier
+    type: subagent
+    label: Verifier
+    status: active
+    summary: Runs or designs execution-grounded checks and returns compact evidence.
+    owners:
+      - dom.build
+    evidence:
+      - domains/build/agents/verifier.md
+    updated_at: 2026-06-16
+  - id: fail.scope-expansion
+    type: failure_mode
+    label: Scope Expansion
+    status: active
+    summary: Agent broadens a bounded task beyond its success criteria.
+    owners:
+      - manurella
+    evidence:
+      - specs/runtime-control.md
+      - evals/results/build-kilo-smoke.md
+    updated_at: 2026-06-16
+  - id: eval.build-kilo-smoke
+    type: eval
+    label: Build Kilo Smoke
+    status: active
+    summary: Kilo smoke runs for Build documentation edits across Fast and Standard modes.
+    owners:
+      - dom.build
+    evidence:
+      - evals/results/build-kilo-smoke.md
+    updated_at: 2026-06-16
+edges:
+  - id: edge.build.owns.orchestrator
+    type: owns
+    source: dom.build
+    target: agt.build-orchestrator
+    status: active
+    confidence: 0.8
+    weight: 1.0
+    evidence:
+      - domains/build/README.md
+    updated_at: 2026-06-16
+  - id: edge.orchestrator.localizer
+    type: orchestrates
+    source: agt.build-orchestrator
+    target: sub.localizer
+    status: active
+    confidence: 0.7
+    weight: 0.8
+    evidence:
+      - domains/build/agents/build-orchestrator.md
+      - domains/build/agents/localizer.md
+    updated_at: 2026-06-16
+  - id: edge.orchestrator.editor
+    type: orchestrates
+    source: agt.build-orchestrator
+    target: sub.editor
+    status: active
+    confidence: 0.7
+    weight: 0.8
+    evidence:
+      - domains/build/agents/build-orchestrator.md
+      - domains/build/agents/editor.md
+    updated_at: 2026-06-16
+  - id: edge.orchestrator.verifier
+    type: orchestrates
+    source: agt.build-orchestrator
+    target: sub.verifier
+    status: active
+    confidence: 0.7
+    weight: 0.8
+    evidence:
+      - domains/build/agents/build-orchestrator.md
+      - domains/build/agents/verifier.md
+    updated_at: 2026-06-16
+  - id: edge.fast.mitigates.scope-expansion
+    type: mitigates
+    source: mode.fast
+    target: fail.scope-expansion
+    status: active
+    confidence: 0.6
+    weight: 0.7
+    evidence:
+      - evals/results/build-kilo-smoke.md
+    updated_at: 2026-06-16
+  - id: edge.orchestrator.evaluated-by.smoke
+    type: evaluated_by
+    source: agt.build-orchestrator
+    target: eval.build-kilo-smoke
+    status: active
+    confidence: 0.6
+    weight: 0.6
+    evidence:
+      - evals/results/build-kilo-smoke.md
+    updated_at: 2026-06-16

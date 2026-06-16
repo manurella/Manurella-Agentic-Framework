@@ -34,7 +34,24 @@ The router decides the execution path:
 
 V0 router behavior is rule-based. Contextual bandits are deferred until we have enough scored results.
 
-### 3. Domain Packs
+### 3. Cognitive Graph
+
+The Cognitive Graph is Manurella's evolving reasoning map.
+
+It connects:
+
+- domains
+- agents and subagents
+- skills and tools
+- modes and effort levels
+- context sources
+- evals and failure modes
+- research evidence
+- routing rules
+
+V0 keeps the graph git-versioned under `cognition/`. It should guide routing and context selection without becoming another giant always-on prompt.
+
+### 4. Domain Packs
 
 Domain packs contain specialist behavior and domain-specific rubrics.
 
@@ -47,7 +64,7 @@ Initial packs:
 
 Domain packs should be modular. Large examples and knowledge libraries belong in references/resources, not always-on prompt bodies.
 
-### 4. Tool Layer
+### 5. Tool Layer
 
 Tools are explicit capabilities with schemas, side-effect levels, and permission requirements.
 
@@ -60,7 +77,7 @@ V0 starts with no custom MCP server unless a task proves it is needed. The first
 
 MCP is the preferred long-term integration boundary, but MCP tools must be treated as hostile until permissioned and logged.
 
-### 5. Memory Layer
+### 6. Memory Layer
 
 V0 memory is file-based and explicit:
 
@@ -72,7 +89,7 @@ V0 memory is file-based and explicit:
 
 No automatic immortal vector memory in v0. Memory must be curated before it affects future runs.
 
-### 6. Evaluation Layer
+### 7. Evaluation Layer
 
 The eval layer is the scoreboard:
 
@@ -84,7 +101,7 @@ The eval layer is the scoreboard:
 
 The first eval target is Kilo because it gives practical access to free models.
 
-### 7. Runtime Control Layer
+### 8. Runtime Control Layer
 
 The runtime control layer defines how much reasoning, delegation, tool use, and wall-clock time a run may spend.
 
@@ -99,7 +116,7 @@ V0 control dimensions:
 - timeout and resume policy
 - adapter-supported runtime knobs
 
-### 8. Runtime Adapters
+### 9. Runtime Adapters
 
 Adapters compile the portable specs into runtime-specific formats.
 

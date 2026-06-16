@@ -107,6 +107,25 @@ Every benchmark run should record:
 - `reviewer`
 - `created_at`
 
+### Cognitive Graph
+
+The Cognitive Graph is the runtime-neutral relationship map for Manurella.
+
+It records:
+
+- domains
+- agents and subagents
+- skills and tools
+- context sources
+- eval records
+- failure modes
+- modes
+- effort levels
+- routing rules
+- research evidence
+
+The v0 schema is defined in `specs/cognitive-graph.md`.
+
 ## Kernel Invariants
 
 - The canonical agent definition is runtime-neutral.
@@ -115,6 +134,7 @@ Every benchmark run should record:
 - Research claims must stay in `research/` until promoted into specs or ADRs.
 - Runtime-generated files are outputs, not the source of truth.
 - Runtime depth is budgeted by `specs/runtime-control.md`.
+- Cognitive graph changes must be git-versioned and evidence-linked.
 - Full RL/fine-tuning is out of scope until enough scored trajectories exist.
 
 ## Research Hooks
