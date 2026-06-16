@@ -71,3 +71,5 @@ Manurella-guided output should beat baseline output by at least 0.5 average rubr
 This threshold is provisional. It should be revisited after the first real Kilo runs.
 
 Runtime-control fields are defined in `specs/runtime-control.md`.
+
+Concrete run records live under `evals/`.
