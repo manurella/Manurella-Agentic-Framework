@@ -223,6 +223,69 @@ nodes:
     evidence:
       - evals/results/build-kilo-smoke.md
     updated_at: 2026-06-16
+  - id: plan.master-execution
+    type: plan
+    label: Master Execution Plan
+    status: active
+    summary: Delivery spine for Manurella v0 across kernel, graph, domains, adapters, evals, and tools.
+    owners:
+      - manurella
+    evidence:
+      - docs/master-execution-plan.md
+    updated_at: 2026-06-17
+  - id: spec.runtime-packet-protocol
+    type: spec
+    label: Runtime Packet Protocol
+    status: active
+    summary: Checkpointed packet protocol for unstable runtimes, timeouts, and resumable execution.
+    owners:
+      - manurella
+    evidence:
+      - specs/runtime-packet-protocol.md
+    updated_at: 2026-06-17
+  - id: gate.build-frontend-quality
+    type: quality_gate
+    label: Build Frontend Quality Gate
+    status: active
+    summary: Evidence gate for frontend accessibility, visual QA, responsive fit, state flow, and performance smoke review.
+    owners:
+      - dom.build
+    evidence:
+      - domains/build/frontend-quality-gate.md
+      - evals/results/frontend-a11y-visual-qa-kilo-mixed-run.md
+    updated_at: 2026-06-17
+  - id: eval.frontend-a11y-visual-qa-kilo-mixed
+    type: eval
+    label: Frontend A11y Visual QA Kilo Mixed Run
+    status: active
+    summary: Partial Kilo frontend QA run that found real issues but failed benchmark hygiene, screenshot use, and result separation.
+    owners:
+      - dom.build
+    evidence:
+      - evals/results/frontend-a11y-visual-qa-kilo-mixed-run.md
+      - evals/fixtures/frontend-a11y-visual-qa/eval.md
+    updated_at: 2026-06-17
+  - id: fail.mixed-eval-artifacts
+    type: failure_mode
+    label: Mixed Eval Artifacts
+    status: active
+    summary: Runtime writes review/result records inside target fixture or application files, corrupting benchmark separation.
+    owners:
+      - manurella
+    evidence:
+      - evals/results/frontend-a11y-visual-qa-kilo-mixed-run.md
+    updated_at: 2026-06-17
+  - id: fail.weak-visual-evidence
+    type: failure_mode
+    label: Weak Visual Evidence
+    status: active
+    summary: Runtime lists visual QA concerns but does not inspect available screenshots or misses obvious visible defects.
+    owners:
+      - dom.build
+    evidence:
+      - evals/results/frontend-a11y-visual-qa-kilo-mixed-run.md
+      - domains/build/frontend-quality-gate.md
+    updated_at: 2026-06-17
 edges:
   - id: edge.build.owns.orchestrator
     type: owns
@@ -435,3 +498,47 @@ edges:
     evidence:
       - docs/agent-authoring-doctrine.md
     updated_at: 2026-06-16
+  - id: edge.master-plan.guides.runtime-packets
+    type: guides
+    source: plan.master-execution
+    target: spec.runtime-packet-protocol
+    status: active
+    confidence: 0.8
+    weight: 0.9
+    evidence:
+      - docs/master-execution-plan.md
+      - specs/runtime-packet-protocol.md
+    updated_at: 2026-06-17
+  - id: edge.runtime-packets.mitigate.mixed-eval-artifacts
+    type: mitigates
+    source: spec.runtime-packet-protocol
+    target: fail.mixed-eval-artifacts
+    status: active
+    confidence: 0.7
+    weight: 0.8
+    evidence:
+      - specs/runtime-packet-protocol.md
+      - evals/results/frontend-a11y-visual-qa-kilo-mixed-run.md
+    updated_at: 2026-06-17
+  - id: edge.frontend-gate.mitigates.weak-visual-evidence
+    type: mitigates
+    source: gate.build-frontend-quality
+    target: fail.weak-visual-evidence
+    status: active
+    confidence: 0.7
+    weight: 0.9
+    evidence:
+      - domains/build/frontend-quality-gate.md
+      - evals/results/frontend-a11y-visual-qa-kilo-mixed-run.md
+    updated_at: 2026-06-17
+  - id: edge.frontend-mixed-run.evidences.frontend-gate
+    type: evidences
+    source: eval.frontend-a11y-visual-qa-kilo-mixed
+    target: gate.build-frontend-quality
+    status: active
+    confidence: 0.7
+    weight: 0.8
+    evidence:
+      - evals/results/frontend-a11y-visual-qa-kilo-mixed-run.md
+      - domains/build/frontend-quality-gate.md
+    updated_at: 2026-06-17

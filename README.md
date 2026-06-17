@@ -14,6 +14,8 @@ V0 proves this loop:
 4. Score outputs with deterministic checks and human/LLM rubrics.
 5. Iterate from measured failures, not vibes.
 
+The current execution spine is `docs/master-execution-plan.md`.
+
 ## First Domains
 
 - `build`: software building, architecture, QA, security, deployment, and documentation.
@@ -25,11 +27,14 @@ V0 proves this loop:
 
 - `docs/charter.md`: purpose, constraints, and v0 success criteria.
 - `docs/architecture.md`: layered architecture and first implementation decisions.
+- `docs/master-execution-plan.md`: delivery sequence, checkpoints, and promotion gates.
 - `docs/decisions/`: ADRs for decisions that should not be lost.
 - `specs/evals.md`: evaluation categories, metrics, and v0 benchmark plan.
+- `specs/runtime-packet-protocol.md`: checkpointed runtime packets for Kilo and other unstable runtimes.
 - `research/`: external research inputs and synthesis.
 - `adapters/kilo/`: Kilo Code export target and examples.
 - `domains/`: portable specialist domain packs.
+- `domains/build/frontend-quality-gate.md`: frontend accessibility, visual, state, and performance evidence gate.
 - `tools/`: future prompt compiler, eval runner, and memory tooling.
 
 ## Commit Style
@@ -41,4 +46,3 @@ Use Conventional Commits:
 - `test:` eval cases and validation logic
 - `fix:` corrections
 - `chore:` repository maintenance
-

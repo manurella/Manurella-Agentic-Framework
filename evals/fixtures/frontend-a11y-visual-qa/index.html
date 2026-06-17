@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manurella Settings</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">M</span>
+      <span class="brand-text">Manurella</span>
+    </div>
+    <nav class="nav" aria-label="Primary">
+      <a href="#">Dashboard</a>
+      <a class="active" href="#">Settings</a>
+      <a href="#">Reports</a>
+    </nav>
+    <button class="icon-button" type="button" aria-label="Open account menu">☰</button>
+  </header>
+
+  <main class="shell">
+    <aside class="profile-card">
+      <div class="avatar-wrap">
+        <img class="avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Crect width='128' height='128' rx='32' fill='%23e0f2fe'/%3E%3Ccircle cx='64' cy='46' r='24' fill='%230f766e'/%3E%3Cpath d='M22 112c8-30 26-44 42-44s34 14 42 44' fill='%230f766e'/%3E%3C/svg%3E">
+      </div>
+      <h1>Settings</h1>
+      <p class="muted">Manage farm profile, alerts, and team access.</p>
+
+      <form id="settings-form" class="settings-form" novalidate>
+        <div class="field">
+          <span class="field-label">Farm name</span>
+          <input id="farm-name" type="text" placeholder="Green Pastures Dairy">
+        </div>
+        <div class="field">
+          <span class="field-label">Region</span>
+          <select id="region">
+            <option>North Valley</option>
+            <option>South Meadow</option>
+            <option>East Ridge</option>
+          </select>
+        </div>
+        <div class="field">
+          <span class="field-label">Daily collection target</span>
+          <input id="target" type="number" placeholder="1200">
+        </div>
+        <label class="check-row">
+          <input type="checkbox" checked>
+          Email alerts
+        </label>
+        <button class="btn btn-primary" type="submit">Save settings</button>
+        <p id="form-message" class="form-message" aria-live="polite"></p>
+      </form>
+    </aside>
+
+    <section class="content">
+      <div class="page-heading">
+        <div>
+          <p class="eyebrow">Operations dashboard</p>
+          <h2>Today's farm controls</h2>
+        </div>
+        <button id="open-invite" class="btn btn-secondary" type="button">Invite teammate</button>
+      </div>
+
+      <div id="status-cards" class="status-grid" aria-label="Farm status">
+        <article class="status-card">
+          <span class="status-label">Collection</span>
+          <strong>78%</strong>
+          <span class="status-foot">1,140 L collected</span>
+        </article>
+        <article class="status-card">
+          <span class="status-label">Fleet</span>
+          <strong>4/5</strong>
+          <span class="status-foot">Tankers active</span>
+        </article>
+        <article class="status-card">
+          <span class="status-label">Weather</span>
+          <strong>Clear</strong>
+          <span class="status-foot">Field access good</span>
+        </article>
+      </div>
+
+      <div class="workflow-grid">
+        <section class="panel">
+          <div class="panel-heading">
+            <h3>Collection batch</h3>
+            <span class="pill">Live</span>
+          </div>
+          <p class="muted">Review the active route and send the next update to drivers.</p>
+          <div class="route-list" role="list">
+            <div role="listitem"><strong>Route A</strong><span>North silo → Compost yard</span></div>
+            <div role="listitem"><strong>Route B</strong><span>South barn → Storage tank</span></div>
+            <div role="listitem"><strong>Route C</strong><span>East paddock → Biogas unit</span></div>
+          </div>
+          <button id="start-batch" class="btn btn-primary" type="button">Start next batch</button>
+          <p id="batch-message" class="form-message" aria-live="polite"></p>
+        </section>
+
+        <section class="panel">
+          <div class="panel-heading">
+            <h3>Alerts</h3>
+            <span class="pill warn">3 open</span>
+          </div>
+          <ul class="alert-list">
+            <li><span class="dot"></span> Low tank level at North silo</li>
+            <li><span class="dot"></span> Driver ETA changed for Route B</li>
+            <li><span class="dot"></span> Sensor offline near East paddock</li>
+          </ul>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div id="invite-drawer" class="drawer-backdrop" hidden>
+    <section class="drawer" role="dialog" aria-labelledby="invite-title" aria-modal="true">
+      <div class="drawer-inner">
+        <div class="drawer-heading">
+          <div>
+            <p class="eyebrow">Team access</p>
+            <h2 id="invite-title">Invite teammate</h2>
+          </div>
+          <div id="close-invite" class="drawer-close" aria-label="Close">×</div>
+        </div>
+        <p class="muted">Add a manager who can review farm activity.</p>
+        <div class="field">
+          <span class="field-label">Email address</span>
+          <input id="invite-email" type="email" placeholder="name@example.com">
+        </div>
+        <div class="field">
+          <span class="field-label">Role</span>
+          <select id="invite-role">
+            <option>Manager</option>
+            <option>Viewer</option>
+            <option>Driver</option>
+          </select>
+        </div>
+        <div class="drawer-actions">
+          <button id="send-invite" class="btn btn-primary" type="button">Send invite</button>
+          <button id="cancel-invite" class="btn btn-secondary" type="button">Cancel</button>
+        </div>
+        <p id="invite-message" class="form-message" aria-live="polite"></p>
+      </div>
+    </section>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="./app.js"></script>
+</body>
+</html>

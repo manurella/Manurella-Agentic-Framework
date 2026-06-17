@@ -118,6 +118,8 @@ V0 control dimensions:
 - timeout and resume policy
 - adapter-supported runtime knobs
 
+Runtime packets in `specs/runtime-packet-protocol.md` are the execution boundary for unstable or weak runtimes. They split scout, design, implementation, verification, and research work into small resumable units with explicit evidence and stop conditions.
+
 ### 9. Runtime Adapters
 
 Adapters compile the portable specs into runtime-specific formats.
@@ -139,3 +141,4 @@ Adapters should be one-way exports. Runtime quirks must not leak back into the k
 - Defer real RL and fine-tuning until scored trajectories exist.
 - Prefer small specialist prompts plus retrieved references over massive always-on prompts.
 - Treat `Family System v13.yaml` as a legacy benchmark source to audit for structural patterns, not as a canonical artifact to copy.
+- Treat domain gates, such as `domains/build/frontend-quality-gate.md`, as evidence contracts. A domain agent is not promoted because it sounds right; it is promoted when the gate and eval records show repeated improvement over baseline.
