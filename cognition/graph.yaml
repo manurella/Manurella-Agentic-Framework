@@ -255,6 +255,18 @@ nodes:
     evidence:
       - specs/runtime-packet-protocol.md
     updated_at: 2026-06-17
+  - id: spec.weak-runtime-compensation
+    type: spec
+    label: Weak Runtime Compensation
+    status: active
+    summary: Evidence-first operating rules for weak models, shallow reasoning, generic output, and stream or timeout instability.
+    owners:
+      - manurella
+    evidence:
+      - specs/weak-runtime-compensation.md
+      - evals/results/frontend-a11y-visual-qa-kilo-mixed-run.md
+      - evals/results/build-kilo-smoke.md
+    updated_at: 2026-06-17
   - id: spec.promotion-gates
     type: spec
     label: Promotion Gates
@@ -321,6 +333,18 @@ nodes:
     evidence:
       - docs/kilo-test-runbook.md
       - specs/runtime-packet-protocol.md
+    updated_at: 2026-06-17
+  - id: doc.mentor-interview-quickstart
+    type: runbook
+    label: Mentor Interview Quickstart
+    status: active
+    summary: Copy-paste Mentor workflow for immediate interview study without requiring the full benchmark process.
+    owners:
+      - dom.mentor
+    evidence:
+      - docs/mentor-interview-quickstart.md
+      - domains/mentor/mentor-quality-gate.md
+      - domains/mentor/learner-state-schema.md
     updated_at: 2026-06-17
   - id: gate.build-frontend-quality
     type: quality_gate
@@ -406,6 +430,18 @@ nodes:
     evidence:
       - domains/mentor/mentor-quality-gate.md
       - evals/prompts/mentor-interview-study-packet.md
+    updated_at: 2026-06-17
+  - id: fail.weak-runtime-reasoning
+    type: failure_mode
+    label: Weak Runtime Reasoning
+    status: active
+    summary: Runtime gives shallow, generic, circular, or unsupported output because the model does not expose evidence, assumptions, and bounded reasoning steps.
+    owners:
+      - manurella
+    evidence:
+      - specs/weak-runtime-compensation.md
+      - evals/results/frontend-a11y-visual-qa-kilo-mixed-run.md
+      - evals/results/build-kilo-smoke.md
     updated_at: 2026-06-17
 edges:
   - id: edge.build.owns.orchestrator
@@ -630,6 +666,29 @@ edges:
       - docs/master-execution-plan.md
       - specs/runtime-packet-protocol.md
     updated_at: 2026-06-17
+  - id: edge.runtime-packets.use.weak-runtime-compensation
+    type: uses
+    source: spec.runtime-packet-protocol
+    target: spec.weak-runtime-compensation
+    status: active
+    confidence: 0.7
+    weight: 0.8
+    evidence:
+      - specs/runtime-packet-protocol.md
+      - specs/weak-runtime-compensation.md
+    updated_at: 2026-06-17
+  - id: edge.weak-runtime-compensation.mitigates.weak-runtime-reasoning
+    type: mitigates
+    source: spec.weak-runtime-compensation
+    target: fail.weak-runtime-reasoning
+    status: active
+    confidence: 0.7
+    weight: 0.8
+    evidence:
+      - specs/weak-runtime-compensation.md
+      - evals/results/frontend-a11y-visual-qa-kilo-mixed-run.md
+      - evals/results/build-kilo-smoke.md
+    updated_at: 2026-06-17
   - id: edge.runtime-packets.mitigate.mixed-eval-artifacts
     type: mitigates
     source: spec.runtime-packet-protocol
@@ -696,6 +755,17 @@ edges:
       - docs/kilo-test-runbook.md
       - specs/runtime-packet-protocol.md
     updated_at: 2026-06-17
+  - id: edge.kilo-runbook.uses.weak-runtime-compensation
+    type: uses
+    source: doc.kilo-test-runbook
+    target: spec.weak-runtime-compensation
+    status: active
+    confidence: 0.7
+    weight: 0.7
+    evidence:
+      - docs/kilo-test-runbook.md
+      - specs/weak-runtime-compensation.md
+    updated_at: 2026-06-17
   - id: edge.kilo-runbook.uses.result-comparator
     type: uses
     source: doc.kilo-test-runbook
@@ -706,6 +776,28 @@ edges:
     evidence:
       - docs/kilo-test-runbook.md
       - tools/compare_results.py
+    updated_at: 2026-06-17
+  - id: edge.mentor-quickstart.uses.quality-gate
+    type: uses
+    source: doc.mentor-interview-quickstart
+    target: gate.mentor-quality
+    status: active
+    confidence: 0.8
+    weight: 0.8
+    evidence:
+      - docs/mentor-interview-quickstart.md
+      - domains/mentor/mentor-quality-gate.md
+    updated_at: 2026-06-17
+  - id: edge.mentor-quickstart.uses.learner-state
+    type: uses
+    source: doc.mentor-interview-quickstart
+    target: spec.mentor-learner-state
+    status: active
+    confidence: 0.8
+    weight: 0.8
+    evidence:
+      - docs/mentor-interview-quickstart.md
+      - domains/mentor/learner-state-schema.md
     updated_at: 2026-06-17
   - id: edge.frontend-gate.mitigates.weak-visual-evidence
     type: mitigates
@@ -758,6 +850,17 @@ edges:
     weight: 0.8
     evidence:
       - domains/mentor/mentor-quality-gate.md
+    updated_at: 2026-06-17
+  - id: edge.weak-runtime-compensation.mitigates.generic-tutoring
+    type: mitigates
+    source: spec.weak-runtime-compensation
+    target: fail.generic-tutoring
+    status: active
+    confidence: 0.6
+    weight: 0.7
+    evidence:
+      - specs/weak-runtime-compensation.md
+      - evals/prompts/mentor-interview-study-packet.md
     updated_at: 2026-06-17
   - id: edge.mentor-interview.evaluates.quality-gate
     type: evaluates

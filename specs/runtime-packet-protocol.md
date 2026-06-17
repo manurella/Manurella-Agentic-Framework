@@ -150,6 +150,8 @@ Output:
 
 Kilo packets must be short and explicit.
 
+When the model is unknown, weak, or already produced shallow/generic output, apply `specs/weak-runtime-compensation.md` inside the packet. The model must expose its evidence, assumptions, narrow target, output, and self-check before it continues.
+
 Default limits:
 
 | Packet class | Fast timebox | Standard timebox | Delegation |
@@ -181,6 +183,8 @@ On timeout or upstream idle failure:
 5. Lower delegation before lowering quality gates.
 
 Timeout does not mean the model "needed more time." It may mean the packet was too large, the runtime stream idled, delegation ran away, or the prompt failed to force evidence checkpoints.
+
+If the timeout came from stream or upstream idle behavior, the next packet must include an early checkpoint output before doing deeper work.
 
 ## Evidence Rules
 

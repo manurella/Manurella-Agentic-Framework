@@ -25,9 +25,14 @@ Expected:
 - Run baseline and guided outputs in separate Kilo threads.
 - Do not ask the same run to create result records.
 - Capture exact model, runtime, mode, effort, elapsed time, timeout status, and changed artifacts.
+- If the previous run looked generic, shallow, or confused, add `specs/weak-runtime-compensation.md` to the prompt and require evidence, assumptions, narrow target, output, and self-check.
 - Stop at packet boundaries. Do not let Kilo continue into repairs or documentation unless the packet asks for it.
 
 ## First Mentor Test
+
+For immediate personal study, use `docs/mentor-interview-quickstart.md`.
+
+For framework evaluation, use the benchmark flow below.
 
 Use:
 
@@ -92,3 +97,14 @@ If Kilo times out:
 3. Do not rerun the full prompt.
 4. Resume with a narrower runtime packet.
 5. Prefer lowering delegation before lowering quality gates.
+
+If the failure is stream or upstream idle related, require an early checkpoint in the next prompt before deeper work:
+
+```text
+Before the main answer, output:
+1. Evidence read
+2. Assumptions
+3. Narrow target
+
+Then continue only if the packet still fits the timebox.
+```

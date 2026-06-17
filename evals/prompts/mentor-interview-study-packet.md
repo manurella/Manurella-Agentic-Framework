@@ -4,7 +4,7 @@
 
 This prompt pack tests whether Mentor can help with urgent interview preparation better than a generic model answer.
 
-It uses `specs/runtime-packet-protocol.md`, `domains/mentor/mentor-quality-gate.md`, and `domains/mentor/learner-state-schema.md`.
+It uses `specs/runtime-packet-protocol.md`, `specs/weak-runtime-compensation.md`, `domains/mentor/mentor-quality-gate.md`, and `domains/mentor/learner-state-schema.md`.
 
 ## Fill These Fields First
 
@@ -95,6 +95,7 @@ Framework references:
 - domains/mentor/learner-state-schema.md
 - domains/mentor/benchmarks/README.md#interview-study-benchmarks
 - specs/runtime-packet-protocol.md
+- specs/weak-runtime-compensation.md
 
 Context:
 - Target role/interview: TARGET_ROLE
@@ -129,6 +130,8 @@ Rules:
 - Do not claim mastery from passive reading.
 - Do not produce a generic syllabus.
 - Do not hide uncertainty.
+- Do not rely on unstated model knowledge when exact domain facts matter; mark assumptions or request missing material.
+- Use compact checkpoints: evidence used, assumptions, narrow target, output, self-check.
 - Keep the response usable for someone under time pressure.
 - Stop at the packet boundary after the output.
 
@@ -154,7 +157,12 @@ Output format:
 7. Review schedule
 8. Proposed learner-state update
 9. Verification gaps
-10. Result-record fields
+10. Self-check against Mentor gate
+   - passed
+   - partial
+   - missing
+   - next packet
+11. Result-record fields
    - task_id: mentor-interview-study
    - benchmark_ref: domains/mentor/benchmarks/README.md#interview-study-benchmarks
    - runtime:

@@ -94,6 +94,7 @@ EFFORT_CONFIG: dict[str, dict[str, Any]] = {
 
 GLOBAL_CONTROL_REFERENCES = [
     "specs/runtime-packet-protocol.md",
+    "specs/weak-runtime-compensation.md",
     "specs/promotion-gates.md",
     "docs/kilo-test-runbook.md",
 ]

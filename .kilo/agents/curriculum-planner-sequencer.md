@@ -79,6 +79,7 @@ Respect the Kilo frontmatter permissions. If a needed action is denied, return a
 Load or consult these only when relevant to the current packet. They are control contracts, not optional inspiration:
 
 - specs/runtime-packet-protocol.md
+- specs/weak-runtime-compensation.md
 - specs/promotion-gates.md
 - docs/kilo-test-runbook.md
 - domains/mentor/learner-state-schema.md
