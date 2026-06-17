@@ -28,6 +28,7 @@ The current execution spine is `docs/master-execution-plan.md`.
 - `docs/charter.md`: purpose, constraints, and v0 success criteria.
 - `docs/architecture.md`: layered architecture and first implementation decisions.
 - `docs/master-execution-plan.md`: delivery sequence, checkpoints, and promotion gates.
+- `docs/kilo-test-runbook.md`: packetized Kilo testing workflow for generated agents and eval records.
 - `docs/decisions/`: ADRs for decisions that should not be lost.
 - `specs/evals.md`: evaluation categories, metrics, and v0 benchmark plan.
 - `specs/runtime-packet-protocol.md`: checkpointed runtime packets for Kilo and other unstable runtimes.

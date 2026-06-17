@@ -299,6 +299,17 @@ nodes:
       - tools/README.md
       - specs/promotion-gates.md
     updated_at: 2026-06-17
+  - id: doc.kilo-test-runbook
+    type: runbook
+    label: Kilo Test Runbook
+    status: active
+    summary: Packetized workflow for testing generated Kilo agents, recording evals, comparing outputs, and handling timeouts.
+    owners:
+      - manurella
+    evidence:
+      - docs/kilo-test-runbook.md
+      - specs/runtime-packet-protocol.md
+    updated_at: 2026-06-17
   - id: gate.build-frontend-quality
     type: quality_gate
     label: Build Frontend Quality Gate
@@ -649,6 +660,28 @@ edges:
     weight: 0.8
     evidence:
       - specs/promotion-gates.md
+      - tools/compare_results.py
+    updated_at: 2026-06-17
+  - id: edge.kilo-runbook.uses.runtime-packets
+    type: uses
+    source: doc.kilo-test-runbook
+    target: spec.runtime-packet-protocol
+    status: active
+    confidence: 0.8
+    weight: 0.8
+    evidence:
+      - docs/kilo-test-runbook.md
+      - specs/runtime-packet-protocol.md
+    updated_at: 2026-06-17
+  - id: edge.kilo-runbook.uses.result-comparator
+    type: uses
+    source: doc.kilo-test-runbook
+    target: tool.result-comparator
+    status: active
+    confidence: 0.8
+    weight: 0.7
+    evidence:
+      - docs/kilo-test-runbook.md
       - tools/compare_results.py
     updated_at: 2026-06-17
   - id: edge.frontend-gate.mitigates.weak-visual-evidence
