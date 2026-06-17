@@ -1,0 +1,161 @@
+"""Run Manurella's local framework self-check suite."""
+
+from __future__ import annotations
+
+import argparse
+import pathlib
+import subprocess
+import sys
+
+
+SMOKE_BASELINE = "self-check-baseline"
+SMOKE_GUIDED = "self-check-guided"
+
+
+def run_command(command: list[str], cwd: pathlib.Path) -> int:
+    print(f"> {' '.join(command)}")
+    completed = subprocess.run(command, cwd=cwd)
+    return completed.returncode
+
+
+def patch_score(path: pathlib.Path, score: int) -> None:
+    text = path.read_text(encoding="utf-8")
+    replacements = {
+        "- `correctness`:": f"- `correctness`: {score}",
+        "- `instruction_adherence`:": f"- `instruction_adherence`: {score}",
+        "- `domain_quality`:": f"- `domain_quality`: {score}",
+    }
+    for before, after in replacements.items():
+        text = text.replace(before, after)
+    path.write_text(text, encoding="utf-8", newline="\n")
+
+
+def safe_unlink(root: pathlib.Path, path: pathlib.Path) -> None:
+    resolved_root = root.resolve()
+    resolved_path = path.resolve()
+    if resolved_root not in resolved_path.parents:
+        raise RuntimeError(f"refusing to remove outside repo: {resolved_path}")
+    if resolved_path.exists():
+        resolved_path.unlink()
+        print(f"removed: {resolved_path}")
+
+
+def parse_args(argv: list[str]) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--repo", type=pathlib.Path, default=pathlib.Path.cwd())
+    parser.add_argument("--keep-smoke-records", action="store_true")
+    return parser.parse_args(argv)
+
+
+def main(argv: list[str]) -> int:
+    args = parse_args(argv)
+    root = args.repo.resolve()
+    python = sys.executable
+    baseline_path = root / "evals" / "results" / f"{SMOKE_BASELINE}.md"
+    guided_path = root / "evals" / "results" / f"{SMOKE_GUIDED}.md"
+
+    commands = [
+        [python, "tools/validate_framework.py", "--repo", "."],
+        [
+            python,
+            "adapters/kilo/export_agents.py",
+            "--all",
+            "--output",
+            ".kilo/agents",
+            "--mode",
+            "standard",
+            "--effort",
+            "high",
+            "--dry-run",
+        ],
+        [
+            python,
+            "tools/create_result_record.py",
+            "--repo",
+            ".",
+            "--task-id",
+            SMOKE_BASELINE,
+            "--domain",
+            "mentor",
+            "--kind",
+            "mentor",
+            "--benchmark-ref",
+            "domains/mentor/benchmarks/README.md#interview-study-benchmarks",
+            "--runtime",
+            "self_check",
+            "--model",
+            "self_check",
+            "--mode",
+            "fast",
+            "--effort",
+            "medium",
+            "--status",
+            "partial",
+            "--timeout-status",
+            "none",
+            "--overwrite",
+        ],
+        [
+            python,
+            "tools/create_result_record.py",
+            "--repo",
+            ".",
+            "--task-id",
+            SMOKE_GUIDED,
+            "--domain",
+            "mentor",
+            "--kind",
+            "mentor",
+            "--benchmark-ref",
+            "domains/mentor/benchmarks/README.md#interview-study-benchmarks",
+            "--runtime",
+            "self_check",
+            "--model",
+            "self_check",
+            "--mode",
+            "standard",
+            "--effort",
+            "high",
+            "--status",
+            "partial",
+            "--timeout-status",
+            "none",
+            "--overwrite",
+        ],
+    ]
+
+    try:
+        for command in commands:
+            code = run_command(command, root)
+            if code != 0:
+                return code
+
+        patch_score(baseline_path, 3)
+        patch_score(guided_path, 4)
+
+        code = run_command(
+            [
+                python,
+                "tools/compare_results.py",
+                "--baseline",
+                str(baseline_path),
+                "--guided",
+                str(guided_path),
+                "--threshold",
+                "0.5",
+            ],
+            root,
+        )
+        if code != 0:
+            return code
+    finally:
+        if not args.keep_smoke_records:
+            safe_unlink(root, baseline_path)
+            safe_unlink(root, guided_path)
+
+    print("self-check passed")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv[1:]))

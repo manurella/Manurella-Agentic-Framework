@@ -299,6 +299,18 @@ nodes:
       - tools/README.md
       - specs/promotion-gates.md
     updated_at: 2026-06-17
+  - id: tool.self-check
+    type: tool
+    label: Self Check
+    status: active
+    summary: One-command local smoke suite for framework validation, Kilo export dry-run, result helper, and comparator.
+    owners:
+      - manurella
+    evidence:
+      - tools/self_check.py
+      - tools/README.md
+      - specs/promotion-gates.md
+    updated_at: 2026-06-17
   - id: doc.kilo-test-runbook
     type: runbook
     label: Kilo Test Runbook
@@ -661,6 +673,17 @@ edges:
     evidence:
       - specs/promotion-gates.md
       - tools/compare_results.py
+    updated_at: 2026-06-17
+  - id: edge.promotion-gates.require.self-check
+    type: requires
+    source: spec.promotion-gates
+    target: tool.self-check
+    status: active
+    confidence: 0.8
+    weight: 0.9
+    evidence:
+      - specs/promotion-gates.md
+      - tools/self_check.py
     updated_at: 2026-06-17
   - id: edge.kilo-runbook.uses.runtime-packets
     type: uses

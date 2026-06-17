@@ -123,7 +123,13 @@ A tool can become part of the normal workflow only when:
 
 ## Current V0 Promotion Commands
 
-Run these before claiming a framework checkpoint is healthy:
+Run this before claiming a framework checkpoint is healthy:
+
+```powershell
+python tools/self_check.py --repo .
+```
+
+The self-check wraps the lower-level commands below and runs a result-record/comparator smoke test:
 
 ```powershell
 python tools/validate_framework.py --repo .

@@ -2,6 +2,16 @@
 
 Local tools that enforce Manurella framework structure.
 
+## Self Check
+
+Run the full local framework smoke suite:
+
+```powershell
+python tools/self_check.py --repo .
+```
+
+It runs the framework validator, Kilo exporter dry-run, result-record helper smoke, comparator smoke, and removes its temporary smoke records.
+
 ## Framework Validator
 
 Run from the repository root:
