@@ -50,8 +50,15 @@ Sequence:
 4. Start a fresh Kilo thread.
 5. Run guided Mentor prompt.
 6. Save output.
-7. Use `tools/create_result_record.py` to create two result records.
-8. Use `tools/compare_results.py` to compare them.
+7. Use `tools/record_mentor_run.py` for guided Mentor outputs when captured text is available.
+8. Use `tools/create_result_record.py` for baseline or unscored records.
+9. Use `tools/compare_results.py` to compare them.
+
+For a guided Mentor output saved at `evals/results/captured-mentor-output.md`:
+
+```powershell
+python tools/record_mentor_run.py --repo . --task-id guided-mentor-interview-study-standard-high --output-text evals/results/captured-mentor-output.md --model "MODEL_NAME" --actual-latency "LATENCY" --timeout-status none --overwrite
+```
 
 ## First Build Frontend Test
 

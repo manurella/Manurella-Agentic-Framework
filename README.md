@@ -43,6 +43,8 @@ The current execution spine is `docs/master-execution-plan.md`.
 - `tools/validate_framework.py`: local structure validator for graph, agents, evidence, and eval hygiene.
 - `tools/create_result_record.py`: result-record skeleton generator for clean `evals/results/` artifacts.
 - `tools/create_mentor_packet.py`: copy-paste Mentor interview-study packet generator.
+- `tools/score_mentor_output.py`: deterministic Mentor output gate scorer.
+- `tools/record_mentor_run.py`: captured Mentor output scorer and result-record wrapper.
 - `tools/compare_results.py`: baseline-vs-guided score comparator for promotion signals.
 - `tools/self_check.py`: one-command local smoke suite for validator, Kilo export, result helper, and comparator.
 - `tools/`: framework validation now; prompt compiler, eval runner, and memory tooling later.

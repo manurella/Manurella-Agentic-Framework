@@ -10,6 +10,8 @@ import sys
 
 SMOKE_BASELINE = "self-check-baseline"
 SMOKE_GUIDED = "self-check-guided"
+SMOKE_MENTOR_OUTPUT = "self-check-mentor-output"
+SMOKE_MENTOR_RECORD = "self-check-mentor-record"
 
 
 def run_command(command: list[str], cwd: pathlib.Path) -> int:
@@ -27,6 +29,51 @@ def patch_score(path: pathlib.Path, score: int) -> None:
     }
     for before, after in replacements.items():
         text = text.replace(before, after)
+    path.write_text(text, encoding="utf-8", newline="\n")
+
+
+def write_mentor_smoke_output(path: pathlib.Path) -> None:
+    text = """# Self Check Mentor Output
+
+## Evidence and assumptions
+
+Evidence used: session protocol, interview study kit, Mentor quality gate.
+Assumptions: frontend interview with weak state ownership.
+
+## Target skill
+
+Skill ID: interview.frontend.state-ownership
+
+## Teaching move
+
+Worked example followed by active recall.
+
+## Active recall
+
+Question: Where should filter state, fetched profile data, and form draft state live?
+
+## Answer key or rubric
+
+Expected answer: URL for shareable filters, server cache for fetched profile data, local/form state for drafts.
+Scoring rubric: 5 complete, 3 partial, 1 generic.
+
+## Feedback rule
+
+Correct, partially correct, incorrect, or insufficient evidence.
+
+## Learner-state update proposal
+
+Mastery unchanged until unaided recall; next action is another drill.
+
+## Next packet
+
+Next packet: mock interview drill.
+
+## Self-check against Mentor gate
+
+Passed: target skill, active recall, rubric, feedback, learner-state update.
+Partial: real learner evidence is synthetic.
+"""
     path.write_text(text, encoding="utf-8", newline="\n")
 
 
@@ -53,6 +100,8 @@ def main(argv: list[str]) -> int:
     python = sys.executable
     baseline_path = root / "evals" / "results" / f"{SMOKE_BASELINE}.md"
     guided_path = root / "evals" / "results" / f"{SMOKE_GUIDED}.md"
+    mentor_output_path = root / "evals" / "results" / f"{SMOKE_MENTOR_OUTPUT}.md"
+    mentor_record_path = root / "evals" / "results" / f"{SMOKE_MENTOR_RECORD}.md"
 
     commands = [
         [python, "tools/validate_framework.py", "--repo", "."],
@@ -146,6 +195,49 @@ def main(argv: list[str]) -> int:
 
         patch_score(baseline_path, 3)
         patch_score(guided_path, 4)
+        write_mentor_smoke_output(mentor_output_path)
+
+        code = run_command(
+            [
+                python,
+                "tools/score_mentor_output.py",
+                str(mentor_output_path),
+                "--min-score",
+                "9",
+            ],
+            root,
+        )
+        if code != 0:
+            return code
+
+        code = run_command(
+            [
+                python,
+                "tools/record_mentor_run.py",
+                "--repo",
+                ".",
+                "--task-id",
+                SMOKE_MENTOR_RECORD,
+                "--output-text",
+                str(mentor_output_path),
+                "--runtime",
+                "self_check",
+                "--model",
+                "self_check",
+                "--mode",
+                "standard",
+                "--effort",
+                "high",
+                "--timeout-status",
+                "none",
+                "--actual-latency",
+                "not_applicable",
+                "--overwrite",
+            ],
+            root,
+        )
+        if code != 0:
+            return code
 
         code = run_command(
             [
@@ -162,10 +254,28 @@ def main(argv: list[str]) -> int:
         )
         if code != 0:
             return code
+
+        code = run_command(
+            [
+                python,
+                "tools/compare_results.py",
+                "--baseline",
+                str(baseline_path),
+                "--guided",
+                str(mentor_record_path),
+                "--threshold",
+                "0.5",
+            ],
+            root,
+        )
+        if code != 0:
+            return code
     finally:
         if not args.keep_smoke_records:
             safe_unlink(root, baseline_path)
             safe_unlink(root, guided_path)
+            safe_unlink(root, mentor_output_path)
+            safe_unlink(root, mentor_record_path)
 
     print("self-check passed")
     return 0

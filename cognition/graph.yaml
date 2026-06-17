@@ -324,17 +324,45 @@ nodes:
       - domains/mentor/session-protocol.md
       - domains/mentor/interview-study-kit.md
     updated_at: 2026-06-17
+  - id: tool.mentor-output-scorer
+    type: tool
+    label: Mentor Output Scorer
+    status: active
+    summary: Deterministic gate scorer for captured Mentor outputs, checking target skill, active recall, rubric, feedback, learner-state update, next packet, and self-check coverage.
+    owners:
+      - dom.mentor
+    evidence:
+      - tools/score_mentor_output.py
+      - tools/README.md
+      - domains/mentor/mentor-quality-gate.md
+      - domains/mentor/session-protocol.md
+    updated_at: 2026-06-17
+  - id: tool.mentor-run-recorder
+    type: tool
+    label: Mentor Run Recorder
+    status: active
+    summary: Local wrapper that scores captured Mentor output and creates a structured eval result record with scorer evidence.
+    owners:
+      - dom.mentor
+    evidence:
+      - tools/record_mentor_run.py
+      - tools/score_mentor_output.py
+      - tools/create_result_record.py
+      - tools/README.md
+    updated_at: 2026-06-17
   - id: tool.self-check
     type: tool
     label: Self Check
     status: active
-    summary: One-command local smoke suite for framework validation, Kilo export dry-run, result helper, Mentor packet helper, and comparator.
+    summary: One-command local smoke suite for framework validation, Kilo export dry-run, result helper, Mentor packet helper, Mentor output scorer, Mentor run recorder, and comparator.
     owners:
       - manurella
     evidence:
       - tools/self_check.py
       - tools/README.md
       - tools/create_mentor_packet.py
+      - tools/score_mentor_output.py
+      - tools/record_mentor_run.py
       - specs/promotion-gates.md
     updated_at: 2026-06-17
   - id: doc.kilo-test-runbook
@@ -994,4 +1022,70 @@ edges:
     evidence:
       - tools/create_mentor_packet.py
       - domains/mentor/interview-study-kit.md
+    updated_at: 2026-06-17
+  - id: edge.mentor-output-scorer.evaluates.quality-gate
+    type: evaluates
+    source: tool.mentor-output-scorer
+    target: gate.mentor-quality
+    status: active
+    confidence: 0.7
+    weight: 0.8
+    evidence:
+      - tools/score_mentor_output.py
+      - domains/mentor/mentor-quality-gate.md
+    updated_at: 2026-06-17
+  - id: edge.mentor-output-scorer.uses.session-protocol
+    type: uses
+    source: tool.mentor-output-scorer
+    target: spec.mentor-session-protocol
+    status: active
+    confidence: 0.7
+    weight: 0.7
+    evidence:
+      - tools/score_mentor_output.py
+      - domains/mentor/session-protocol.md
+    updated_at: 2026-06-17
+  - id: edge.self-check.uses.mentor-output-scorer
+    type: uses
+    source: tool.self-check
+    target: tool.mentor-output-scorer
+    status: active
+    confidence: 0.8
+    weight: 0.7
+    evidence:
+      - tools/self_check.py
+      - tools/score_mentor_output.py
+    updated_at: 2026-06-17
+  - id: edge.mentor-run-recorder.uses.output-scorer
+    type: uses
+    source: tool.mentor-run-recorder
+    target: tool.mentor-output-scorer
+    status: active
+    confidence: 0.8
+    weight: 0.8
+    evidence:
+      - tools/record_mentor_run.py
+      - tools/score_mentor_output.py
+    updated_at: 2026-06-17
+  - id: edge.mentor-run-recorder.uses.result-helper
+    type: uses
+    source: tool.mentor-run-recorder
+    target: tool.result-record-helper
+    status: active
+    confidence: 0.8
+    weight: 0.8
+    evidence:
+      - tools/record_mentor_run.py
+      - tools/create_result_record.py
+    updated_at: 2026-06-17
+  - id: edge.self-check.uses.mentor-run-recorder
+    type: uses
+    source: tool.self-check
+    target: tool.mentor-run-recorder
+    status: active
+    confidence: 0.8
+    weight: 0.7
+    evidence:
+      - tools/self_check.py
+      - tools/record_mentor_run.py
     updated_at: 2026-06-17
