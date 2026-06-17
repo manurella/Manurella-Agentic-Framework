@@ -89,6 +89,8 @@ Load or consult these only when relevant to the current packet. They are control
 - specs/promotion-gates.md
 - docs/kilo-test-runbook.md
 - domains/mentor/learner-state-schema.md
+- domains/mentor/session-protocol.md
+- domains/mentor/interview-study-kit.md
 - domains/mentor/mentor-quality-gate.md
 - evals/prompts/mentor-interview-study-packet.md
 

@@ -311,16 +311,30 @@ nodes:
       - tools/README.md
       - specs/promotion-gates.md
     updated_at: 2026-06-17
+  - id: tool.mentor-packet-helper
+    type: tool
+    label: Mentor Packet Helper
+    status: active
+    summary: Local helper that creates copy-paste Mentor interview-study runtime packets with framework references and weak-runtime checkpoints.
+    owners:
+      - dom.mentor
+    evidence:
+      - tools/create_mentor_packet.py
+      - tools/README.md
+      - domains/mentor/session-protocol.md
+      - domains/mentor/interview-study-kit.md
+    updated_at: 2026-06-17
   - id: tool.self-check
     type: tool
     label: Self Check
     status: active
-    summary: One-command local smoke suite for framework validation, Kilo export dry-run, result helper, and comparator.
+    summary: One-command local smoke suite for framework validation, Kilo export dry-run, result helper, Mentor packet helper, and comparator.
     owners:
       - manurella
     evidence:
       - tools/self_check.py
       - tools/README.md
+      - tools/create_mentor_packet.py
       - specs/promotion-gates.md
     updated_at: 2026-06-17
   - id: doc.kilo-test-runbook
@@ -398,6 +412,28 @@ nodes:
       - dom.mentor
     evidence:
       - domains/mentor/learner-state-schema.md
+    updated_at: 2026-06-17
+  - id: spec.mentor-session-protocol
+    type: spec
+    label: Mentor Session Protocol
+    status: active
+    summary: Structured learning loop for Mentor sessions covering intake, diagnosis, target selection, teaching move, retrieval practice, feedback, state update, and next packet.
+    owners:
+      - dom.mentor
+    evidence:
+      - domains/mentor/session-protocol.md
+      - domains/mentor/mentor-quality-gate.md
+    updated_at: 2026-06-17
+  - id: ref.mentor-interview-study-kit
+    type: reference
+    label: Mentor Interview Study Kit
+    status: active
+    summary: Compact interview preparation substrate with skill IDs, track-specific weak-answer patterns, drill templates, and mock interview rubrics.
+    owners:
+      - dom.mentor
+    evidence:
+      - domains/mentor/interview-study-kit.md
+      - domains/mentor/benchmarks/README.md
     updated_at: 2026-06-17
   - id: gate.mentor-quality
     type: quality_gate
@@ -799,6 +835,28 @@ edges:
       - docs/mentor-interview-quickstart.md
       - domains/mentor/learner-state-schema.md
     updated_at: 2026-06-17
+  - id: edge.mentor-quickstart.uses.session-protocol
+    type: uses
+    source: doc.mentor-interview-quickstart
+    target: spec.mentor-session-protocol
+    status: active
+    confidence: 0.8
+    weight: 0.8
+    evidence:
+      - docs/mentor-interview-quickstart.md
+      - domains/mentor/session-protocol.md
+    updated_at: 2026-06-17
+  - id: edge.mentor-quickstart.uses.study-kit
+    type: uses
+    source: doc.mentor-interview-quickstart
+    target: ref.mentor-interview-study-kit
+    status: active
+    confidence: 0.8
+    weight: 0.8
+    evidence:
+      - docs/mentor-interview-quickstart.md
+      - domains/mentor/interview-study-kit.md
+    updated_at: 2026-06-17
   - id: edge.frontend-gate.mitigates.weak-visual-evidence
     type: mitigates
     source: gate.build-frontend-quality
@@ -831,6 +889,26 @@ edges:
     evidence:
       - domains/mentor/learner-state-schema.md
     updated_at: 2026-06-17
+  - id: edge.mentor.owns.session-protocol
+    type: owns
+    source: dom.mentor
+    target: spec.mentor-session-protocol
+    status: active
+    confidence: 0.8
+    weight: 0.9
+    evidence:
+      - domains/mentor/session-protocol.md
+    updated_at: 2026-06-17
+  - id: edge.mentor.owns.interview-study-kit
+    type: owns
+    source: dom.mentor
+    target: ref.mentor-interview-study-kit
+    status: active
+    confidence: 0.8
+    weight: 0.8
+    evidence:
+      - domains/mentor/interview-study-kit.md
+    updated_at: 2026-06-17
   - id: edge.mentor.owns.quality-gate
     type: owns
     source: dom.mentor
@@ -840,6 +918,17 @@ edges:
     weight: 0.9
     evidence:
       - domains/mentor/mentor-quality-gate.md
+    updated_at: 2026-06-17
+  - id: edge.mentor-gate.requires.session-protocol
+    type: requires
+    source: gate.mentor-quality
+    target: spec.mentor-session-protocol
+    status: active
+    confidence: 0.8
+    weight: 0.8
+    evidence:
+      - domains/mentor/mentor-quality-gate.md
+      - domains/mentor/session-protocol.md
     updated_at: 2026-06-17
   - id: edge.mentor-gate.mitigates.generic-tutoring
     type: mitigates
@@ -872,4 +961,37 @@ edges:
     evidence:
       - evals/prompts/mentor-interview-study-packet.md
       - domains/mentor/benchmarks/README.md
+    updated_at: 2026-06-17
+  - id: edge.mentor-interview.uses.study-kit
+    type: uses
+    source: eval.mentor-interview-study
+    target: ref.mentor-interview-study-kit
+    status: active
+    confidence: 0.7
+    weight: 0.7
+    evidence:
+      - evals/prompts/mentor-interview-study-packet.md
+      - domains/mentor/interview-study-kit.md
+    updated_at: 2026-06-17
+  - id: edge.mentor-packet-helper.uses.session-protocol
+    type: uses
+    source: tool.mentor-packet-helper
+    target: spec.mentor-session-protocol
+    status: active
+    confidence: 0.8
+    weight: 0.8
+    evidence:
+      - tools/create_mentor_packet.py
+      - domains/mentor/session-protocol.md
+    updated_at: 2026-06-17
+  - id: edge.mentor-packet-helper.uses.study-kit
+    type: uses
+    source: tool.mentor-packet-helper
+    target: ref.mentor-interview-study-kit
+    status: active
+    confidence: 0.8
+    weight: 0.8
+    evidence:
+      - tools/create_mentor_packet.py
+      - domains/mentor/interview-study-kit.md
     updated_at: 2026-06-17

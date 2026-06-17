@@ -122,6 +122,20 @@ def main(argv: list[str]) -> int:
             "none",
             "--overwrite",
         ],
+        [
+            python,
+            "tools/create_mentor_packet.py",
+            "--repo",
+            ".",
+            "--target-role",
+            "Frontend Developer",
+            "--available-time",
+            "30 minutes",
+            "--topic",
+            "state ownership",
+            "--weak-topics",
+            "React server and client state",
+        ],
     ]
 
     try:

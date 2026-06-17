@@ -10,7 +10,7 @@ Run the full local framework smoke suite:
 python tools/self_check.py --repo .
 ```
 
-It runs the framework validator, Kilo exporter dry-run, result-record helper smoke, comparator smoke, and removes its temporary smoke records.
+It runs the framework validator, Kilo exporter dry-run, result-record helper smoke, Mentor packet helper smoke, comparator smoke, and removes its temporary smoke records.
 
 ## Framework Validator
 
@@ -52,3 +52,13 @@ python tools/compare_results.py --baseline evals/results/baseline-mentor-intervi
 ```
 
 The comparator reads shared numeric score fields, computes average delta, and reports whether the guided run met the promotion signal threshold.
+
+## Mentor Packet Helper
+
+Create a copy-paste Mentor interview-study packet:
+
+```powershell
+python tools/create_mentor_packet.py --repo . --target-role "Frontend Developer" --available-time "45 minutes today" --topic "state ownership" --weak-topics "React state, cache invalidation"
+```
+
+The helper fills the Manurella runtime packet, Mentor framework references, weak-runtime checkpoint, session protocol, and output contract.

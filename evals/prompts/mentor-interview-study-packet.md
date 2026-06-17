@@ -91,6 +91,8 @@ MANURELLA RUNTIME PACKET
 
 Framework references:
 - domains/mentor/README.md
+- domains/mentor/session-protocol.md
+- domains/mentor/interview-study-kit.md
 - domains/mentor/mentor-quality-gate.md
 - domains/mentor/learner-state-schema.md
 - domains/mentor/benchmarks/README.md#interview-study-benchmarks
@@ -127,6 +129,9 @@ Mentor lenses:
 
 Rules:
 - Do not create files.
+- Use one primary target skill only.
+- Use `domains/mentor/session-protocol.md` as the session loop.
+- Use `domains/mentor/interview-study-kit.md` for skill IDs, drill shape, and rubric pattern when applicable.
 - Do not claim mastery from passive reading.
 - Do not produce a generic syllabus.
 - Do not hide uncertainty.

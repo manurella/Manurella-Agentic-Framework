@@ -34,6 +34,8 @@ MANURELLA RUNTIME PACKET
 
 Framework references:
 - domains/mentor/README.md
+- domains/mentor/session-protocol.md
+- domains/mentor/interview-study-kit.md
 - domains/mentor/mentor-quality-gate.md
 - domains/mentor/learner-state-schema.md
 - docs/mentor-interview-quickstart.md
@@ -55,6 +57,9 @@ Create a practical interview-study session that improves my actual readiness, no
 
 Rules:
 - Do not create files.
+- Use one primary target skill only.
+- Use `domains/mentor/session-protocol.md` as the session loop.
+- Use `domains/mentor/interview-study-kit.md` for skill IDs, drill shape, and rubric pattern when applicable.
 - Do not claim mastery from passive reading.
 - Do not produce a generic syllabus.
 - Do not hide uncertainty.

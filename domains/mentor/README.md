@@ -51,6 +51,8 @@ Internal sub-agents:
 ## Control Artifacts
 
 - `learner-state-schema.md`: compact learner memory model for goals, evidence, skill estimates, recall risk, misconceptions, and next actions.
+- `session-protocol.md`: default Mentor learning loop for intake, diagnosis, teaching move, retrieval practice, feedback, state update, and next packet.
+- `interview-study-kit.md`: compact interview skill map, drill templates, and rubric patterns for urgent preparation.
 - `mentor-quality-gate.md`: evidence gate for diagnosis, pedagogy, active recall, feedback, review scheduling, and uncertainty.
 - `benchmarks/README.md#interview-study-benchmarks`: urgent interview-study benchmarks.
 - `../../evals/prompts/mentor-interview-study-packet.md`: Kilo-safe baseline/guided prompt pack for interview preparation.
@@ -79,6 +81,8 @@ Do not pretend learner state is more precise than the evidence supports. Use com
 - affective safety
 - active recall quality
 - interview readiness under time constraints
+- session-loop completion
+- narrow skill targeting
 
 ## Research Questions
 

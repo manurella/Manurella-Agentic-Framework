@@ -107,6 +107,8 @@ DOMAIN_CONTROL_REFERENCES: dict[str, list[str]] = {
     ],
     "mentor": [
         "domains/mentor/learner-state-schema.md",
+        "domains/mentor/session-protocol.md",
+        "domains/mentor/interview-study-kit.md",
         "domains/mentor/mentor-quality-gate.md",
         "evals/prompts/mentor-interview-study-packet.md",
     ],
