@@ -31,6 +31,7 @@ For fresh agent sessions, start from `AGENTS.md` and `MANURELLA.md`. The main ro
 - `docs/charter.md`: purpose, constraints, and v0 success criteria.
 - `docs/architecture.md`: layered architecture and first implementation decisions.
 - `docs/master-execution-plan.md`: delivery sequence, checkpoints, and promotion gates.
+- `docs/family-system-mechanism-map.md`: extracted load-bearing mechanics from Family System v13.
 - `AGENTS.md`: root instructions for Codex-style runtimes.
 - `MANURELLA.md`: framework brain and boot context.
 - `docs/kilo-test-runbook.md`: packetized Kilo testing workflow for generated agents and eval records.
@@ -38,6 +39,7 @@ For fresh agent sessions, start from `AGENTS.md` and `MANURELLA.md`. The main ro
 - `docs/decisions/`: ADRs for decisions that should not be lost.
 - `specs/evals.md`: evaluation categories, metrics, and v0 benchmark plan.
 - `specs/runtime-packet-protocol.md`: checkpointed runtime packets for Kilo and other unstable runtimes.
+- `specs/core-operating-protocol.md`: Family-level task classification, project-state, handoff, quality-gate, and recovery rules.
 - `specs/weak-runtime-compensation.md`: rules for weak models, shallow reasoning, generic output, and stream/timeout recovery.
 - `specs/promotion-gates.md`: evidence required before agents, gates, evals, or tools become accepted behavior.
 - `research/`: external research inputs and synthesis.

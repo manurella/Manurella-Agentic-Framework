@@ -134,6 +134,7 @@ The v0 schema is defined in `specs/cognitive-graph.md`.
 - Research claims must stay in `research/` until promoted into specs or ADRs.
 - Runtime-generated files are outputs, not the source of truth.
 - Runtime depth is budgeted by `specs/runtime-control.md`.
+- Core routing, handoff, project-state, recovery, and quality-review behavior is defined by `specs/core-operating-protocol.md`.
 - Cognitive graph changes must be git-versioned and evidence-linked.
 - Full RL/fine-tuning is out of scope until enough scored trajectories exist.
 

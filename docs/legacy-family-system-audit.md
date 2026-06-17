@@ -43,3 +43,8 @@ The audit should eventually produce:
 - a list of deprecated patterns
 - migration notes into the cognitive graph
 - candidate eval tasks that reproduce the old system's strongest behavior
+
+Current extraction:
+
+- `docs/family-system-mechanism-map.md`
+- `specs/core-operating-protocol.md`

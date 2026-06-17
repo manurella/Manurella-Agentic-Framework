@@ -35,6 +35,8 @@ The router decides the execution path:
 
 V0 router behavior is rule-based. Contextual bandits are deferred until we have enough scored results.
 
+The rule-based core is defined in `specs/core-operating-protocol.md`. It carries forward the useful Family System mechanics: task class, project state, handoff packet, quality review, recovery, and context hygiene.
+
 ### 3. Cognitive Graph
 
 The Cognitive Graph is Manurella's evolving reasoning map.

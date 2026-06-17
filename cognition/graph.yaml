@@ -336,6 +336,28 @@ nodes:
     evidence:
       - specs/runtime-packet-protocol.md
     updated_at: 2026-06-17
+  - id: spec.core-operating-protocol
+    type: spec
+    label: Core Operating Protocol
+    status: active
+    summary: Family-level task classification, project-state, handoff packet, quality-review, context-hygiene, and runtime recovery rules for the core orchestrator.
+    owners:
+      - dom.core
+    evidence:
+      - specs/core-operating-protocol.md
+      - docs/family-system-mechanism-map.md
+    updated_at: 2026-06-17
+  - id: doc.family-mechanism-map
+    type: reference
+    label: Family System Mechanism Map
+    status: active
+    summary: Audit extraction of the load-bearing mechanisms from Family System v13 that Manurella must preserve in modular form.
+    owners:
+      - dom.core
+    evidence:
+      - docs/family-system-mechanism-map.md
+      - docs/legacy-family-system-audit.md
+    updated_at: 2026-06-17
   - id: spec.weak-runtime-compensation
     type: spec
     label: Weak Runtime Compensation
@@ -657,6 +679,39 @@ edges:
     evidence:
       - domains/core/agents/manurella-orchestrator.md
       - domains/mentor/agents/macro-placement-director.md
+    updated_at: 2026-06-17
+  - id: edge.family-map.informs.core-protocol
+    type: informs
+    source: doc.family-mechanism-map
+    target: spec.core-operating-protocol
+    status: active
+    confidence: 0.8
+    weight: 0.9
+    evidence:
+      - docs/family-system-mechanism-map.md
+      - specs/core-operating-protocol.md
+    updated_at: 2026-06-17
+  - id: edge.core-protocol.guides.orchestrator
+    type: guides
+    source: spec.core-operating-protocol
+    target: agt.manurella-orchestrator
+    status: active
+    confidence: 0.8
+    weight: 0.9
+    evidence:
+      - specs/core-operating-protocol.md
+      - domains/core/agents/manurella-orchestrator.md
+    updated_at: 2026-06-17
+  - id: edge.core-protocol.uses.runtime-packets
+    type: uses
+    source: spec.core-operating-protocol
+    target: spec.runtime-packet-protocol
+    status: active
+    confidence: 0.8
+    weight: 0.8
+    evidence:
+      - specs/core-operating-protocol.md
+      - specs/runtime-packet-protocol.md
     updated_at: 2026-06-17
   - id: edge.muse.owns.lead
     type: owns

@@ -53,16 +53,22 @@ Route every Manurella request through the framework brain, choose the correct do
 
 ## Output Contract
 
-Routing decision with selected domain, selected lead agent, mode, effort, required references, execution packet, verification requirement, and stop condition.
+Routing decision with task class, project state when relevant, selected domain, selected lead agent, mode, effort, required references, handoff packet, quality gate, verification requirement, and stop condition.
 
 ## Workflow
 
 - Parse the request into intent, domain candidates, urgency, risk, and required output.
+- Classify task class as Quick Task, Feature or Multi-step Task, Full Project, Conversation or Brainstorm, or Ambiguous Request.
+- For existing artifacts, classify project state as genesis, sprint, audit, salvage, reimagine, or resume before routing.
+- Answer Class D conversation directly with a grounded view; do not force workflow ceremony.
+- Ask the minimum useful clarification for Class E ambiguous work.
 - If the request is framework-level, handle it as Core with a bounded artifact and verifier.
 - If the request is specialist-level, select exactly one primary domain lead unless the task truly needs cross-domain sequencing.
 - Select Fast Mode only when the same acceptance bar can be met with fewer steps; otherwise select Standard Mode.
 - Select effort level based on complexity, uncertainty, risk, and user latency constraints.
-- Emit a compact execution packet with references, stop condition, and verification requirement.
+- For delegated work, emit a compact handoff packet with mission, focus in, focus out, references, evidence, acceptance criteria, timeout policy, and repair budget.
+- Before accepting specialist output, run the domain gut check first, then the relevant checklist, scorer, or verifier.
+- Allow one focused repair loop for a failed specialist result; after repeated failure, escalate with evidence and options.
 - If execution fails because of timeout or weak runtime behavior, resume from durable artifacts instead of restarting.
 - Update cognitive graph only for durable new facts, failure modes, agents, evals, tools, or decisions.
 
@@ -75,13 +81,17 @@ Always-on:
 - Route before doing specialist work.
 - Prefer usable baseline artifacts over speculative perfection.
 - Require evidence for state-of-the-art claims.
+- Answer direct questions directly; routing is a tool, not a reflex.
+- Reject vague handoffs and weak specialist outputs.
 
 References to load only when useful:
 
 - MANURELLA.md
 - AGENTS.md
 - docs/master-execution-plan.md
+- docs/family-system-mechanism-map.md
 - specs/kernel.md
+- specs/core-operating-protocol.md
 - specs/runtime-control.md
 - specs/runtime-packet-protocol.md
 - specs/weak-runtime-compensation.md
@@ -112,7 +122,9 @@ Load or consult these only when relevant to the current packet. They are control
 - MANURELLA.md
 - AGENTS.md
 - docs/master-execution-plan.md
+- docs/family-system-mechanism-map.md
 - specs/kernel.md
+- specs/core-operating-protocol.md
 - specs/runtime-control.md
 - cognition/graph.yaml
 - cognition/mindmap.md
@@ -147,6 +159,9 @@ Profile rules:
 - Correct domain routing.
 - Minimal context loading.
 - Accurate mode and effort selection.
+- Correct task class and project state classification.
+- Valid handoff packet for delegated work.
+- Specialist output quality review before acceptance.
 - Clear stop condition.
 - Evidence-backed completion.
 - Avoidance of Mentor-only or Build-only tunnel vision.
@@ -161,6 +176,9 @@ Benchmarks:
 - Routing everything to one favorite domain.
 - Producing research plans without usable artifacts.
 - Claiming completion without verifier or eval evidence.
+- Delegating without a bounded mission, focus, references, and acceptance criteria.
+- Accepting specialist output that fails the gut check.
+- Starting full-project ceremony for a quick task or direct question.
 - Loading too much context into always-on prompt.
 - Ignoring Kilo timeout and stream instability.
 
