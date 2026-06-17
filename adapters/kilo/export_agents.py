@@ -92,6 +92,33 @@ EFFORT_CONFIG: dict[str, dict[str, Any]] = {
     },
 }
 
+GLOBAL_CONTROL_REFERENCES = [
+    "specs/runtime-packet-protocol.md",
+    "specs/promotion-gates.md",
+    "docs/kilo-test-runbook.md",
+]
+
+DOMAIN_CONTROL_REFERENCES: dict[str, list[str]] = {
+    "build": [
+        "domains/build/runtime-policy.md",
+        "domains/build/frontend-quality-gate.md",
+        "specs/evals.md",
+    ],
+    "mentor": [
+        "domains/mentor/learner-state-schema.md",
+        "domains/mentor/mentor-quality-gate.md",
+        "evals/prompts/mentor-interview-study-packet.md",
+    ],
+    "muse": [
+        "domains/muse/benchmarks/README.md",
+        "research/inputs/manurella-muse-agent-architecture.md",
+    ],
+    "pixel": [
+        "domains/pixel/benchmarks/README.md",
+        "research/inputs/manurella-pixel-sub-agent-architecture.md",
+    ],
+}
+
 
 class ExportError(Exception):
     """Raised for deterministic export validation failures."""
@@ -294,6 +321,18 @@ Profile rules:
 """
 
 
+def domain_control_section(agent: dict[str, Any]) -> str:
+    refs = GLOBAL_CONTROL_REFERENCES + DOMAIN_CONTROL_REFERENCES.get(agent["domain"], [])
+    return f"""## Manurella Control References
+
+Load or consult these only when relevant to the current packet. They are control contracts, not optional inspiration:
+
+{bullet_list(refs)}
+
+If this task is an eval, benchmark, promotion, or Kilo test, follow `specs/runtime-packet-protocol.md` and write durable results only under `evals/results/`.
+"""
+
+
 def prompt_body(agent: dict[str, Any], source_path: pathlib.Path, mode: str, effort: str) -> str:
     outputs = agent.get("outputs") or {}
     context = agent.get("context") or {}
@@ -347,6 +386,8 @@ Retrieved context:
 ## Permission Policy
 
 Respect the Kilo frontmatter permissions. If a needed action is denied, return a blocked result with the missing capability instead of working around it.
+
+{domain_control_section(agent)}
 
 {runtime_control_section(mode, effort)}
 

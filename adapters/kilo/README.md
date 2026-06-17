@@ -63,6 +63,8 @@ python adapters/kilo/export_agents.py --domain build --output .kilo/agents --mod
 - Creative, visual, and mentor agents deny `bash` by default.
 - Prompt bodies include references to source files instead of embedding large research inputs.
 - Runtime controls follow `specs/runtime-control.md`.
+- Prompt bodies include global control references to `specs/runtime-packet-protocol.md`, `specs/promotion-gates.md`, and `docs/kilo-test-runbook.md`.
+- Prompt bodies include domain control references, such as Build's frontend quality gate and Mentor's learner-state/quality gates.
 - `--mode fast` narrows `steps` and denies `task` delegation to prevent small smoke tests from fanning out.
 - `--mode standard` preserves each source agent's configured `steps`.
 - `--effort low|medium|high|extra-high|max|ultra` controls reasoning depth in the generated prompt.
@@ -78,10 +80,11 @@ The Kilo prompt body uses this order:
 4. Workflow
 5. Context policy
 6. Permission policy
-7. Runtime control mode and effort
-8. Evaluation rubric
-9. Failure modes
-10. Source references
+7. Manurella control references
+8. Runtime control mode and effort
+9. Evaluation rubric
+10. Failure modes
+11. Source references
 
 ## First Runtime Sample
 

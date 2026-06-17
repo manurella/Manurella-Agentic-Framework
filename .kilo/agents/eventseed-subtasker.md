@@ -73,6 +73,19 @@ Retrieved context:
 
 Respect the Kilo frontmatter permissions. If a needed action is denied, return a blocked result with the missing capability instead of working around it.
 
+## Manurella Control References
+
+Load or consult these only when relevant to the current packet. They are control contracts, not optional inspiration:
+
+- specs/runtime-packet-protocol.md
+- specs/promotion-gates.md
+- docs/kilo-test-runbook.md
+- domains/muse/benchmarks/README.md
+- research/inputs/manurella-muse-agent-architecture.md
+
+If this task is an eval, benchmark, promotion, or Kilo test, follow `specs/runtime-packet-protocol.md` and write durable results only under `evals/results/`.
+
+
 ## Runtime Control
 
 Mode: `standard`
