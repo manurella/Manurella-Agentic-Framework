@@ -48,6 +48,13 @@ Internal sub-agents:
 - comprehensible input response
 - learner-state update
 
+## Control Artifacts
+
+- `learner-state-schema.md`: compact learner memory model for goals, evidence, skill estimates, recall risk, misconceptions, and next actions.
+- `mentor-quality-gate.md`: evidence gate for diagnosis, pedagogy, active recall, feedback, review scheduling, and uncertainty.
+- `benchmarks/README.md#interview-study-benchmarks`: urgent interview-study benchmarks.
+- `../../evals/prompts/mentor-interview-study-packet.md`: Kilo-safe baseline/guided prompt pack for interview preparation.
+
 ## Context Policy
 
 Do not pretend learner state is more precise than the evidence supports. Use compact learner-state vectors, skill IDs, recent-turn summaries, and explicit uncertainty. Keep live tutoring latency low by moving state tracing out of the synchronous response loop.
@@ -70,6 +77,8 @@ Do not pretend learner state is more precise than the evidence supports. Use com
 - comprehensible-input control
 - learner-state calibration
 - affective safety
+- active recall quality
+- interview readiness under time constraints
 
 ## Research Questions
 
@@ -77,4 +86,3 @@ Do not pretend learner state is more precise than the evidence supports. Use com
 - Which learner-state math is appropriate for v0 without overclaiming precision?
 - How should Mentor test correction quality and avoid false negatives on valid alternate phrasing?
 - What parts of the tutoring loop can be deterministic before invoking a model?
-

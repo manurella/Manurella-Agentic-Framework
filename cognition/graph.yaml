@@ -13,6 +13,18 @@ nodes:
       - domains/build/README.md
       - research/synthesis/domain-architecture-synthesis.md
     updated_at: 2026-06-16
+  - id: dom.mentor
+    type: domain
+    label: Mentor
+    status: active
+    summary: Adaptive tutoring, learner-state tracking, active recall, curriculum sequencing, and interview-study support.
+    owners:
+      - manurella
+    evidence:
+      - domains/mentor/README.md
+      - domains/mentor/learner-state-schema.md
+      - domains/mentor/mentor-quality-gate.md
+    updated_at: 2026-06-17
   - id: mode.fast
     type: mode
     label: Fast Mode
@@ -286,6 +298,48 @@ nodes:
       - evals/results/frontend-a11y-visual-qa-kilo-mixed-run.md
       - domains/build/frontend-quality-gate.md
     updated_at: 2026-06-17
+  - id: spec.mentor-learner-state
+    type: spec
+    label: Mentor Learner State Schema
+    status: active
+    summary: Evidence-bound learner memory model for goals, skills, mastery estimates, recall risk, misconceptions, and next actions.
+    owners:
+      - dom.mentor
+    evidence:
+      - domains/mentor/learner-state-schema.md
+    updated_at: 2026-06-17
+  - id: gate.mentor-quality
+    type: quality_gate
+    label: Mentor Quality Gate
+    status: active
+    summary: Evidence gate for diagnosis, pedagogy, active recall, feedback, review scheduling, uncertainty, and interview study.
+    owners:
+      - dom.mentor
+    evidence:
+      - domains/mentor/mentor-quality-gate.md
+    updated_at: 2026-06-17
+  - id: eval.mentor-interview-study
+    type: eval
+    label: Mentor Interview Study Eval
+    status: draft
+    summary: Baseline-vs-guided benchmark prompt pack for urgent interview preparation and learner-state-aware tutoring.
+    owners:
+      - dom.mentor
+    evidence:
+      - evals/prompts/mentor-interview-study-packet.md
+      - domains/mentor/benchmarks/README.md
+    updated_at: 2026-06-17
+  - id: fail.generic-tutoring
+    type: failure_mode
+    label: Generic Tutoring
+    status: active
+    summary: Tutor gives generic explanations or syllabi without diagnosis, active recall, learner adaptation, or next-state evidence.
+    owners:
+      - dom.mentor
+    evidence:
+      - domains/mentor/mentor-quality-gate.md
+      - evals/prompts/mentor-interview-study-packet.md
+    updated_at: 2026-06-17
 edges:
   - id: edge.build.owns.orchestrator
     type: owns
@@ -541,4 +595,45 @@ edges:
     evidence:
       - evals/results/frontend-a11y-visual-qa-kilo-mixed-run.md
       - domains/build/frontend-quality-gate.md
+    updated_at: 2026-06-17
+  - id: edge.mentor.owns.learner-state
+    type: owns
+    source: dom.mentor
+    target: spec.mentor-learner-state
+    status: active
+    confidence: 0.8
+    weight: 0.9
+    evidence:
+      - domains/mentor/learner-state-schema.md
+    updated_at: 2026-06-17
+  - id: edge.mentor.owns.quality-gate
+    type: owns
+    source: dom.mentor
+    target: gate.mentor-quality
+    status: active
+    confidence: 0.8
+    weight: 0.9
+    evidence:
+      - domains/mentor/mentor-quality-gate.md
+    updated_at: 2026-06-17
+  - id: edge.mentor-gate.mitigates.generic-tutoring
+    type: mitigates
+    source: gate.mentor-quality
+    target: fail.generic-tutoring
+    status: active
+    confidence: 0.7
+    weight: 0.8
+    evidence:
+      - domains/mentor/mentor-quality-gate.md
+    updated_at: 2026-06-17
+  - id: edge.mentor-interview.evaluates.quality-gate
+    type: evaluates
+    source: eval.mentor-interview-study
+    target: gate.mentor-quality
+    status: draft
+    confidence: 0.5
+    weight: 0.6
+    evidence:
+      - evals/prompts/mentor-interview-study-packet.md
+      - domains/mentor/benchmarks/README.md
     updated_at: 2026-06-17

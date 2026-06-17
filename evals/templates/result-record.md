@@ -97,6 +97,27 @@ Frontend scores when applicable:
 - `implementation_minimality`:
 - `verification_evidence`:
 
+Mentor evidence when applicable:
+
+- `target_skill`:
+- `learner_evidence_used`:
+- `diagnosis_confidence`: low | medium | high | not_applicable
+- `teaching_strategy`:
+- `active_recall_included`: yes | no
+- `answer_key_or_rubric_included`: yes | no
+- `learner_state_update_proposed`: yes | no
+- `next_review_or_action`:
+
+Mentor scores when applicable:
+
+- `diagnostic_precision`:
+- `pedagogical_fit`:
+- `active_recall_quality`:
+- `feedback_quality`:
+- `review_schedule_quality`:
+- `learner_state_honesty`:
+- `interview_readiness_value`:
+
 ## Notes
 
 Quality notes:

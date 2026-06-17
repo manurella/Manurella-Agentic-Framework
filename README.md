@@ -35,7 +35,9 @@ The current execution spine is `docs/master-execution-plan.md`.
 - `adapters/kilo/`: Kilo Code export target and examples.
 - `domains/`: portable specialist domain packs.
 - `domains/build/frontend-quality-gate.md`: frontend accessibility, visual, state, and performance evidence gate.
-- `tools/`: future prompt compiler, eval runner, and memory tooling.
+- `domains/mentor/mentor-quality-gate.md`: tutoring, active recall, feedback, learner-state, and interview-study evidence gate.
+- `tools/validate_framework.py`: local structure validator for graph, agents, evidence, and eval hygiene.
+- `tools/`: framework validation now; prompt compiler, eval runner, and memory tooling later.
 
 ## Commit Style
 

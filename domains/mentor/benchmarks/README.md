@@ -100,3 +100,85 @@ Metrics:
 - state delta compactness
 - uncertainty honesty
 
+## Interview Study Benchmarks
+
+These benchmarks test Mentor as an urgent learning agent for interview preparation.
+
+### Task 1: Time-Boxed Study Triage
+
+Input:
+
+- target role or interview type
+- deadline
+- known weak topics
+- available study time
+- optional recent failed question
+
+Expected output:
+
+- priority map
+- diagnostic questions or assumptions
+- study schedule
+- active recall tasks
+- answer keys or rubrics
+- learner-state update proposal
+
+Metrics:
+
+- deadline fit
+- prioritization quality
+- diagnostic precision
+- active recall quality
+- schedule realism
+- learner-state honesty
+
+### Task 2: Concept Repair Lesson
+
+Input:
+
+- one concept the learner is confused about
+- one failed explanation or answer
+- target interview level
+
+Expected output:
+
+- misconception diagnosis
+- corrected mental model
+- worked example
+- explain-back prompt
+- grading rubric
+- next review recommendation
+
+Metrics:
+
+- misconception targeting
+- explanation clarity
+- example relevance
+- retrieval practice quality
+- feedback usefulness
+- false-mastery prevention
+
+### Task 3: Mock Interview Loop
+
+Input:
+
+- target topic
+- learner state summary
+- requested difficulty
+
+Expected output:
+
+- one realistic interview question
+- hidden evaluator rubric
+- adaptive follow-up based on learner answer
+- concise correction
+- next drill recommendation
+
+Metrics:
+
+- realism
+- rubric quality
+- follow-up adaptivity
+- correction precision
+- time efficiency
+- learner-state update quality
