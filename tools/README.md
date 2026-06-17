@@ -43,6 +43,16 @@ python tools/create_result_record.py --repo . --task-id mentor-interview-study-r
 
 The helper refuses fixture output paths by construction and keeps eval records in the correct directory.
 
+## Learner State Helper
+
+Create an initial Mentor learner-state file:
+
+```powershell
+python tools/create_learner_state.py --repo . --learner-id rehan --target-role "Frontend Developer" --weak-topics "state ownership, accessibility" --output evals/results/rehan-learner-state.yaml --overwrite
+```
+
+The file follows `domains/mentor/learner-state-schema.md` and starts uncertain by design. It records weak topics as self-reported diagnostics, not mastered facts.
+
 ## Result Comparator
 
 Compare baseline and guided records:
@@ -58,7 +68,7 @@ The comparator reads shared numeric score fields, computes average delta, and re
 Create a copy-paste Mentor interview-study packet:
 
 ```powershell
-python tools/create_mentor_packet.py --repo . --target-role "Frontend Developer" --available-time "45 minutes today" --topic "state ownership" --weak-topics "React state, cache invalidation"
+python tools/create_mentor_packet.py --repo . --target-role "Frontend Developer" --available-time "45 minutes today" --topic "state ownership" --weak-topics "React state, cache invalidation" --learner-state evals/results/rehan-learner-state.yaml
 ```
 
 The helper fills the Manurella runtime packet, Mentor framework references, weak-runtime checkpoint, session protocol, and output contract.

@@ -58,6 +58,7 @@ Domain packs contain specialist behavior and domain-specific rubrics.
 
 Initial packs:
 
+- `core`: main routing, governance, eval policy, cognitive graph maintenance, runtime control
 - `build`: software architecture, coding, QA, security, deployment, documentation
 - `muse`: writing, story, scripts, creative critique
 - `pixel`: art direction and image prompt engineering

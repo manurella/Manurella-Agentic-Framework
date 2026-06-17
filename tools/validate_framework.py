@@ -15,7 +15,7 @@ from typing import Any
 import yaml
 
 
-KNOWN_DOMAINS = {"build", "muse", "pixel", "mentor"}
+KNOWN_DOMAINS = {"core", "build", "muse", "pixel", "mentor"}
 KNOWN_AGENT_TIERS = {"top_level", "internal"}
 KNOWN_AGENT_STATUSES = {"draft", "research_candidate", "accepted", "deprecated"}
 KNOWN_PERMISSION_VALUES = {"allow", "ask", "deny"}

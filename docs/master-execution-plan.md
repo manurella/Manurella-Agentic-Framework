@@ -63,10 +63,11 @@ Acceptance:
 
 ### W3. Domain Packs
 
-Goal: define Build, Muse, Pixel, and Mentor as modular domain systems.
+Goal: define Core, Build, Muse, Pixel, and Mentor as modular domain systems.
 
 Artifacts:
 
+- `domains/core/`
 - `domains/build/`
 - `domains/muse/`
 - `domains/pixel/`
@@ -74,6 +75,7 @@ Artifacts:
 
 Acceptance:
 
+- Core has a main routing orchestrator that can select the correct specialist domain.
 - Each domain has a lead/orchestrator and specialist boundaries.
 - Each domain has at least two benchmarks before any serious promotion claim.
 - Each specialist is authored as agent, skill, or checklist based on actual authority needed.
@@ -133,7 +135,25 @@ Acceptance:
 
 ## Immediate Critical Path
 
-### Checkpoint A: Stabilize The Build Testbed
+### Checkpoint A: Establish A Usable Baseline Router
+
+Finish first because the framework is unusable without a main boot path.
+
+Tasks:
+
+1. Add root runtime instructions and the Manurella brain boot file.
+2. Add a Core domain with the main Manurella Orchestrator.
+3. Export the orchestrator and all specialist leads to Kilo.
+4. Validate framework structure and run self-check.
+5. Use the orchestrator as the default entrypoint for future Kilo tests.
+
+Done when:
+
+- `AGENTS.md`, `MANURELLA.md`, and `domains/core/agents/manurella-orchestrator.md` exist.
+- Kilo export includes `manurella-orchestrator.md`.
+- Validator and self-check pass.
+
+### Checkpoint B: Stabilize The Build Testbed
 
 Finish first because Build gives the clearest deterministic evidence.
 
@@ -151,7 +171,7 @@ Done when:
 - The guided run is comparable to baseline on the same fixture.
 - Timeout, screenshot, and verification evidence are explicit.
 
-### Checkpoint B: Promote The First Build/Frontend Components
+### Checkpoint C: Promote The First Build/Frontend Components
 
 Tasks:
 
@@ -164,7 +184,7 @@ Done when:
 - At least two frontend tasks show guided improvement over baseline.
 - No promoted node has vague authority or missing permissions.
 
-### Checkpoint C: Mentor Learning Agent Foundation
+### Checkpoint D: Mentor Learning Agent Foundation
 
 Tasks:
 
@@ -178,7 +198,7 @@ Done when:
 - Mentor can produce a study plan, teach a concept, diagnose a failure, and generate practice with answer keys.
 - Results are scored against baseline teaching output.
 
-### Checkpoint D: Muse And Pixel Stabilization
+### Checkpoint E: Muse And Pixel Stabilization
 
 Tasks:
 
@@ -215,10 +235,11 @@ Research does not become accepted behavior until translated into specs and teste
 
 By the first serious checkpoint today, the repository should contain:
 
-1. This master plan.
-2. A runtime packet protocol for Kilo.
-3. A Build/frontend QA gate produced from the failed eval.
-4. A cleaned eval instruction that prevents mixed fixture/result artifacts.
-5. User-ready Kilo prompts for the next test.
+1. Root runtime boot files.
+2. A main Manurella routing orchestrator.
+3. A runtime packet protocol for Kilo.
+4. A Build/frontend QA gate produced from the failed eval.
+5. A cleaned eval instruction that prevents mixed fixture/result artifacts.
+6. User-ready Kilo agents and prompts for the next test.
 
 This is not v0 complete. It is the first usable control spine for getting to v0 without wasting runs.

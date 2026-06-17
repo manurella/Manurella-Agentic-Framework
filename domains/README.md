@@ -4,6 +4,7 @@ Domain packs are portable specialist definitions. They are not runtime-specific 
 
 Initial packs:
 
+- `core`
 - `build`
 - `muse`
 - `pixel`
@@ -20,4 +21,3 @@ Each domain pack should eventually define:
 - rubrics
 - examples
 - runtime adapter notes
-

@@ -12,6 +12,7 @@ SMOKE_BASELINE = "self-check-baseline"
 SMOKE_GUIDED = "self-check-guided"
 SMOKE_MENTOR_OUTPUT = "self-check-mentor-output"
 SMOKE_MENTOR_RECORD = "self-check-mentor-record"
+SMOKE_LEARNER_STATE = "self-check-learner-state"
 
 
 def run_command(command: list[str], cwd: pathlib.Path) -> int:
@@ -102,6 +103,7 @@ def main(argv: list[str]) -> int:
     guided_path = root / "evals" / "results" / f"{SMOKE_GUIDED}.md"
     mentor_output_path = root / "evals" / "results" / f"{SMOKE_MENTOR_OUTPUT}.md"
     mentor_record_path = root / "evals" / "results" / f"{SMOKE_MENTOR_RECORD}.md"
+    learner_state_path = root / "evals" / "results" / f"{SMOKE_LEARNER_STATE}.yaml"
 
     commands = [
         [python, "tools/validate_framework.py", "--repo", "."],
@@ -173,6 +175,21 @@ def main(argv: list[str]) -> int:
         ],
         [
             python,
+            "tools/create_learner_state.py",
+            "--repo",
+            ".",
+            "--learner-id",
+            "self-check",
+            "--target-role",
+            "Frontend Developer",
+            "--weak-topics",
+            "state ownership, accessibility",
+            "--output",
+            str(learner_state_path),
+            "--overwrite",
+        ],
+        [
+            python,
             "tools/create_mentor_packet.py",
             "--repo",
             ".",
@@ -184,6 +201,8 @@ def main(argv: list[str]) -> int:
             "state ownership",
             "--weak-topics",
             "React server and client state",
+            "--learner-state",
+            str(learner_state_path),
         ],
     ]
 
@@ -276,6 +295,7 @@ def main(argv: list[str]) -> int:
             safe_unlink(root, guided_path)
             safe_unlink(root, mentor_output_path)
             safe_unlink(root, mentor_record_path)
+            safe_unlink(root, learner_state_path)
 
     print("self-check passed")
     return 0

@@ -30,7 +30,7 @@ REQUIRED_KEYS = {
     "research",
 }
 
-KNOWN_DOMAINS = {"build", "pixel", "muse", "mentor"}
+KNOWN_DOMAINS = {"core", "build", "pixel", "muse", "mentor"}
 TOP_LEVEL = "top_level"
 INTERNAL = "internal"
 MODE_NAMES = {"fast", "standard"}
@@ -100,6 +100,15 @@ GLOBAL_CONTROL_REFERENCES = [
 ]
 
 DOMAIN_CONTROL_REFERENCES: dict[str, list[str]] = {
+    "core": [
+        "MANURELLA.md",
+        "AGENTS.md",
+        "docs/master-execution-plan.md",
+        "specs/kernel.md",
+        "specs/runtime-control.md",
+        "cognition/graph.yaml",
+        "cognition/mindmap.md",
+    ],
     "build": [
         "domains/build/runtime-policy.md",
         "domains/build/frontend-quality-gate.md",
@@ -200,6 +209,20 @@ def same_domain_internal_agents(agents: list[dict[str, Any]], domain: str) -> li
     )
 
 
+def core_routable_agents(agents: list[dict[str, Any]]) -> list[str]:
+    preferred_ids = {
+        "build-orchestrator",
+        "muse-lead",
+        "pixel-director",
+        "macro-placement-director",
+    }
+    return sorted(
+        agent["id"]
+        for agent in agents
+        if agent["id"] in preferred_ids and agent["tier"] == TOP_LEVEL
+    )
+
+
 def map_permissions(agent: dict[str, Any], all_agents: list[dict[str, Any]], mode: str) -> dict[str, Any]:
     source = agent.get("permissions") or {}
     for key in ("read", "edit", "shell", "web", "delegate"):
@@ -219,7 +242,10 @@ def map_permissions(agent: dict[str, Any], all_agents: list[dict[str, Any]], mod
     }
 
     if source["delegate"] == "allow":
-        allowed = same_domain_internal_agents(all_agents, agent["domain"])
+        if agent["domain"] == "core":
+            allowed = core_routable_agents(all_agents)
+        else:
+            allowed = same_domain_internal_agents(all_agents, agent["domain"])
         task_rules: dict[str, str] = {"*": "deny"}
         for item in allowed:
             task_rules[item] = "allow"

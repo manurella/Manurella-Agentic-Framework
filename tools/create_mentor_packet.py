@@ -21,6 +21,8 @@ def packet(args: argparse.Namespace) -> str:
     weak_topics = value_or_unknown(args.weak_topics)
     failed_question = value_or_unknown(args.failed_question)
     study_style = value_or_unknown(args.study_style)
+    learner_state = value_or_unknown(str(args.learner_state) if args.learner_state else None)
+    learner_state_reference = f"- {learner_state}" if args.learner_state else ""
 
     return f"""Use the Manurella Mentor system in {args.mode.title()} Mode with {args.effort.title()} effort.
 
@@ -38,6 +40,7 @@ Framework references:
 - domains/mentor/learner-state-schema.md
 - specs/runtime-packet-protocol.md
 - specs/weak-runtime-compensation.md
+{learner_state_reference}
 
 Context:
 - Target role/interview: {target_role}
@@ -47,6 +50,7 @@ Context:
 - Known weak topics: {weak_topics}
 - Recent failed question: {failed_question}
 - Preferred study style: {study_style}
+- Learner state path: {learner_state}
 
 Task:
 Create one focused interview-study session that improves actual interview readiness.
@@ -64,6 +68,7 @@ Rules:
 - Do not hide uncertainty.
 - Use active recall with answer key or rubric.
 - Include feedback rules and a learner-state update proposal.
+- If learner state is available, use it as evidence and propose only evidence-bound updates.
 - Stop after this packet.
 
 Output format:
@@ -91,6 +96,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--weak-topics")
     parser.add_argument("--failed-question")
     parser.add_argument("--study-style")
+    parser.add_argument("--learner-state", type=pathlib.Path)
     parser.add_argument("--mode", choices=["fast", "standard"], default="standard")
     parser.add_argument(
         "--effort",

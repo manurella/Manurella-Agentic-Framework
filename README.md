@@ -16,8 +16,11 @@ V0 proves this loop:
 
 The current execution spine is `docs/master-execution-plan.md`.
 
+For fresh agent sessions, start from `AGENTS.md` and `MANURELLA.md`. The main router is `domains/core/agents/manurella-orchestrator.md`.
+
 ## First Domains
 
+- `core`: main routing, framework governance, cognitive graph, runtime control, eval policy, and adapter coordination.
 - `build`: software building, architecture, QA, security, deployment, and documentation.
 - `muse`: writing, story, script, narrative critique, and creative development.
 - `pixel`: art direction and precise image-generation prompt engineering.
@@ -28,6 +31,8 @@ The current execution spine is `docs/master-execution-plan.md`.
 - `docs/charter.md`: purpose, constraints, and v0 success criteria.
 - `docs/architecture.md`: layered architecture and first implementation decisions.
 - `docs/master-execution-plan.md`: delivery sequence, checkpoints, and promotion gates.
+- `AGENTS.md`: root instructions for Codex-style runtimes.
+- `MANURELLA.md`: framework brain and boot context.
 - `docs/kilo-test-runbook.md`: packetized Kilo testing workflow for generated agents and eval records.
 - `docs/mentor-interview-quickstart.md`: copy-paste Mentor workflow for immediate interview study.
 - `docs/decisions/`: ADRs for decisions that should not be lost.
@@ -38,10 +43,12 @@ The current execution spine is `docs/master-execution-plan.md`.
 - `research/`: external research inputs and synthesis.
 - `adapters/kilo/`: Kilo Code export target and examples.
 - `domains/`: portable specialist domain packs.
+- `domains/core/`: main framework router and governance domain.
 - `domains/build/frontend-quality-gate.md`: frontend accessibility, visual, state, and performance evidence gate.
 - `domains/mentor/mentor-quality-gate.md`: tutoring, active recall, feedback, learner-state, and interview-study evidence gate.
 - `tools/validate_framework.py`: local structure validator for graph, agents, evidence, and eval hygiene.
 - `tools/create_result_record.py`: result-record skeleton generator for clean `evals/results/` artifacts.
+- `tools/create_learner_state.py`: Mentor learner-state YAML initializer for interview study.
 - `tools/create_mentor_packet.py`: copy-paste Mentor interview-study packet generator.
 - `tools/score_mentor_output.py`: deterministic Mentor output gate scorer.
 - `tools/record_mentor_run.py`: captured Mentor output scorer and result-record wrapper.

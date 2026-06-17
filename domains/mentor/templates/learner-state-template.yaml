@@ -1,0 +1,27 @@
+learner_id: learner
+updated_at: 2026-06-17
+goal:
+  target: unknown
+  deadline: null
+  context: interview
+  constraints: []
+profile:
+  domain: interview
+  level_estimate: unknown
+  confidence: low
+  notes:
+    - Initial state. Do not infer mastery without evidence.
+skills: []
+recent_events: []
+next_actions:
+  - type: diagnose
+    skill_id: interview.core.problem-framing
+    reason: Initial diagnostic needed before confident planning.
+    urgency: high
+interview:
+  target_role: unknown
+  interview_date: null
+  company_or_stack: null
+  required_topics: []
+  weak_topics: []
+  mock_history: []

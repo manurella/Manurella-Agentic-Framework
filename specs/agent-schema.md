@@ -46,7 +46,7 @@ Every agent definition must include:
 
 ```yaml
 id: string
-domain: build | muse | pixel | mentor
+domain: core | build | muse | pixel | mentor
 tier: top_level | internal
 status: draft | research_candidate | accepted | deprecated
 purpose: string

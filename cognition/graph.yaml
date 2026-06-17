@@ -2,6 +2,18 @@ version: 0
 updated_at: 2026-06-16
 status: draft
 nodes:
+  - id: dom.core
+    type: domain
+    label: Core
+    status: active
+    summary: Main routing, framework governance, cognitive graph maintenance, runtime control, eval policy, research intake, and adapter coordination.
+    owners:
+      - manurella
+    evidence:
+      - domains/core/README.md
+      - MANURELLA.md
+      - AGENTS.md
+    updated_at: 2026-06-17
   - id: dom.build
     type: domain
     label: Build
@@ -13,6 +25,30 @@ nodes:
       - domains/build/README.md
       - research/synthesis/domain-architecture-synthesis.md
     updated_at: 2026-06-16
+  - id: dom.muse
+    type: domain
+    label: Muse
+    status: active
+    summary: Creative writing, story architecture, scene drafting, style editing, continuity, critique, and long-form creative project state.
+    owners:
+      - manurella
+    evidence:
+      - domains/muse/README.md
+      - research/inputs/manurella-muse-agent-architecture.md
+      - research/synthesis/domain-architecture-synthesis.md
+    updated_at: 2026-06-17
+  - id: dom.pixel
+    type: domain
+    label: Pixel
+    status: active
+    summary: Art direction, image-generation prompt engineering, visual continuity, model-specific prompt syntax, audit, and repair.
+    owners:
+      - manurella
+    evidence:
+      - domains/pixel/README.md
+      - research/inputs/manurella-pixel-sub-agent-architecture.md
+      - research/synthesis/domain-architecture-synthesis.md
+    updated_at: 2026-06-17
   - id: dom.mentor
     type: domain
     label: Mentor
@@ -57,6 +93,18 @@ nodes:
     evidence:
       - specs/runtime-control.md
     updated_at: 2026-06-16
+  - id: agt.manurella-orchestrator
+    type: agent
+    label: Manurella Orchestrator
+    status: active
+    summary: Main framework router that chooses the correct domain lead, mode, effort, references, stop condition, and verification requirement.
+    owners:
+      - dom.core
+    evidence:
+      - domains/core/agents/manurella-orchestrator.md
+      - MANURELLA.md
+      - docs/master-execution-plan.md
+    updated_at: 2026-06-17
   - id: agt.build-orchestrator
     type: agent
     label: Build Orchestrator
@@ -68,6 +116,39 @@ nodes:
       - domains/build/agents/build-orchestrator.md
       - domains/build/benchmarks/README.md
     updated_at: 2026-06-16
+  - id: agt.muse-lead
+    type: agent
+    label: Muse Lead
+    status: active
+    summary: User-facing coordinator for creative writing tasks, project state, phase routing, and specialist delegation.
+    owners:
+      - dom.muse
+    evidence:
+      - domains/muse/agents/muse-lead.md
+      - domains/muse/benchmarks/README.md
+    updated_at: 2026-06-17
+  - id: agt.pixel-director
+    type: agent
+    label: Pixel Director
+    status: active
+    summary: User-facing coordinator for visual intent, art direction briefs, prompt compilation, continuity, audit, and repair routing.
+    owners:
+      - dom.pixel
+    evidence:
+      - domains/pixel/agents/pixel-director.md
+      - domains/pixel/benchmarks/README.md
+    updated_at: 2026-06-17
+  - id: agt.mentor-macro-placement-director
+    type: agent
+    label: Mentor Macro Placement Director
+    status: active
+    summary: Top-level Mentor routing agent for learner placement, goals, diagnostic direction, and study-path selection.
+    owners:
+      - dom.mentor
+    evidence:
+      - domains/mentor/agents/macro-placement-director.md
+      - domains/mentor/benchmarks/README.md
+    updated_at: 2026-06-17
   - id: sub.localizer
     type: subagent
     label: Localizer
@@ -324,6 +405,19 @@ nodes:
       - domains/mentor/session-protocol.md
       - domains/mentor/interview-study-kit.md
     updated_at: 2026-06-17
+  - id: tool.mentor-learner-state-helper
+    type: tool
+    label: Mentor Learner State Helper
+    status: active
+    summary: Local helper that creates evidence-bound Mentor learner-state YAML files for interview study and prevents cold-start tutoring from overclaiming mastery.
+    owners:
+      - dom.mentor
+    evidence:
+      - tools/create_learner_state.py
+      - domains/mentor/learner-state-schema.md
+      - domains/mentor/templates/learner-state-template.yaml
+      - tools/README.md
+    updated_at: 2026-06-17
   - id: tool.mentor-output-scorer
     type: tool
     label: Mentor Output Scorer
@@ -354,12 +448,13 @@ nodes:
     type: tool
     label: Self Check
     status: active
-    summary: One-command local smoke suite for framework validation, Kilo export dry-run, result helper, Mentor packet helper, Mentor output scorer, Mentor run recorder, and comparator.
+    summary: One-command local smoke suite for framework validation, Kilo export dry-run, result helper, Mentor learner-state helper, Mentor packet helper, Mentor output scorer, Mentor run recorder, and comparator.
     owners:
       - manurella
     evidence:
       - tools/self_check.py
       - tools/README.md
+      - tools/create_learner_state.py
       - tools/create_mentor_packet.py
       - tools/score_mentor_output.py
       - tools/record_mentor_run.py
@@ -508,6 +603,94 @@ nodes:
       - evals/results/build-kilo-smoke.md
     updated_at: 2026-06-17
 edges:
+  - id: edge.core.owns.manurella-orchestrator
+    type: owns
+    source: dom.core
+    target: agt.manurella-orchestrator
+    status: active
+    confidence: 0.8
+    weight: 0.9
+    evidence:
+      - domains/core/README.md
+      - domains/core/agents/manurella-orchestrator.md
+    updated_at: 2026-06-17
+  - id: edge.manurella-orchestrator.routes.build
+    type: routes_to
+    source: agt.manurella-orchestrator
+    target: agt.build-orchestrator
+    status: active
+    confidence: 0.8
+    weight: 0.9
+    evidence:
+      - domains/core/agents/manurella-orchestrator.md
+      - domains/build/agents/build-orchestrator.md
+    updated_at: 2026-06-17
+  - id: edge.manurella-orchestrator.routes.muse
+    type: routes_to
+    source: agt.manurella-orchestrator
+    target: agt.muse-lead
+    status: active
+    confidence: 0.8
+    weight: 0.8
+    evidence:
+      - domains/core/agents/manurella-orchestrator.md
+      - domains/muse/agents/muse-lead.md
+    updated_at: 2026-06-17
+  - id: edge.manurella-orchestrator.routes.pixel
+    type: routes_to
+    source: agt.manurella-orchestrator
+    target: agt.pixel-director
+    status: active
+    confidence: 0.8
+    weight: 0.8
+    evidence:
+      - domains/core/agents/manurella-orchestrator.md
+      - domains/pixel/agents/pixel-director.md
+    updated_at: 2026-06-17
+  - id: edge.manurella-orchestrator.routes.mentor
+    type: routes_to
+    source: agt.manurella-orchestrator
+    target: agt.mentor-macro-placement-director
+    status: active
+    confidence: 0.8
+    weight: 0.8
+    evidence:
+      - domains/core/agents/manurella-orchestrator.md
+      - domains/mentor/agents/macro-placement-director.md
+    updated_at: 2026-06-17
+  - id: edge.muse.owns.lead
+    type: owns
+    source: dom.muse
+    target: agt.muse-lead
+    status: active
+    confidence: 0.7
+    weight: 0.8
+    evidence:
+      - domains/muse/README.md
+      - domains/muse/agents/muse-lead.md
+    updated_at: 2026-06-17
+  - id: edge.pixel.owns.director
+    type: owns
+    source: dom.pixel
+    target: agt.pixel-director
+    status: active
+    confidence: 0.7
+    weight: 0.8
+    evidence:
+      - domains/pixel/README.md
+      - domains/pixel/agents/pixel-director.md
+    updated_at: 2026-06-17
+  - id: edge.mentor.owns.macro-placement-director
+    type: owns
+    source: dom.mentor
+    target: agt.mentor-macro-placement-director
+    status: active
+    confidence: 0.7
+    weight: 0.8
+    evidence:
+      - domains/mentor/README.md
+      - domains/mentor/agents/macro-placement-director.md
+    updated_at: 2026-06-17
   - id: edge.build.owns.orchestrator
     type: owns
     source: dom.build
@@ -1012,6 +1195,28 @@ edges:
       - tools/create_mentor_packet.py
       - domains/mentor/session-protocol.md
     updated_at: 2026-06-17
+  - id: edge.mentor-learner-state-helper.uses.schema
+    type: uses
+    source: tool.mentor-learner-state-helper
+    target: spec.mentor-learner-state
+    status: active
+    confidence: 0.8
+    weight: 0.8
+    evidence:
+      - tools/create_learner_state.py
+      - domains/mentor/learner-state-schema.md
+    updated_at: 2026-06-17
+  - id: edge.mentor-packet-helper.uses.learner-state
+    type: uses
+    source: tool.mentor-packet-helper
+    target: spec.mentor-learner-state
+    status: active
+    confidence: 0.8
+    weight: 0.7
+    evidence:
+      - tools/create_mentor_packet.py
+      - domains/mentor/learner-state-schema.md
+    updated_at: 2026-06-17
   - id: edge.mentor-packet-helper.uses.study-kit
     type: uses
     source: tool.mentor-packet-helper
@@ -1055,6 +1260,17 @@ edges:
     evidence:
       - tools/self_check.py
       - tools/score_mentor_output.py
+    updated_at: 2026-06-17
+  - id: edge.self-check.uses.mentor-learner-state-helper
+    type: uses
+    source: tool.self-check
+    target: tool.mentor-learner-state-helper
+    status: active
+    confidence: 0.8
+    weight: 0.7
+    evidence:
+      - tools/self_check.py
+      - tools/create_learner_state.py
     updated_at: 2026-06-17
   - id: edge.mentor-run-recorder.uses.output-scorer
     type: uses
