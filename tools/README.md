@@ -22,3 +22,23 @@ The validator checks:
 - eval hygiene warnings
 
 Errors fail validation. Warnings identify known quality risks that should be fixed before promotion or final reporting.
+
+## Result Record Helper
+
+Create a skeleton result record under `evals/results/`:
+
+```powershell
+python tools/create_result_record.py --repo . --task-id mentor-interview-study-run --domain mentor --kind mentor --benchmark-ref domains/mentor/benchmarks/README.md#interview-study-benchmarks
+```
+
+The helper refuses fixture output paths by construction and keeps eval records in the correct directory.
+
+## Result Comparator
+
+Compare baseline and guided records:
+
+```powershell
+python tools/compare_results.py --baseline evals/results/baseline-mentor-interview-study.md --guided evals/results/guided-mentor-interview-study-standard-high.md --threshold 0.5
+```
+
+The comparator reads shared numeric score fields, computes average delta, and reports whether the guided run met the promotion signal threshold.

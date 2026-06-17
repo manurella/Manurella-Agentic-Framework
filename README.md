@@ -31,12 +31,15 @@ The current execution spine is `docs/master-execution-plan.md`.
 - `docs/decisions/`: ADRs for decisions that should not be lost.
 - `specs/evals.md`: evaluation categories, metrics, and v0 benchmark plan.
 - `specs/runtime-packet-protocol.md`: checkpointed runtime packets for Kilo and other unstable runtimes.
+- `specs/promotion-gates.md`: evidence required before agents, gates, evals, or tools become accepted behavior.
 - `research/`: external research inputs and synthesis.
 - `adapters/kilo/`: Kilo Code export target and examples.
 - `domains/`: portable specialist domain packs.
 - `domains/build/frontend-quality-gate.md`: frontend accessibility, visual, state, and performance evidence gate.
 - `domains/mentor/mentor-quality-gate.md`: tutoring, active recall, feedback, learner-state, and interview-study evidence gate.
 - `tools/validate_framework.py`: local structure validator for graph, agents, evidence, and eval hygiene.
+- `tools/create_result_record.py`: result-record skeleton generator for clean `evals/results/` artifacts.
+- `tools/compare_results.py`: baseline-vs-guided score comparator for promotion signals.
 - `tools/`: framework validation now; prompt compiler, eval runner, and memory tooling later.
 
 ## Commit Style

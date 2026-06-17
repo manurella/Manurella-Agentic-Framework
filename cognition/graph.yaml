@@ -255,6 +255,50 @@ nodes:
     evidence:
       - specs/runtime-packet-protocol.md
     updated_at: 2026-06-17
+  - id: spec.promotion-gates
+    type: spec
+    label: Promotion Gates
+    status: active
+    summary: Evidence gates for moving agents, quality gates, evals, and tools from draft to accepted behavior.
+    owners:
+      - manurella
+    evidence:
+      - specs/promotion-gates.md
+    updated_at: 2026-06-17
+  - id: tool.framework-validator
+    type: tool
+    label: Framework Validator
+    status: active
+    summary: Local validator for graph structure, agent frontmatter, evidence references, and eval hygiene.
+    owners:
+      - manurella
+    evidence:
+      - tools/validate_framework.py
+      - tools/README.md
+    updated_at: 2026-06-17
+  - id: tool.result-record-helper
+    type: tool
+    label: Result Record Helper
+    status: active
+    summary: Local helper that creates eval result-record skeletons under evals/results.
+    owners:
+      - manurella
+    evidence:
+      - tools/create_result_record.py
+      - tools/README.md
+    updated_at: 2026-06-17
+  - id: tool.result-comparator
+    type: tool
+    label: Result Comparator
+    status: active
+    summary: Local comparator for baseline-vs-guided result records and promotion signal thresholds.
+    owners:
+      - manurella
+    evidence:
+      - tools/compare_results.py
+      - tools/README.md
+      - specs/promotion-gates.md
+    updated_at: 2026-06-17
   - id: gate.build-frontend-quality
     type: quality_gate
     label: Build Frontend Quality Gate
@@ -573,6 +617,39 @@ edges:
     evidence:
       - specs/runtime-packet-protocol.md
       - evals/results/frontend-a11y-visual-qa-kilo-mixed-run.md
+    updated_at: 2026-06-17
+  - id: edge.promotion-gates.require.validator
+    type: requires
+    source: spec.promotion-gates
+    target: tool.framework-validator
+    status: active
+    confidence: 0.8
+    weight: 0.9
+    evidence:
+      - specs/promotion-gates.md
+      - tools/validate_framework.py
+    updated_at: 2026-06-17
+  - id: edge.result-helper.mitigates.mixed-eval-artifacts
+    type: mitigates
+    source: tool.result-record-helper
+    target: fail.mixed-eval-artifacts
+    status: active
+    confidence: 0.7
+    weight: 0.8
+    evidence:
+      - tools/create_result_record.py
+      - evals/results/frontend-a11y-visual-qa-kilo-mixed-run.md
+    updated_at: 2026-06-17
+  - id: edge.promotion-gates.require.result-comparison
+    type: requires
+    source: spec.promotion-gates
+    target: tool.result-comparator
+    status: active
+    confidence: 0.8
+    weight: 0.8
+    evidence:
+      - specs/promotion-gates.md
+      - tools/compare_results.py
     updated_at: 2026-06-17
   - id: edge.frontend-gate.mitigates.weak-visual-evidence
     type: mitigates
