@@ -196,6 +196,8 @@ The Brain is not validated until:
 
 ## Next Depth-First Path
 
+The Interpreter boundary is specified in `specs/interpreter-task-model.md`.
+
 ```text
-Manurella -> Brain -> Interpreter -> Task Model -> Acceptance Contract
+Interpreter -> schemas -> validator -> compatibility projection -> fixture suite
 ```

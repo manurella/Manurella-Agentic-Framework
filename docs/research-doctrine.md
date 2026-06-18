@@ -52,16 +52,42 @@ Research findings must distinguish:
 
 Only evidence-backed or evaluation-backed decisions should be promoted into specs.
 
-## Main Domains
+## Research Prompt Context Contract
 
-Manurella starts with four top-level domains:
+Every commissioned research prompt must include:
 
-- `build`: software and systems creation.
-- `muse`: writing, story, script, and creative language work.
-- `pixel`: visual art direction, image prompt design, generation repair, and style consistency.
-- `mentor`: language learning first, then broader teaching and learning systems.
+1. A canonical glossary expanding every project-specific term and acronym.
+2. Accepted project facts that the researcher must not reinterpret.
+3. Open questions that are genuinely under investigation.
+4. Canonical files or quoted excerpts needed to evaluate existing behavior.
+5. Explicit separation between legacy compatibility labels and proposed architecture.
+6. Required evidence quality, dates, links, and output structure.
+7. An instruction to report inaccessible attachments or missing context before analysis.
 
-Each domain is large enough to require its own research pass. Shared framework patterns should emerge after the individual passes, not be forced before them.
+The researcher must not invent expansions for unknown project terms. If an attachment cannot be accessed, the report must identify the missing source and limit its conclusions rather than substitute a generic industry meaning.
+
+Prompt authors must review the prompt for ambiguous internal shorthand before spending a research run. For example, Family A-E must always be expanded as:
+
+```text
+A: Quick Task
+B: Feature Or Multi-Step Task
+C: Full Project Or Large Build
+D: Conversation Or Brainstorm
+E: Ambiguous Request
+```
+
+## Proposed Domain Packs
+
+The current proposed domain packs are defined in `docs/manurella-root-ontology.md`:
+
+- `inquiry`
+- `engineering` with product identity Build
+- `narrative-and-language` with product identity Muse
+- `visual-and-media` with product identity Pixel
+- `learning` with product identity Mentor
+- `operations`
+
+These remain proposed until their boundary tasks and benchmark baskets validate them. Shared framework patterns should emerge from evidence rather than be forced across domains prematurely.
 
 ## State Of The Art Requirement
 

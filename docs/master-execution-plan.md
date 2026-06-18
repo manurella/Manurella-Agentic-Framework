@@ -35,6 +35,7 @@ Artifacts:
 
 - `specs/kernel.md`
 - `specs/brain-cognitive-kernel.md`
+- `specs/interpreter-task-model.md`
 - `specs/core-operating-protocol.md`
 - `specs/agent-schema.md`
 - `specs/runtime-control.md`
