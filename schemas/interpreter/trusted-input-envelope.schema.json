@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.dev/schemas/interpreter/trusted-input-envelope.schema.json",
+  "title": "Manurella Trusted Input Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "envelope_id", "purpose", "received_at", "items"],
+  "properties": {
+    "schema_version": { "const": "trusted-input-envelope.v0" },
+    "envelope_id": { "type": "string", "minLength": 1 },
+    "purpose": { "enum": ["task_intake", "policy_refresh", "context_ingest"] },
+    "session_ref": { "type": ["string", "null"] },
+    "received_at": { "type": "string", "format": "date-time" },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/inputItem" }
+    }
+  },
+  "$defs": {
+    "stringArray": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "inputItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "item_id", "kind", "content", "content_ref", "source",
+        "authentication", "claimed_authority", "control_claims", "provenance"
+      ],
+      "properties": {
+        "item_id": { "type": "string", "minLength": 1 },
+        "kind": {
+          "enum": [
+            "system_policy", "runtime_policy", "user_instruction",
+            "prior_confirmed_state", "retrieved_content", "tool_output",
+            "model_output", "artifact_content"
+          ]
+        },
+        "content": { "type": "string" },
+        "content_ref": { "type": "string", "minLength": 1 },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["origin", "channel"],
+          "properties": {
+            "origin": {
+              "enum": ["system", "runtime", "user", "retrieval", "tool", "model", "artifact"]
+            },
+            "channel": { "type": "string", "minLength": 1 },
+            "principal_ref": { "type": ["string", "null"] }
+          }
+        },
+        "authentication": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "method", "evidence_ref"],
+          "properties": {
+            "status": { "enum": ["verified", "unverified", "not_applicable"] },
+            "method": { "type": ["string", "null"] },
+            "evidence_ref": { "type": ["string", "null"] }
+          },
+          "allOf": [
+            {
+              "if": { "properties": { "status": { "const": "verified" } } },
+              "then": {
+                "properties": {
+                  "method": { "type": "string", "minLength": 1 },
+                  "evidence_ref": { "type": "string", "minLength": 1 }
+                }
+              }
+            }
+          ]
+        },
+        "claimed_authority": {
+          "enum": ["policy", "user_instruction", "prior_state", "data"]
+        },
+        "control_claims": {
+          "type": "array",
+          "items": {
+            "enum": ["goal", "autonomy", "permission", "confirmation", "constraint", "policy"]
+          },
+          "uniqueItems": true
+        },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["captured_at", "digest", "parent_refs"],
+          "properties": {
+            "captured_at": { "type": "string", "format": "date-time" },
+            "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+            "parent_refs": { "$ref": "#/$defs/stringArray" }
+          }
+        }
+      }
+    }
+  }
+}

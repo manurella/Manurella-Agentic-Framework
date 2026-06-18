@@ -1,0 +1,42 @@
+envelope:
+  schema_version: trusted-input-envelope.v0
+  envelope_id: envelope.ready-task
+  purpose: task_intake
+  session_ref: session.1
+  received_at: "2026-06-18T10:00:00Z"
+  items:
+    - item_id: policy.system
+      kind: system_policy
+      content: Preserve permission and confirmation boundaries.
+      content_ref: runtime://system-policy/1
+      source: {origin: system, channel: runtime, principal_ref: manurella}
+      authentication: {status: verified, method: runtime_chain, evidence_ref: auth://system/1}
+      claimed_authority: policy
+      control_claims: [policy, permission, confirmation]
+      provenance:
+        captured_at: "2026-06-18T10:00:00Z"
+        digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+        parent_refs: []
+    - item_id: instruction.user
+      kind: user_instruction
+      content: Audit the framework and do not edit files.
+      content_ref: turn://session.1/1
+      source: {origin: user, channel: codex, principal_ref: user.1}
+      authentication: {status: verified, method: session_identity, evidence_ref: auth://session.1}
+      claimed_authority: user_instruction
+      control_claims: [goal, autonomy, constraint]
+      provenance:
+        captured_at: "2026-06-18T10:00:00Z"
+        digest: sha256:1111111111111111111111111111111111111111111111111111111111111111
+        parent_refs: []
+expected_partition:
+  schema_version: trust-partition.v0
+  envelope_ref: envelope.ready-task
+  disposition: ready
+  execution_blocked: false
+  trusted_policy_refs: [policy.system]
+  authenticated_user_instruction_refs: [instruction.user]
+  prior_confirmed_state_refs: []
+  untrusted_data_refs: []
+  rejected_control_claims: []
+  issues: []

@@ -38,7 +38,10 @@ Artifacts:
 - `specs/interpreter-task-model.md`
 - `schemas/interpreter/task-frame.schema.json`
 - `schemas/interpreter/acceptance-contract.schema.json`
+- `schemas/interpreter/trusted-input-envelope.schema.json`
+- `schemas/interpreter/trust-partition.schema.json`
 - `schemas/core/routing-decision.schema.json`
+- `tools/partition_trusted_input.py`
 - `tools/validate_interpreter.py`
 - `tools/compile_core_packet.py`
 - `specs/core-operating-protocol.md`
@@ -54,6 +57,7 @@ Acceptance:
 - Fast Mode and Standard Mode are explicit workflow envelopes.
 - Effort levels are reasoning-depth policies, not vague quality labels.
 - Interpreter contracts pass structural, semantic, compatibility-projection, and negative fixture checks.
+- Interpreter input is provenance-bound and partitioned by derived authority before parsing.
 - Core compiles validated bundles into direct, blocked, or delegated routing decisions without transcript leakage.
 
 ### W2. Cognitive Graph

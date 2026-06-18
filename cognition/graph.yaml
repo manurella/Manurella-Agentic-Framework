@@ -648,6 +648,56 @@ nodes:
       - schemas/interpreter/task-frame.schema.json
       - specs/interpreter-task-model.md
     updated_at: 2026-06-18
+  - id: spec.interpreter-trusted-input-envelope
+    type: spec
+    label: Trusted Input Envelope Schema
+    status: active
+    summary: Strict provenance, source, authentication, authority-claim, and control-claim contract for Interpreter input.
+    owners:
+      - dom.core
+    evidence:
+      - schemas/interpreter/trusted-input-envelope.schema.json
+      - specs/interpreter-task-model.md
+    updated_at: 2026-06-18
+  - id: spec.interpreter-trust-partition
+    type: spec
+    label: Trust Partition Schema
+    status: active
+    summary: Strict output contract separating trusted policy, authenticated user instruction, prior confirmed state, and untrusted data.
+    owners:
+      - dom.core
+    evidence:
+      - schemas/interpreter/trust-partition.schema.json
+      - specs/interpreter-task-model.md
+    updated_at: 2026-06-18
+  - id: tool.interpreter-trust-partitioner
+    type: tool
+    label: Interpreter Trust Partitioner
+    status: active
+    summary: Deterministic authority boundary that quarantines unauthorized control claims and blocks unauthenticated task intake.
+    owners:
+      - dom.core
+    evidence:
+      - tools/partition_trusted_input.py
+      - schemas/interpreter/trusted-input-envelope.schema.json
+      - schemas/interpreter/trust-partition.schema.json
+      - tools/README.md
+    updated_at: 2026-06-18
+  - id: eval.interpreter-trust-partition-fixtures
+    type: eval
+    label: Interpreter Trust Partition Fixtures
+    status: active
+    summary: Six deterministic cases covering ready intake, context data, injection quarantine, unauthenticated blocking, duplicate IDs, and invalid authentication evidence.
+    owners:
+      - dom.core
+    evidence:
+      - evals/fixtures/trust-partitioner/ready-task.yaml
+      - evals/fixtures/trust-partitioner/quarantine-injection.yaml
+      - evals/fixtures/trust-partitioner/blocked-unauthenticated-user.yaml
+      - evals/fixtures/trust-partitioner/blocked-duplicate-id.yaml
+      - evals/fixtures/trust-partitioner/schema-invalid-authentication.yaml
+      - tools/partition_trusted_input.py
+    updated_at: 2026-06-18
   - id: spec.interpreter-acceptance-schema
     type: spec
     label: Acceptance Contract Schema
@@ -721,6 +771,62 @@ nodes:
       - tools/README.md
     updated_at: 2026-06-18
 edges:
+  - id: edge.core.owns.interpreter-trust-partitioner
+    type: owns
+    source: dom.core
+    target: tool.interpreter-trust-partitioner
+    status: active
+    confidence: 0.9
+    weight: 0.9
+    evidence:
+      - tools/partition_trusted_input.py
+      - specs/interpreter-task-model.md
+    updated_at: 2026-06-18
+  - id: edge.interpreter-trust-partitioner.uses.input-envelope
+    type: uses
+    source: tool.interpreter-trust-partitioner
+    target: spec.interpreter-trusted-input-envelope
+    status: active
+    confidence: 0.9
+    weight: 0.9
+    evidence:
+      - tools/partition_trusted_input.py
+      - schemas/interpreter/trusted-input-envelope.schema.json
+    updated_at: 2026-06-18
+  - id: edge.interpreter-trust-partitioner.uses.partition-schema
+    type: uses
+    source: tool.interpreter-trust-partitioner
+    target: spec.interpreter-trust-partition
+    status: active
+    confidence: 0.9
+    weight: 0.9
+    evidence:
+      - tools/partition_trusted_input.py
+      - schemas/interpreter/trust-partition.schema.json
+    updated_at: 2026-06-18
+  - id: edge.interpreter-trust-fixtures.evaluate.partitioner
+    type: evaluates
+    source: eval.interpreter-trust-partition-fixtures
+    target: tool.interpreter-trust-partitioner
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - evals/fixtures/trust-partitioner/quarantine-injection.yaml
+      - evals/fixtures/trust-partitioner/blocked-unauthenticated-user.yaml
+      - tools/partition_trusted_input.py
+    updated_at: 2026-06-18
+  - id: edge.self-check.uses.interpreter-trust-partitioner
+    type: uses
+    source: tool.self-check
+    target: tool.interpreter-trust-partitioner
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - tools/self_check.py
+      - tools/partition_trusted_input.py
+    updated_at: 2026-06-18
   - id: edge.core.owns.manurella-orchestrator
     type: owns
     source: dom.core

@@ -10,7 +10,23 @@ Run the full local framework smoke suite:
 python tools/self_check.py --repo .
 ```
 
-It runs the framework validator, Interpreter contract fixtures, Core routing projection fixtures, Kilo exporter dry-run, result-record helper smoke, Mentor packet helper smoke, Mentor output scorer smoke, Mentor run recorder smoke, comparator smoke, and removes its temporary smoke records.
+It runs the framework validator, trust-partition fixtures, Interpreter contract fixtures, Core routing projection fixtures, Kilo exporter dry-run, result-record helper smoke, Mentor packet helper smoke, Mentor output scorer smoke, Mentor run recorder smoke, comparator smoke, and removes its temporary smoke records.
+
+## Trusted Input Partitioner
+
+Validate trusted input envelopes and run the adversarial partition suite:
+
+```powershell
+python tools/partition_trusted_input.py --repo . --fixtures
+```
+
+Partition one envelope:
+
+```powershell
+python tools/partition_trusted_input.py --repo . --input path/to/envelope.yaml
+```
+
+The partitioner derives authority from item kind, origin, and verified authentication evidence. Content cannot grant itself authority. System/runtime policy, authenticated user instruction, prior confirmed state, and untrusted data remain separate; unauthorized control claims are quarantined, and task intake without an authenticated user instruction is blocked. The result contains references and findings, not copied content.
 
 ## Interpreter Contract Validator
 

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020/schema",
+  "$id": "https://manurella.dev/schemas/interpreter/trust-partition.schema.json",
+  "title": "Manurella Trust Partition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "envelope_ref", "disposition", "execution_blocked",
+    "trusted_policy_refs", "authenticated_user_instruction_refs",
+    "prior_confirmed_state_refs", "untrusted_data_refs", "rejected_control_claims", "issues"
+  ],
+  "properties": {
+    "schema_version": { "const": "trust-partition.v0" },
+    "envelope_ref": { "type": "string", "minLength": 1 },
+    "disposition": { "enum": ["ready", "quarantined", "blocked"] },
+    "execution_blocked": { "type": "boolean" },
+    "trusted_policy_refs": { "$ref": "#/$defs/stringArray" },
+    "authenticated_user_instruction_refs": { "$ref": "#/$defs/stringArray" },
+    "prior_confirmed_state_refs": { "$ref": "#/$defs/stringArray" },
+    "untrusted_data_refs": { "$ref": "#/$defs/stringArray" },
+    "rejected_control_claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["item_ref", "claims", "reason"],
+        "properties": {
+          "item_ref": { "type": "string", "minLength": 1 },
+          "claims": { "$ref": "#/$defs/stringArray" },
+          "reason": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "item_ref", "severity", "message"],
+        "properties": {
+          "code": { "type": "string", "minLength": 1 },
+          "item_ref": { "type": ["string", "null"] },
+          "severity": { "enum": ["warning", "blocking"] },
+          "message": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "stringArray": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    }
+  }
+}

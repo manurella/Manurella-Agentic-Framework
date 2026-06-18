@@ -364,6 +364,21 @@ Evaluation covers:
 
 The framework-wide 80/100 quality gate applies, with critical safety and permission failures acting as vetoes rather than weighted deductions.
 
+## Trusted Input And Partition Slice
+
+The first live input boundary is implemented in:
+
+- `schemas/interpreter/trusted-input-envelope.schema.json`
+- `schemas/interpreter/trust-partition.schema.json`
+- `tools/partition_trusted_input.py`
+- `evals/fixtures/trust-partitioner/`
+
+Each input item carries immutable content provenance, source metadata, claimed authority, authentication evidence, and explicit control claims. The partitioner derives authority from item kind, origin, and verified authentication; it never trusts a content-level claim by itself.
+
+The output separates trusted policy, authenticated user instruction, prior confirmed state, and untrusted data. Unauthorized goal, autonomy, permission, confirmation, constraint, or policy claims are rejected and recorded. Retrieved, tool, model, and artifact content remains data even when its transport is authenticated. Task intake without an authenticated user instruction fails closed.
+
+The `quarantined` disposition means untrusted control claims were rejected while a valid task instruction remains executable. `blocked` means the envelope cannot safely define an executable task. This slice performs structural partitioning, not natural-language prompt-injection detection, Task Frame parsing, or authentication itself; adapters must supply genuine authentication evidence.
+
 ## Executable Contract Slice
 
 The first executable v0 slice is implemented in:
@@ -406,10 +421,10 @@ This slice is implemented when:
 5. Routing and handoff packets can be derived without copying the full transcript.
 6. Current Core behavior consumes the Task Frame without losing Family-level directness.
 
-Conditions 1-6 are satisfied for fixture-driven validated bundles. Creating those bundles from natural-language turns remains the next Interpreter implementation boundary.
+Conditions 1-6 are satisfied for fixture-driven validated bundles. The trusted input envelope and deterministic trust partition are also implemented. Creating Task Frames from partitioned natural-language input remains the next Interpreter implementation boundary.
 
 ## Next Depth-First Path
 
 ```text
-Interpreter -> trusted input envelope -> trust partitioner -> task parser -> acceptance compiler -> parser evals
+Interpreter -> trusted input envelope [implemented] -> trust partitioner [implemented] -> task parser -> acceptance compiler -> parser evals
 ```

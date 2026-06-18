@@ -107,6 +107,7 @@ def main(argv: list[str]) -> int:
 
     commands = [
         [python, "tools/validate_framework.py", "--repo", "."],
+        [python, "tools/partition_trusted_input.py", "--repo", ".", "--fixtures"],
         [python, "tools/validate_interpreter.py", "--repo", "."],
         [python, "tools/compile_core_packet.py", "--repo", ".", "--fixtures"],
         [

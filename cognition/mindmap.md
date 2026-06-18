@@ -91,6 +91,8 @@ The connected Interpreter-to-Core checkpoint is active:
 
 ```text
 Interpreter
+-> Trusted Input Envelope
+-> Trust Partitioner
 -> Task Frame schema
 -> Acceptance Contract schema
 -> semantic validator
@@ -100,7 +102,7 @@ Interpreter
 -> bounded handoff projection
 ```
 
-Natural-language parsing and runtime execution remain later connected checkpoints.
+The trusted input boundary and deterministic partitioner are implemented. Natural-language Task Frame parsing, Acceptance Contract compilation, and runtime execution remain later connected checkpoints.
 
 ## Experimental Frontend Slice
 
