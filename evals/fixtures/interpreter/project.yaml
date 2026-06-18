@@ -4,6 +4,16 @@ expected_validation: pass
 expected_projection:
   family_class: C
   project_posture: genesis
+expected_core_projection:
+  disposition: delegate
+  family_class: C
+  project_posture: genesis
+  selected_domain: build
+  selected_agent: build-orchestrator
+  secondary_domains: []
+  mode: standard
+  effort: high
+  handoff_required: true
 task_frame:
   identity:
     frame_id: tf.project-atlas

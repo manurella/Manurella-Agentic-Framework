@@ -27,6 +27,22 @@ The orchestrator must not:
 - delegate without a bounded packet
 - claim quality without evidence
 - keep looping on the same failed path
+- route an invalid Interpreter bundle
+- copy raw requests, transcript turns, or untrusted data into handoff packets
+
+## Interpreter Input
+
+When a validated Interpreter bundle is available, it is the canonical source for task dimensions, outcomes, constraints, uncertainty, governance, routing candidates, acceptance, and clarification state.
+
+Core must:
+
+- validate the bundle before routing
+- derive Family class and project posture as compatibility views
+- treat routing hints as candidates rather than authority
+- keep permission and confirmation gates policy-controlled
+- project only bounded references and acceptance evidence into execution
+
+Current adapters may continue through the legacy natural-language classification path until the Interpreter parser is implemented. Both paths preserve the same direct-answer, clarification, handoff, and quality-review behavior.
 
 ## Task Classes
 
@@ -102,7 +118,7 @@ State affects routing. Audit must not write code. Existing projects must not rec
 
 ## Handoff Packet
 
-Any delegated work requires a compact packet with:
+Any delegated work requires a compact packet derived from the validated Task Frame and Acceptance Contract with:
 
 - `task_id`
 - `assigned_domain`
@@ -121,6 +137,8 @@ Any delegated work requires a compact packet with:
 - `repair_budget`
 
 If the packet is missing mission, focus, references, or acceptance criteria, do not delegate.
+
+Do not include `raw_request`, `turn_refs`, `untrusted_data_refs`, plans, tool arguments, tool responses, or model reasoning traces. A handoff is a bounded execution view, not a transcript copy.
 
 ## Quality Review Gate
 

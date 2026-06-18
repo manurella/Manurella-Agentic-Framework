@@ -11,6 +11,12 @@ mindmap
         Family A-E Projection
         Project Posture Projection
         Contract Fixture Suite
+      Core Router
+        Routing Decision Schema
+        Directness And Blocking Policy
+        Primary And Secondary Domains
+        Bounded Handoff Compiler
+        Transcript Minimization
     Domains
       Build
         Agents
@@ -81,7 +87,7 @@ This slice is intentionally not complete yet. The graph should grow from evaluat
 
 ## Current Depth-First Slice
 
-The first executable Brain checkpoint is active:
+The connected Interpreter-to-Core checkpoint is active:
 
 ```text
 Interpreter
@@ -90,9 +96,11 @@ Interpreter
 -> semantic validator
 -> Family and project-posture projection
 -> representative positive and negative fixtures
+-> Core routing decision
+-> bounded handoff projection
 ```
 
-Natural-language parsing, Router consumption, handoff compilation, and runtime execution remain later connected checkpoints.
+Natural-language parsing and runtime execution remain later connected checkpoints.
 
 ## Experimental Frontend Slice
 

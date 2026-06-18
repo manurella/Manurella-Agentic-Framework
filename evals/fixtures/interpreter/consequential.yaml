@@ -4,6 +4,16 @@ expected_validation: pass
 expected_projection:
   family_class: A
   project_posture: null
+expected_core_projection:
+  disposition: confirm
+  family_class: A
+  project_posture: null
+  selected_domain: core
+  selected_agent: manurella-orchestrator
+  secondary_domains: []
+  mode: standard
+  effort: medium
+  handoff_required: false
 task_frame:
   identity:
     frame_id: tf.publish-release

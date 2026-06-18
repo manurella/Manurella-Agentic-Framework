@@ -1,0 +1,126 @@
+fixture_id: core-routing.pixel
+scenario: A bounded visual prompt task routes to the Pixel Director.
+base_fixture: ../quick-task.yaml
+mutations:
+  - path: task_frame.identity.frame_id
+    value: tf.pixel-prompt
+  - path: task_frame.identity.root_frame_id
+    value: tf.pixel-prompt
+  - path: task_frame.source.raw_request
+    value: Create a launch visual prompt from the approved visual brief.
+  - path: task_frame.source.trusted_context_refs
+    value: [artifact.visual-brief]
+  - path: task_frame.objective.normalized_goal
+    value: Compile one launch visual prompt from the approved visual brief.
+  - path: task_frame.objective.work_types
+    value: [create]
+  - path: task_frame.objective.desired_outcomes
+    value:
+      - id: outcome.visual-prompt
+        statement: Produce a model-ready prompt that preserves the approved visual intent.
+        kind: artifact
+        priority: required
+        source_authority: user_asserted
+  - path: task_frame.objective.autonomy
+    value: draft
+  - path: task_frame.scope.project_posture
+    value: genesis
+  - path: task_frame.scope.artifacts
+    value:
+      - id: artifact.visual-prompt
+        kind: image-prompt
+        description: Launch visual-generation prompt.
+        required: true
+  - path: task_frame.constraints.hard
+    value:
+      - id: constraint.visual-brief
+        statement: Preserve the subject, composition, style, and exclusions in the approved brief.
+        source_authority: user_asserted
+  - path: task_frame.acceptance_contract_ref
+    value: ac.pixel-prompt@1
+  - path: task_frame.routing_hints
+    value:
+      candidate_domains: [pixel]
+      required_capabilities: [art_direction, prompt_compilation]
+      likely_tools: []
+      memory_requirements: [visual_continuity]
+      unresolved_routing_questions: []
+  - path: task_frame.provenance.entries
+    value:
+      - field_path: source.raw_request
+        authority: immutable_source
+        source_refs: [turn.2]
+      - field_path: objective.normalized_goal
+        authority: interpreter_inferred
+        source_refs: [turn.2, artifact.visual-brief]
+      - field_path: constraints.hard
+        authority: user_asserted
+        source_refs: [artifact.visual-brief]
+  - path: acceptance_contract.contract_id
+    value: ac.pixel-prompt
+  - path: acceptance_contract.task_frame_ref
+    value: tf.pixel-prompt@1
+  - path: acceptance_contract.required_outcomes
+    value:
+      - id: criterion.visual-intent
+        statement: The prompt preserves the approved visual intent.
+        source_authority: user_asserted
+  - path: acceptance_contract.required_artifacts
+    value:
+      - id: criterion.prompt
+        statement: Deliver one model-ready image prompt.
+        source_authority: interpreter_inferred
+  - path: acceptance_contract.hard_checks
+    value:
+      - id: check.visual-brief
+        statement: Every mandatory brief constraint appears in the prompt.
+        source_authority: user_asserted
+  - path: acceptance_contract.forbidden_results
+    value:
+      - id: forbidden.visual-drift
+        statement: Do not introduce conflicting subjects, styles, or composition.
+        source_authority: policy_derived
+  - path: acceptance_contract.quality_rubric
+    value:
+      dimensions:
+        - id: visual-fidelity
+          description: Prompt subject, composition, style, and constraints are coherent.
+          weight: 1.0
+          minimum_score: 80
+          critical: true
+          evaluator: pixel-audit-judge
+          evidence: [artifact.visual-brief]
+      minimum_score: 80
+      critical_dimensions: [visual-fidelity]
+  - path: acceptance_contract.evidence_requirements.required_evidence
+    value:
+      - id: evidence.pixel-gate
+        statement: Record the Pixel gut check against the visual brief.
+        source_authority: interpreter_inferred
+  - path: acceptance_contract.verification_plan
+    value:
+      deterministic_checks: []
+      model_checks:
+        - id: model.pixel-gate
+          description: Evaluate prompt fidelity against the visual brief.
+          required: true
+      human_review: []
+  - path: acceptance_contract.control.stop_conditions
+    value:
+      - id: stop.pixel-prompt
+        statement: Stop after one prompt passes the Pixel gate.
+        source_authority: interpreter_inferred
+expected_validation: pass
+expected_projection:
+  family_class: A
+  project_posture: genesis
+expected_core_projection:
+  disposition: delegate
+  family_class: A
+  project_posture: genesis
+  selected_domain: pixel
+  selected_agent: pixel-director
+  secondary_domains: []
+  mode: fast
+  effort: low
+  handoff_required: true

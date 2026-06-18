@@ -10,7 +10,7 @@ Run the full local framework smoke suite:
 python tools/self_check.py --repo .
 ```
 
-It runs the framework validator, Interpreter contract fixture suite, Kilo exporter dry-run, result-record helper smoke, Mentor packet helper smoke, Mentor output scorer smoke, Mentor run recorder smoke, comparator smoke, and removes its temporary smoke records.
+It runs the framework validator, Interpreter contract fixtures, Core routing projection fixtures, Kilo exporter dry-run, result-record helper smoke, Mentor packet helper smoke, Mentor output scorer smoke, Mentor run recorder smoke, comparator smoke, and removes its temporary smoke records.
 
 ## Interpreter Contract Validator
 
@@ -27,6 +27,22 @@ python tools/validate_interpreter.py --repo . --input evals/fixtures/interpreter
 ```
 
 The validator checks the versioned JSON Schemas under `schemas/interpreter/`, then applies invariants that JSON Schema alone cannot express: reference reciprocity, revision lineage, project context, uncertainty state, clarification blocking, audit non-mutation, consequential confirmation, permission records, freshness, and critical rubric references. It also derives the legacy Family A-E label and project posture for adapter compatibility.
+
+## Core Routing Compiler
+
+Compile one validated Interpreter bundle into a routing decision and optional bounded handoff packet:
+
+```powershell
+python tools/compile_core_packet.py --repo . --input evals/fixtures/interpreter/quick-task.yaml
+```
+
+Run routing expectations across all positive and negative Interpreter fixtures:
+
+```powershell
+python tools/compile_core_packet.py --repo . --fixtures
+```
+
+The compiler validates before routing, keeps conversation and blocked decisions in Core, selects one primary specialist for executable work, records secondary domains, and emits `schemas/core/routing-decision.schema.json`. Projection output forbids raw request, turn, and untrusted-data fields.
 
 ## Framework Validator
 

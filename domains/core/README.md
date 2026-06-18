@@ -6,6 +6,8 @@ Core is not a user-facing specialist domain like Build, Muse, Pixel, or Mentor. 
 
 ## V0 Responsibilities
 
+- Consume validated Task Frames, Acceptance Contracts, and Clarification Decisions.
+- Compile bounded routing decisions and handoff packets without copying raw transcript state.
 - Route user requests to the correct domain lead.
 - Decide whether the current task is framework governance or specialist execution.
 - Apply Fast/Standard mode and effort policy.
@@ -23,3 +25,7 @@ Core is not a user-facing specialist domain like Build, Muse, Pixel, or Mentor. 
 ## Agents
 
 - `manurella-orchestrator`: main router and framework-level supervisor.
+
+## Executable Projection
+
+`tools/compile_core_packet.py` validates an Interpreter bundle before compiling `schemas/core/routing-decision.schema.json`. Conversation and Core-owned work stay direct. Ambiguity, confirmation, and refusal remain blocked in Core. Only executable specialist work receives a handoff packet.

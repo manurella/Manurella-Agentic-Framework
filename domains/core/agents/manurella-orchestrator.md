@@ -3,7 +3,7 @@ id: manurella-orchestrator
 domain: core
 tier: top_level
 status: research_candidate
-purpose: Route every Manurella request through the framework brain, choose the correct domain lead, enforce runtime mode and effort policy, and require evidence before claiming completion.
+purpose: Consume validated Interpreter output, route each executable Task Frame through the framework brain, choose the correct domain lead, enforce runtime mode and effort policy, and require evidence before claiming completion.
 use_when:
   - A new user request enters the Manurella framework.
   - The task spans multiple domains or the correct domain is uncertain.
@@ -16,6 +16,9 @@ inputs:
   - name: user_request
     type: natural_language_request
     required: true
+  - name: interpreter_bundle
+    type: validated_task_frame_acceptance_and_clarification_bundle
+    required: false
   - name: active_brain
     type: framework_boot_context
     required: false
@@ -26,8 +29,8 @@ inputs:
     type: file_or_eval_references
     required: false
 outputs:
-  contract: Routing decision with task class, project state when relevant, selected domain, selected lead agent, mode, effort, required references, handoff packet, quality gate, verification requirement, and stop condition.
-  schema_ref: null
+  contract: Validated Core routing decision with disposition, Family compatibility class, project posture, selected domain and lead, mode, effort, bounded references, quality gate, verification requirement, stop conditions, clarification projection, and optional handoff packet.
+  schema_ref: schemas/core/routing-decision.schema.json
 permissions:
   read: allow
   edit: ask
@@ -49,11 +52,13 @@ context:
     - docs/master-execution-plan.md
     - docs/family-system-mechanism-map.md
     - specs/kernel.md
+    - specs/interpreter-task-model.md
     - specs/core-operating-protocol.md
     - specs/runtime-control.md
     - specs/runtime-packet-protocol.md
     - specs/weak-runtime-compensation.md
     - specs/promotion-gates.md
+    - schemas/core/routing-decision.schema.json
     - cognition/mindmap.md
     - cognition/graph.yaml
     - domains/README.md
@@ -63,8 +68,11 @@ context:
     - Domain lead output.
     - Runtime error, timeout, or verifier evidence.
 workflow:
-  - Parse the request into intent, domain candidates, urgency, risk, and required output.
-  - Classify task class as Quick Task, Feature or Multi-step Task, Full Project, Conversation or Brainstorm, or Ambiguous Request.
+  - When an Interpreter bundle is present, validate it before routing and refuse to compile invalid structure, semantics, permission state, or clarification state.
+  - Consume the validated Task Frame, Acceptance Contract, and Clarification Decision as the canonical work definition; never copy raw_request, turn_refs, or untrusted_data_refs into routing or handoff output.
+  - When no Interpreter bundle exists, retain the legacy direct parsing path for current adapters until the natural-language Interpreter pipeline is implemented.
+  - Derive the Family compatibility class and project posture from the Task Frame rather than replacing its multidimensional task model.
+  - Treat routing hints as non-binding candidates; Core owns final domain and agent selection.
   - For existing artifacts, classify project state as genesis, sprint, audit, salvage, reimagine, or resume before routing.
   - Answer Class D conversation directly with a grounded view; do not force workflow ceremony.
   - Ask the minimum useful clarification for Class E ambiguous work.
@@ -73,12 +81,14 @@ workflow:
   - Select Fast Mode only when the same acceptance bar can be met with fewer steps; otherwise select Standard Mode.
   - Select effort level based on complexity, uncertainty, risk, and user latency constraints.
   - For delegated work, emit a compact handoff packet with mission, focus in, focus out, references, evidence, acceptance criteria, timeout policy, and repair budget.
+  - Emit no handoff for direct conversation, Core-owned work, ambiguity, confirmation, or refusal.
   - Before accepting specialist output, run the domain gut check first, then the relevant checklist, scorer, or verifier.
   - Allow one focused repair loop for a failed specialist result; after repeated failure, escalate with evidence and options.
   - If execution fails because of timeout or weak runtime behavior, resume from durable artifacts instead of restarting.
   - Update cognitive graph only for durable new facts, failure modes, agents, evals, tools, or decisions.
 evaluation:
   rubric:
+    - Validated Task Frame consumption without transcript leakage.
     - Correct domain routing.
     - Minimal context loading.
     - Accurate mode and effort selection.
@@ -92,6 +102,9 @@ evaluation:
     - evals/README.md
     - docs/master-execution-plan.md
 failure_modes:
+  - Routing an invalid Interpreter bundle.
+  - Treating inferred routing hints as permissions or binding authority.
+  - Copying raw transcript content into routing or handoff packets.
   - Routing everything to one favorite domain.
   - Producing research plans without usable artifacts.
   - Claiming completion without verifier or eval evidence.

@@ -1,0 +1,16 @@
+fixture_id: core-routing.unblocked-permission
+scenario: Core refuses execution when a required permission is not represented as blocking.
+base_fixture: ../quick-task.yaml
+mutations:
+  - path: task_frame.objective.work_types
+    value: [act]
+  - path: task_frame.governance.permissions_required
+    value:
+      - id: permission.external-write
+        capability: write to an external system
+        status: required
+expected_validation: pass
+expected_projection:
+  family_class: A
+  project_posture: sprint
+expected_core_error: required permission or confirmation is not blocking execution

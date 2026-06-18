@@ -6,7 +6,7 @@
 - Parent: `sys.brain`
 - Level: 2
 - Lifecycle: specified
-- Runtime implementation: contract validator v0; interpretation pipeline pending
+- Runtime implementation: contract validator and Core projection v0; interpretation pipeline pending
 
 ## Purpose
 
@@ -373,9 +373,27 @@ The first executable v0 slice is implemented in:
 - `tools/validate_interpreter.py`
 - `evals/fixtures/interpreter/`
 
-The JSON Schemas enforce the portable structural contract. The validator adds cross-object and policy invariants, then derives Family A-E and project-posture compatibility views. Positive fixtures cover conversation, quick work, a full project, ambiguity, correction, cross-domain work, and consequential action. Focused negative fixtures prove that schema, ambiguity, posture, and confirmation failures are rejected.
+The JSON Schemas enforce the portable structural contract. The validator adds cross-object and policy invariants, then derives Family A-E and project-posture compatibility views. Positive fixtures cover conversation, quick work, a full project, ambiguity, correction, cross-domain work, and consequential action. Focused negative fixtures prove that schema, ambiguity, posture, and confirmation failures are rejected; Router-specific cases prove that unsupported domains and unblocked permissions fail closed.
 
 This slice does not parse natural language, select a route, compile a handoff packet, or execute work. Those remain separate Brain and Router responsibilities.
+
+## Core Routing Projection Slice
+
+Core consumes a validated bundle through:
+
+- `schemas/core/routing-decision.schema.json`
+- `tools/compile_core_packet.py`
+
+V0 projection rules are deterministic:
+
+1. Blocking clarification, confirmation, or refusal remains with Core and emits no handoff.
+2. Family D conversation remains direct and emits no handoff.
+3. Executable candidate domains are scored from required capabilities, artifact kinds, and work types; the first required artifact is the anchor signal and candidate order is the stable tie-breaker.
+4. Core-owned executable work remains direct.
+5. Executable specialist work selects one primary lead, records secondary domains, and receives one bounded handoff packet.
+6. Raw requests, transcript turns, and untrusted data references are forbidden from routing and handoff output.
+
+Routing hints remain inferred candidates. They do not grant permission, satisfy confirmation, or bind the Router.
 
 ## Completion Conditions
 
@@ -388,8 +406,10 @@ This slice is implemented when:
 5. Routing and handoff packets can be derived without copying the full transcript.
 6. Current Core behavior consumes the Task Frame without losing Family-level directness.
 
+Conditions 1-6 are satisfied for fixture-driven validated bundles. Creating those bundles from natural-language turns remains the next Interpreter implementation boundary.
+
 ## Next Depth-First Path
 
 ```text
-Interpreter -> schemas -> validator -> compatibility projection -> fixture suite
+Interpreter -> trusted input envelope -> trust partitioner -> task parser -> acceptance compiler -> parser evals
 ```

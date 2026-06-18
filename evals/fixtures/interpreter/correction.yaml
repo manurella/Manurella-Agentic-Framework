@@ -4,6 +4,16 @@ expected_validation: pass
 expected_projection:
   family_class: A
   project_posture: sprint
+expected_core_projection:
+  disposition: delegate
+  family_class: A
+  project_posture: sprint
+  selected_domain: muse
+  selected_agent: muse-lead
+  secondary_domains: []
+  mode: fast
+  effort: low
+  handoff_required: true
 task_frame:
   identity:
     frame_id: tf.corrected-copy

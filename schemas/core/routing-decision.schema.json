@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.local/schemas/core/routing-decision/0.1.0",
+  "title": "Manurella Core Routing Decision",
+  "description": "Deterministic Core projection from a validated Interpreter bundle. It contains bounded execution context, never the raw transcript.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "decision_id",
+    "task_frame_ref",
+    "acceptance_contract_ref",
+    "disposition",
+    "family_class",
+    "project_posture",
+    "selected_domain",
+    "selected_agent",
+    "secondary_domains",
+    "mode",
+    "effort",
+    "required_references",
+    "quality_gate",
+    "verification_required",
+    "stop_conditions",
+    "clarification",
+    "handoff_packet"
+  ],
+  "properties": {
+    "decision_id": { "$ref": "#/$defs/nonEmptyString" },
+    "task_frame_ref": { "$ref": "#/$defs/versionedRef" },
+    "acceptance_contract_ref": { "$ref": "#/$defs/versionedRef" },
+    "disposition": { "enum": ["direct", "delegate", "clarify", "confirm", "refuse"] },
+    "family_class": { "enum": ["A", "B", "C", "D", "E"] },
+    "project_posture": {
+      "type": ["string", "null"],
+      "enum": ["genesis", "sprint", "audit", "salvage", "reimagine", "resume", null]
+    },
+    "selected_domain": { "enum": ["core", "build", "muse", "pixel", "mentor"] },
+    "selected_agent": { "$ref": "#/$defs/nonEmptyString" },
+    "secondary_domains": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "enum": ["build", "muse", "pixel", "mentor"] }
+    },
+    "mode": { "enum": ["fast", "standard"] },
+    "effort": { "enum": ["low", "medium", "high", "max", "ultra", "sentient"] },
+    "required_references": { "$ref": "#/$defs/stringArray" },
+    "quality_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hard_checks", "rubric_dimensions", "critical_dimensions"],
+      "properties": {
+        "hard_checks": { "$ref": "#/$defs/stringArray" },
+        "rubric_dimensions": { "$ref": "#/$defs/stringArray" },
+        "critical_dimensions": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "verification_required": { "type": "boolean" },
+    "stop_conditions": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/nonEmptyString" }
+    },
+    "clarification": {
+      "oneOf": [
+        { "$ref": "#/$defs/clarification" },
+        { "type": "null" }
+      ]
+    },
+    "handoff_packet": {
+      "oneOf": [
+        { "$ref": "#/$defs/handoffPacket" },
+        { "type": "null" }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "disposition": { "const": "delegate" } },
+        "required": ["disposition"]
+      },
+      "then": {
+        "properties": {
+          "selected_domain": { "enum": ["build", "muse", "pixel", "mentor"] },
+          "handoff_packet": { "$ref": "#/$defs/handoffPacket" },
+          "clarification": { "type": "null" }
+        }
+      },
+      "else": {
+        "properties": {
+          "selected_domain": { "const": "core" },
+          "secondary_domains": { "maxItems": 0 },
+          "handoff_packet": { "type": "null" }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "disposition": { "enum": ["clarify", "confirm", "refuse"] }
+        },
+        "required": ["disposition"]
+      },
+      "then": {
+        "properties": { "clarification": { "$ref": "#/$defs/clarification" } }
+      },
+      "else": {
+        "properties": { "clarification": { "type": "null" } }
+      }
+    }
+  ],
+  "$defs": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "versionedRef": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*@[1-9][0-9]*$"
+    },
+    "stringArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/nonEmptyString" }
+    },
+    "clarification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["action", "reasons", "question", "options", "blocked_by"],
+      "properties": {
+        "action": { "enum": ["ask", "confirm", "refuse"] },
+        "reasons": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/nonEmptyString" }
+        },
+        "question": {
+          "oneOf": [
+            { "$ref": "#/$defs/nonEmptyString" },
+            { "type": "null" }
+          ]
+        },
+        "options": { "$ref": "#/$defs/stringArray" },
+        "blocked_by": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "handoffPacket": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_id",
+        "assigned_domain",
+        "assigned_agent",
+        "class",
+        "mode",
+        "effort",
+        "mission",
+        "focus_in",
+        "focus_out",
+        "references",
+        "evidence",
+        "acceptance_criteria",
+        "blocked_by",
+        "timeout_policy",
+        "repair_budget"
+      ],
+      "properties": {
+        "task_id": { "$ref": "#/$defs/versionedRef" },
+        "assigned_domain": { "enum": ["build", "muse", "pixel", "mentor"] },
+        "assigned_agent": { "$ref": "#/$defs/nonEmptyString" },
+        "class": { "enum": ["A", "B", "C"] },
+        "mode": { "enum": ["fast", "standard"] },
+        "effort": { "enum": ["low", "medium", "high", "max", "ultra", "sentient"] },
+        "mission": { "$ref": "#/$defs/nonEmptyString" },
+        "focus_in": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/nonEmptyString" }
+        },
+        "focus_out": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/nonEmptyString" }
+        },
+        "references": { "$ref": "#/$defs/stringArray" },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/nonEmptyString" }
+        },
+        "acceptance_criteria": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/nonEmptyString" }
+        },
+        "blocked_by": {
+          "type": "array",
+          "maxItems": 0,
+          "items": { "$ref": "#/$defs/nonEmptyString" }
+        },
+        "timeout_policy": { "$ref": "#/$defs/nonEmptyString" },
+        "repair_budget": { "type": "integer", "minimum": 0, "maximum": 1 }
+      }
+    }
+  }
+}

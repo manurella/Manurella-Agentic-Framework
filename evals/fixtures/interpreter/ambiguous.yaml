@@ -4,6 +4,16 @@ expected_validation: pass
 expected_projection:
   family_class: E
   project_posture: genesis
+expected_core_projection:
+  disposition: clarify
+  family_class: E
+  project_posture: genesis
+  selected_domain: core
+  selected_agent: manurella-orchestrator
+  secondary_domains: []
+  mode: fast
+  effort: medium
+  handoff_required: false
 task_frame:
   identity:
     frame_id: tf.ambiguous-design

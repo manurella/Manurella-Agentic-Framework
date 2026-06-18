@@ -4,6 +4,16 @@ expected_validation: pass
 expected_projection:
   family_class: B
   project_posture: sprint
+expected_core_projection:
+  disposition: delegate
+  family_class: B
+  project_posture: sprint
+  selected_domain: build
+  selected_agent: build-orchestrator
+  secondary_domains: [pixel]
+  mode: standard
+  effort: high
+  handoff_required: true
 task_frame:
   identity:
     frame_id: tf.cross-domain-launch

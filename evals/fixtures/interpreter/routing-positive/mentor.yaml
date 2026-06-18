@@ -1,0 +1,126 @@
+fixture_id: core-routing.mentor
+scenario: A bounded learning task routes to the current Mentor lead.
+base_fixture: ../quick-task.yaml
+mutations:
+  - path: task_frame.identity.frame_id
+    value: tf.mentor-recall
+  - path: task_frame.identity.root_frame_id
+    value: tf.mentor-recall
+  - path: task_frame.source.raw_request
+    value: Teach me React state ownership with one interview recall drill.
+  - path: task_frame.source.trusted_context_refs
+    value: [domains/mentor/session-protocol.md]
+  - path: task_frame.objective.normalized_goal
+    value: Teach React state ownership through one focused recall drill.
+  - path: task_frame.objective.work_types
+    value: [learn]
+  - path: task_frame.objective.desired_outcomes
+    value:
+      - id: outcome.recall
+        statement: The learner attempts and receives feedback on one state-ownership drill.
+        kind: learning
+        priority: required
+        source_authority: user_asserted
+  - path: task_frame.objective.autonomy
+    value: advise
+  - path: task_frame.scope.project_posture
+    value: genesis
+  - path: task_frame.scope.artifacts
+    value:
+      - id: artifact.recall-drill
+        kind: study-session
+        description: Focused state-ownership recall drill and answer rubric.
+        required: true
+  - path: task_frame.constraints.hard
+    value:
+      - id: constraint.active-recall
+        statement: Require learner retrieval before revealing the answer.
+        source_authority: policy_derived
+  - path: task_frame.acceptance_contract_ref
+    value: ac.mentor-recall@1
+  - path: task_frame.routing_hints
+    value:
+      candidate_domains: [mentor]
+      required_capabilities: [teaching, interview_study]
+      likely_tools: []
+      memory_requirements: [learner_state]
+      unresolved_routing_questions: []
+  - path: task_frame.provenance.entries
+    value:
+      - field_path: source.raw_request
+        authority: immutable_source
+        source_refs: [turn.2]
+      - field_path: objective.normalized_goal
+        authority: interpreter_inferred
+        source_refs: [turn.2]
+      - field_path: constraints.hard
+        authority: policy_derived
+        source_refs: [domains/mentor/session-protocol.md]
+  - path: acceptance_contract.contract_id
+    value: ac.mentor-recall
+  - path: acceptance_contract.task_frame_ref
+    value: tf.mentor-recall@1
+  - path: acceptance_contract.required_outcomes
+    value:
+      - id: criterion.recall-attempt
+        statement: The learner makes an unaided recall attempt before feedback.
+        source_authority: policy_derived
+  - path: acceptance_contract.required_artifacts
+    value:
+      - id: criterion.drill
+        statement: Deliver one focused drill, rubric, and feedback rule.
+        source_authority: interpreter_inferred
+  - path: acceptance_contract.hard_checks
+    value:
+      - id: check.active-recall
+        statement: Do not claim mastery from passive explanation.
+        source_authority: policy_derived
+  - path: acceptance_contract.forbidden_results
+    value:
+      - id: forbidden.generic-syllabus
+        statement: Do not replace the drill with a general syllabus.
+        source_authority: policy_derived
+  - path: acceptance_contract.quality_rubric
+    value:
+      dimensions:
+        - id: pedagogy
+          description: The session uses active recall, feedback, and evidence-bound state updates.
+          weight: 1.0
+          minimum_score: 80
+          critical: true
+          evaluator: mentor-quality-gate
+          evidence: [domains/mentor/session-protocol.md]
+      minimum_score: 80
+      critical_dimensions: [pedagogy]
+  - path: acceptance_contract.evidence_requirements.required_evidence
+    value:
+      - id: evidence.recall
+        statement: Record the learner attempt and feedback classification.
+        source_authority: policy_derived
+  - path: acceptance_contract.verification_plan
+    value:
+      deterministic_checks: []
+      model_checks:
+        - id: model.mentor-gate
+          description: Check active recall, rubric, feedback, and learner-state update coverage.
+          required: true
+      human_review: []
+  - path: acceptance_contract.control.stop_conditions
+    value:
+      - id: stop.mentor-drill
+        statement: Stop after the recall attempt, feedback, and next action are complete.
+        source_authority: interpreter_inferred
+expected_validation: pass
+expected_projection:
+  family_class: A
+  project_posture: genesis
+expected_core_projection:
+  disposition: delegate
+  family_class: A
+  project_posture: genesis
+  selected_domain: mentor
+  selected_agent: macro-placement-director
+  secondary_domains: []
+  mode: fast
+  effort: low
+  handoff_required: true

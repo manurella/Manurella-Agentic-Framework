@@ -4,6 +4,16 @@ expected_validation: pass
 expected_projection:
   family_class: D
   project_posture: null
+expected_core_projection:
+  disposition: direct
+  family_class: D
+  project_posture: null
+  selected_domain: core
+  selected_agent: manurella-orchestrator
+  secondary_domains: []
+  mode: fast
+  effort: low
+  handoff_required: false
 task_frame:
   identity:
     frame_id: tf.conversation

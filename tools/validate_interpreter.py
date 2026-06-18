@@ -89,6 +89,8 @@ def materialize_fixture(path: pathlib.Path, data: dict[str, Any]) -> dict[str, A
         "expected_validation",
         "expected_error_codes",
         "expected_projection",
+        "expected_core_projection",
+        "expected_core_error",
     ):
         if key in data:
             result[key] = copy.deepcopy(data[key])

@@ -470,13 +470,14 @@ nodes:
     type: tool
     label: Self Check
     status: active
-    summary: One-command local smoke suite for framework validation, Interpreter contracts, Kilo export dry-run, result helpers, Mentor tools, and comparison checks.
+    summary: One-command local smoke suite for framework validation, Interpreter contracts, Core routing projection, Kilo export dry-run, result helpers, Mentor tools, and comparison checks.
     owners:
       - manurella
     evidence:
       - tools/self_check.py
       - tools/README.md
       - tools/validate_interpreter.py
+      - tools/compile_core_packet.py
       - tools/create_learner_state.py
       - tools/create_mentor_packet.py
       - tools/score_mentor_output.py
@@ -675,7 +676,7 @@ nodes:
     type: eval
     label: Interpreter Contract Fixture Suite
     status: active
-    summary: Seven representative positive fixtures and four focused negative cases for schemas, semantic policy, and compatibility projection.
+    summary: Fifteen cases covering Interpreter contracts, every current Core and specialist route, directness, blocking, fail-closed domain and permission policy, and bounded handoffs.
     owners:
       - dom.core
     evidence:
@@ -686,7 +687,38 @@ nodes:
       - evals/fixtures/interpreter/correction.yaml
       - evals/fixtures/interpreter/cross-domain.yaml
       - evals/fixtures/interpreter/consequential.yaml
+      - evals/fixtures/interpreter/routing-negative/unsupported-domain.yaml
+      - evals/fixtures/interpreter/routing-negative/unblocked-permission.yaml
+      - evals/fixtures/interpreter/routing-positive/pixel.yaml
+      - evals/fixtures/interpreter/routing-positive/mentor.yaml
       - tools/validate_interpreter.py
+      - tools/compile_core_packet.py
+    updated_at: 2026-06-18
+  - id: spec.core-routing-decision-schema
+    type: spec
+    label: Core Routing Decision Schema
+    status: active
+    summary: Strict contract for direct, blocked, or delegated Core decisions and optional bounded handoff packets.
+    owners:
+      - dom.core
+    evidence:
+      - schemas/core/routing-decision.schema.json
+      - specs/core-operating-protocol.md
+      - specs/interpreter-task-model.md
+    updated_at: 2026-06-18
+  - id: tool.core-packet-compiler
+    type: tool
+    label: Core Packet Compiler
+    status: active
+    summary: Validates Interpreter bundles, selects Core or one primary specialist, and projects routing and handoff data without transcript leakage.
+    owners:
+      - dom.core
+    evidence:
+      - tools/compile_core_packet.py
+      - schemas/core/routing-decision.schema.json
+      - evals/fixtures/interpreter/quick-task.yaml
+      - evals/fixtures/interpreter/conversation.yaml
+      - tools/README.md
     updated_at: 2026-06-18
 edges:
   - id: edge.core.owns.manurella-orchestrator
@@ -1512,4 +1544,72 @@ edges:
     evidence:
       - tools/self_check.py
       - tools/validate_interpreter.py
+    updated_at: 2026-06-18
+  - id: edge.core.owns.routing-decision-schema
+    type: owns
+    source: dom.core
+    target: spec.core-routing-decision-schema
+    status: active
+    confidence: 0.9
+    weight: 0.9
+    evidence:
+      - schemas/core/routing-decision.schema.json
+      - specs/core-operating-protocol.md
+    updated_at: 2026-06-18
+  - id: edge.core-packet-compiler.uses.interpreter-validator
+    type: uses
+    source: tool.core-packet-compiler
+    target: tool.interpreter-validator
+    status: active
+    confidence: 0.9
+    weight: 0.9
+    evidence:
+      - tools/compile_core_packet.py
+      - tools/validate_interpreter.py
+    updated_at: 2026-06-18
+  - id: edge.core-packet-compiler.uses.routing-schema
+    type: uses
+    source: tool.core-packet-compiler
+    target: spec.core-routing-decision-schema
+    status: active
+    confidence: 0.9
+    weight: 0.9
+    evidence:
+      - tools/compile_core_packet.py
+      - schemas/core/routing-decision.schema.json
+    updated_at: 2026-06-18
+  - id: edge.manurella-orchestrator.uses.core-packet-compiler
+    type: uses
+    source: agt.manurella-orchestrator
+    target: tool.core-packet-compiler
+    status: active
+    confidence: 0.8
+    weight: 0.9
+    evidence:
+      - domains/core/agents/manurella-orchestrator.md
+      - tools/compile_core_packet.py
+    updated_at: 2026-06-18
+  - id: edge.interpreter-fixtures.evaluate.core-packet-compiler
+    type: evaluates
+    source: eval.interpreter-contract-fixtures
+    target: tool.core-packet-compiler
+    status: active
+    confidence: 0.8
+    weight: 0.8
+    evidence:
+      - evals/fixtures/interpreter/conversation.yaml
+      - evals/fixtures/interpreter/cross-domain.yaml
+      - evals/fixtures/interpreter/consequential.yaml
+      - tools/compile_core_packet.py
+    updated_at: 2026-06-18
+  - id: edge.self-check.uses.core-packet-compiler
+    type: uses
+    source: tool.self-check
+    target: tool.core-packet-compiler
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - tools/self_check.py
+      - tools/compile_core_packet.py
     updated_at: 2026-06-18
