@@ -34,6 +34,7 @@ Goal: lock the durable rules that every runtime and domain inherits.
 Artifacts:
 
 - `specs/kernel.md`
+- `specs/brain-cognitive-kernel.md`
 - `specs/core-operating-protocol.md`
 - `specs/agent-schema.md`
 - `specs/runtime-control.md`

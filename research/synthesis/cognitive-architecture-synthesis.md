@@ -1,5 +1,9 @@
 # Cognitive Architecture Synthesis
 
+> Historical v0 synthesis. `research/synthesis/brain-cognitive-kernel-synthesis.md`
+> supersedes its Brain boundary, mode/effort ladder, and Sentient conclusions. Retain
+> this file as provenance for the Cognitive Graph research path.
+
 ## Purpose
 
 This synthesis promotes the stable findings from the cognitive research batch into Manurella v0 direction.

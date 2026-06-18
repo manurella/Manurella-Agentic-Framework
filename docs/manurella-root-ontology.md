@@ -211,10 +211,10 @@ Not accepted without further evidence:
 
 ## Next Depth-First Branch
 
-The next active path is:
+The Brain boundary is specified in `specs/brain-cognitive-kernel.md`. The next active path is:
 
 ```text
-Manurella -> Brain and Cognitive Kernel
+Manurella -> Brain -> Interpreter -> Task Model -> Acceptance Contract
 ```
 
-The Brain branch must define request perception, context assembly, memory interaction, cognitive graph use, planning, routing, reasoning control, tools, evaluation, recovery, learning, metacognition, and transparency before lower-level implementation is locked.
+Detailed Interpreter behavior remains research-required until discussed, specified, and evaluated.
