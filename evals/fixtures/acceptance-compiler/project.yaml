@@ -1,0 +1,11 @@
+source_fixture: ../task-frame-parser/project.yaml
+expected_bundle_fields:
+  task_frame.identity.project_id: project.parser.project
+  task_frame.scope.horizon: project
+  clarification_decision.action: proceed
+  acceptance_contract.delivery.partial_completion_allowed: true
+  acceptance_contract.control.signoff_required: false
+expected_core_fields:
+  disposition: delegate
+  family_class: C
+  selected_domain: build

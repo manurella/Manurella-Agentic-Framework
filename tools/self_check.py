@@ -109,6 +109,7 @@ def main(argv: list[str]) -> int:
         [python, "tools/validate_framework.py", "--repo", "."],
         [python, "tools/partition_trusted_input.py", "--repo", ".", "--fixtures"],
         [python, "tools/parse_task_frame.py", "--repo", ".", "--fixtures"],
+        [python, "tools/compile_acceptance_contract.py", "--repo", ".", "--fixtures"],
         [python, "tools/validate_interpreter.py", "--repo", "."],
         [python, "tools/compile_core_packet.py", "--repo", ".", "--fixtures"],
         [

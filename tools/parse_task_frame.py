@@ -60,6 +60,8 @@ def infer_work_types(text: str) -> list[str]:
     found = [kind for kind, pattern in WORK_PATTERNS if pattern.search(text)]
     if not found:
         return ["answer"]
+    if "converse" in found and set(found) <= {"converse", "answer"}:
+        return ["converse"]
     return list(dict.fromkeys(found))
 
 
@@ -158,6 +160,15 @@ def compile_task_frame(envelope: dict[str, Any], partition: dict[str, Any], loca
         raw_request,
         re.I,
     ) else "turn"
+    posture = infer_posture(raw_request, work_types)
+    if horizon == "project" and posture is None:
+        clarity = "ambiguous"
+        uncertainty["missing_information"].append({
+            "id": "uncertainty.project-posture", "kind": "missing",
+            "statement": "The project posture is not explicit.",
+            "source_refs": instruction_ids, "affected_fields": ["scope.project_posture"],
+            "impact": "material", "status": "open", "resolution": None,
+        })
     autonomy = "execute" if set(work_types) & {"create", "transform"} else "advise"
     if re.search(r"\b(?:explain only|do not edit|don't edit|review only|audit only)\b", raw_request, re.I):
         autonomy = "advise"
@@ -174,13 +185,14 @@ def compile_task_frame(envelope: dict[str, Any], partition: dict[str, Any], loca
         for item_id in partition["trusted_policy_refs"] + partition["prior_confirmed_state_refs"]
     ]
     untrusted_refs = [by_id[item_id]["content_ref"] for item_id in partition["untrusted_data_refs"]]
-    lifecycle = "awaiting_clarification" if clarity == "ambiguous" else "ready"
     consequence = "critical" if destructive else ("consequential" if act else ("controlled" if set(work_types) & {"create", "transform"} else "minimal"))
+    lifecycle = "awaiting_clarification" if clarity == "ambiguous" or consequence in {"consequential", "critical"} else "ready"
 
     return {
         "identity": {
             "frame_id": frame_id, "version": 1, "parent_frame_id": None,
-            "root_frame_id": frame_id, "project_id": None,
+            "root_frame_id": frame_id,
+            "project_id": f"project.{frame_slug}" if horizon == "project" else None,
         },
         "source": {
             "raw_request": raw_request, "turn_refs": user_content_refs,
@@ -198,7 +210,7 @@ def compile_task_frame(envelope: dict[str, Any], partition: dict[str, Any], loca
         },
         "scope": {
             "horizon": horizon, "clarity": clarity,
-            "project_posture": infer_posture(raw_request, work_types),
+            "project_posture": posture,
             "artifacts": artifacts, "dependencies": [],
         },
         "constraints": {

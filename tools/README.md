@@ -46,6 +46,24 @@ The parser consumes only authenticated user-instruction content as intent. Trust
 
 This is a deterministic reference baseline and security regression oracle, not a claim of general natural-language understanding. Unknown language is preserved as user-authored intent and conservatively classified; production parsing still needs schema-constrained model output, semantic validation, and baseline-vs-guided evaluations.
 
+## Acceptance Contract Compiler
+
+Run the end-to-end acceptance fixtures:
+
+```powershell
+python tools/compile_acceptance_contract.py --repo . --fixtures
+```
+
+Compile one trusted input envelope into a complete validated Interpreter bundle:
+
+```powershell
+python tools/compile_acceptance_contract.py --repo . --input path/to/envelope.yaml --locale en-LK
+```
+
+The compiler runs trust partitioning and Task Frame parsing, derives required outcomes and artifacts, constraints, forbidden results, quality thresholds, evidence requirements, verification checks, stop/escalation conditions, signoff, and one Clarification Decision. Consequential or irreversible work requires confirmation and authenticated human signoff. Open material uncertainty produces a blocking clarification question.
+
+Every successful fixture is validated by the canonical Interpreter semantic gate and compiled through the Core routing schema. The compiler is deterministic and conservative: it does not invent domain-specific tests or claim that generic rubric language replaces specialist acceptance criteria.
+
 ## Interpreter Contract Validator
 
 Validate the Task Frame and Acceptance Contract schemas, semantic invariants, Family A-E projections, project postures, and representative fixtures:

@@ -392,6 +392,19 @@ The baseline recognizes explicit work verbs, coarse domain signals, referenced f
 
 This parser is deliberately conservative and deterministic. It establishes a runnable baseline, security invariants, and regression fixtures; it does not prove robust semantic parsing across paraphrases, languages, corrections, multiple intents, implicit constraints, deadlines, or nuanced consequence. A production parser requires schema-constrained model decoding followed by the same deterministic validation and baseline-vs-guided evals.
 
+## Acceptance Contract Compiler
+
+The deterministic Acceptance Contract and Clarification Decision compiler is implemented in:
+
+- `tools/compile_acceptance_contract.py`
+- `evals/fixtures/acceptance-compiler/`
+
+It derives required outcomes and artifacts, authenticated constraints, forbidden results, two critical quality dimensions, evidence and verification requirements, delivery format, stop conditions, escalation conditions, and signoff from a schema-valid Task Frame. Open material uncertainty compiles to `ask`; consequential or irreversible work compiles to `confirm`; executable low-risk work compiles to `proceed`.
+
+The compiler validates reference reciprocity, version alignment, lifecycle, rubric weights, freshness, permission, confirmation, and signoff through the existing Interpreter validator. Successful fixture bundles are also compiled through the Core routing schema and checked for banned transcript fields.
+
+Domain-specific acceptance logic remains a later specialist or model-backed refinement. The deterministic compiler supplies a complete safe baseline contract; it must not fabricate commands, tests, factual evidence, or subjective preferences absent from the Task Frame.
+
 ## Executable Contract Slice
 
 The first executable v0 slice is implemented in:
@@ -434,10 +447,10 @@ This slice is implemented when:
 5. Routing and handoff packets can be derived without copying the full transcript.
 6. Current Core behavior consumes the Task Frame without losing Family-level directness.
 
-Conditions 1-6 are satisfied for fixture-driven validated bundles. The trusted input envelope, deterministic trust partition, and conservative Task Frame parser baseline are implemented. Acceptance Contract compilation and model-backed parser evaluation remain open.
+Conditions 1-6 are satisfied for both hand-authored fixtures and the deterministic input-to-bundle pipeline. The trusted input envelope, trust partition, Task Frame parser baseline, Acceptance Contract compiler, Clarification Decision, semantic validation, and Core projection are implemented. Model-backed parser evaluation remains open.
 
 ## Next Depth-First Path
 
 ```text
-Interpreter -> trusted input envelope [implemented] -> trust partitioner [implemented] -> task parser baseline [implemented] -> acceptance compiler -> model-backed parser evals
+Interpreter -> trusted input envelope [implemented] -> trust partitioner [implemented] -> task parser baseline [implemented] -> acceptance compiler [implemented] -> model-backed parser evals
 ```

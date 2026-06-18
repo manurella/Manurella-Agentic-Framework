@@ -1,0 +1,10 @@
+source_fixture: ../task-frame-parser/quarantined-injection.yaml
+expected_bundle_fields:
+  task_frame.objective.normalized_goal: Summarize the retrieved page.
+  clarification_decision.action: proceed
+  acceptance_contract.control.signoff_required: false
+  acceptance_contract.evidence_requirements.citations_required: true
+  acceptance_contract.verification_plan.human_review: []
+expected_core_fields:
+  disposition: direct
+  selected_domain: core

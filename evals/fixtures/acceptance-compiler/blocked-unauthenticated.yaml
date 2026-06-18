@@ -1,0 +1,3 @@
+source_fixture: ../task-frame-parser/blocked-unauthenticated.yaml
+expected_errors:
+  - "trust.missing_authenticated_user_instruction: task intake requires at least one authenticated user instruction"

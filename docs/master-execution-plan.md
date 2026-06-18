@@ -43,6 +43,7 @@ Artifacts:
 - `schemas/core/routing-decision.schema.json`
 - `tools/partition_trusted_input.py`
 - `tools/parse_task_frame.py`
+- `tools/compile_acceptance_contract.py`
 - `tools/validate_interpreter.py`
 - `tools/compile_core_packet.py`
 - `specs/core-operating-protocol.md`
@@ -60,6 +61,7 @@ Acceptance:
 - Interpreter contracts pass structural, semantic, compatibility-projection, and negative fixture checks.
 - Interpreter input is provenance-bound and partitioned by derived authority before parsing.
 - A conservative parser baseline compiles authenticated user intent into schema-valid Task Frames and blocks unsafe authority promotion.
+- A deterministic Acceptance Contract compiler completes validated Interpreter bundles and proves they compile through Core routing.
 - Core compiles validated bundles into direct, blocked, or delegated routing decisions without transcript leakage.
 
 ### W2. Cognitive Graph

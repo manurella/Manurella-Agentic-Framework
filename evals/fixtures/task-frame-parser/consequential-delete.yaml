@@ -24,4 +24,4 @@ expected_fields:
   governance.reversibility: irreversible
   governance.permissions_required.0.status: required
   governance.confirmations_required.0.status: required
-  lifecycle.status: ready
+  lifecycle.status: awaiting_clarification

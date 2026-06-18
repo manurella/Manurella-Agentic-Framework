@@ -1,0 +1,11 @@
+source_fixture: ../task-frame-parser/conversation.yaml
+expected_bundle_fields:
+  clarification_decision.action: proceed
+  acceptance_contract.control.signoff_required: false
+  acceptance_contract.required_artifacts: []
+  acceptance_contract.delivery.final_format: conversation
+  acceptance_contract.quality_rubric.critical_dimensions: [correctness, instruction_adherence]
+expected_core_fields:
+  disposition: direct
+  family_class: D
+  selected_domain: core

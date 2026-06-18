@@ -18,7 +18,7 @@ envelope:
         digest: sha256:2000000000000000000000000000000000000000000000000000000000000000
         parent_refs: []
 expected_fields:
-  objective.work_types: [converse, answer]
+  objective.work_types: [converse]
   objective.autonomy: advise
   scope.horizon: turn
   scope.clarity: executable

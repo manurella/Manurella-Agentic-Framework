@@ -95,6 +95,7 @@ Interpreter
 -> Trust Partitioner
 -> Task Frame Parser Baseline
 -> Task Frame schema
+-> Acceptance Contract Compiler
 -> Acceptance Contract schema
 -> semantic validator
 -> Family and project-posture projection
@@ -103,7 +104,7 @@ Interpreter
 -> bounded handoff projection
 ```
 
-The trusted input boundary, deterministic partitioner, and conservative Task Frame parser baseline are implemented. Acceptance Contract compilation, model-backed parser evaluation, and runtime execution remain later connected checkpoints.
+The deterministic path from trusted input through Task Frame, Acceptance Contract, clarification, semantic validation, and Core projection is implemented. Model-backed parser evaluation and runtime execution remain later connected checkpoints.
 
 ## Experimental Frontend Slice
 

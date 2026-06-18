@@ -714,7 +714,7 @@ nodes:
     type: eval
     label: Task Frame Parser Baseline Fixtures
     status: active
-    summary: Six cases covering direct conversation, bounded edits, ambiguity, destructive action, indirect injection, and unauthenticated intake.
+    summary: Seven cases covering direct conversation, bounded edits, project framing, ambiguity, destructive action, indirect injection, and unauthenticated intake.
     owners:
       - dom.core
     evidence:
@@ -724,7 +724,37 @@ nodes:
       - evals/fixtures/task-frame-parser/consequential-delete.yaml
       - evals/fixtures/task-frame-parser/quarantined-injection.yaml
       - evals/fixtures/task-frame-parser/blocked-unauthenticated.yaml
+      - evals/fixtures/task-frame-parser/project.yaml
       - tools/parse_task_frame.py
+    updated_at: 2026-06-18
+  - id: tool.interpreter-acceptance-compiler
+    type: tool
+    label: Interpreter Acceptance Contract Compiler
+    status: active
+    summary: Deterministic compiler for complete Acceptance Contracts, Clarification Decisions, semantic validation, and Core-consumable bundles.
+    owners:
+      - dom.core
+    evidence:
+      - tools/compile_acceptance_contract.py
+      - schemas/interpreter/acceptance-contract.schema.json
+      - tools/README.md
+    updated_at: 2026-06-18
+  - id: eval.interpreter-acceptance-compiler-fixtures
+    type: eval
+    label: Acceptance Contract Compiler Fixtures
+    status: active
+    summary: Seven end-to-end cases covering proceed, clarify, confirm, project work, injection quarantine, artifact acceptance, and unauthenticated blocking through Core projection.
+    owners:
+      - dom.core
+    evidence:
+      - evals/fixtures/acceptance-compiler/quick-fix.yaml
+      - evals/fixtures/acceptance-compiler/conversation.yaml
+      - evals/fixtures/acceptance-compiler/ambiguous.yaml
+      - evals/fixtures/acceptance-compiler/consequential-delete.yaml
+      - evals/fixtures/acceptance-compiler/quarantined-injection.yaml
+      - evals/fixtures/acceptance-compiler/blocked-unauthenticated.yaml
+      - evals/fixtures/acceptance-compiler/project.yaml
+      - tools/compile_acceptance_contract.py
     updated_at: 2026-06-18
   - id: spec.interpreter-acceptance-schema
     type: spec
@@ -910,6 +940,62 @@ edges:
     evidence:
       - tools/self_check.py
       - tools/parse_task_frame.py
+    updated_at: 2026-06-18
+  - id: edge.core.owns.interpreter-acceptance-compiler
+    type: owns
+    source: dom.core
+    target: tool.interpreter-acceptance-compiler
+    status: active
+    confidence: 0.9
+    weight: 0.9
+    evidence:
+      - tools/compile_acceptance_contract.py
+      - specs/interpreter-task-model.md
+    updated_at: 2026-06-18
+  - id: edge.interpreter-acceptance-compiler.uses.task-frame-parser
+    type: uses
+    source: tool.interpreter-acceptance-compiler
+    target: tool.interpreter-task-frame-parser
+    status: active
+    confidence: 0.9
+    weight: 0.9
+    evidence:
+      - tools/compile_acceptance_contract.py
+      - tools/parse_task_frame.py
+    updated_at: 2026-06-18
+  - id: edge.interpreter-acceptance-compiler.uses.acceptance-schema
+    type: uses
+    source: tool.interpreter-acceptance-compiler
+    target: spec.interpreter-acceptance-schema
+    status: active
+    confidence: 0.9
+    weight: 0.9
+    evidence:
+      - tools/compile_acceptance_contract.py
+      - schemas/interpreter/acceptance-contract.schema.json
+    updated_at: 2026-06-18
+  - id: edge.interpreter-acceptance-fixtures.evaluate.compiler
+    type: evaluates
+    source: eval.interpreter-acceptance-compiler-fixtures
+    target: tool.interpreter-acceptance-compiler
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - evals/fixtures/acceptance-compiler/consequential-delete.yaml
+      - evals/fixtures/acceptance-compiler/quarantined-injection.yaml
+      - tools/compile_acceptance_contract.py
+    updated_at: 2026-06-18
+  - id: edge.self-check.uses.interpreter-acceptance-compiler
+    type: uses
+    source: tool.self-check
+    target: tool.interpreter-acceptance-compiler
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - tools/self_check.py
+      - tools/compile_acceptance_contract.py
     updated_at: 2026-06-18
   - id: edge.core.owns.manurella-orchestrator
     type: owns

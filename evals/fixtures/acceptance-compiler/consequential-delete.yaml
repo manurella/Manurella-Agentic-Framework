@@ -1,0 +1,13 @@
+source_fixture: ../task-frame-parser/consequential-delete.yaml
+expected_bundle_fields:
+  task_frame.lifecycle.status: awaiting_clarification
+  clarification_decision.action: confirm
+  clarification_decision.blocks_execution: true
+  acceptance_contract.control.signoff_required: true
+  acceptance_contract.quality_rubric.minimum_score: 100
+  acceptance_contract.verification_plan.human_review.0.id: human.signoff
+  acceptance_contract.verification_plan.deterministic_checks.0.id: deterministic.constraints
+  acceptance_contract.verification_plan.deterministic_checks.1.id: deterministic.permissions
+expected_core_fields:
+  disposition: confirm
+  selected_domain: core

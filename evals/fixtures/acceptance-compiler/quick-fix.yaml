@@ -1,0 +1,13 @@
+source_fixture: ../task-frame-parser/quick-fix.yaml
+expected_bundle_fields:
+  clarification_decision.action: proceed
+  clarification_decision.blocks_execution: false
+  acceptance_contract.control.signoff_required: false
+  acceptance_contract.required_artifacts.0.id: criterion.artifact-1
+  acceptance_contract.hard_checks.0.id: check.constraint-1
+  acceptance_contract.quality_rubric.minimum_score: 80
+  acceptance_contract.evidence_requirements.provenance_required: true
+expected_core_fields:
+  disposition: delegate
+  family_class: A
+  selected_domain: build
