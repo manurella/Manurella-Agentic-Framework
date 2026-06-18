@@ -819,6 +819,60 @@ nodes:
       - evals/fixtures/parser-benchmark/destructive-euphemism.yaml
       - tools/evaluate_task_frame_parser.py
     updated_at: 2026-06-18
+  - id: eval.interpreter-parser-free-model-comparison-v0
+    type: eval
+    label: Interpreter Parser Free-Model Comparison V0
+    status: active
+    summary: StepFun and Nex both achieved 37/37 critical fields and 2/2 safety cases, but failed semantic or Core-routing promotion gates; Nemotron ended in an upstream idle timeout, and the first StepFun v1 retry failed YAML parsing. StepFun remains the leading unpromoted candidate.
+    owners:
+      - dom.core
+    evidence:
+      - evals/results/parser-free-model-comparison-v0.md
+      - evals/results/kilo-20260618-203451.parser-eval.yaml
+      - evals/results/kilo-parser-benchmark-20260618t200845-0530.parser-eval.yaml
+      - evals/results/parser-nemotron-super-v0.runtime-failure.md
+      - evals/results/parser-stepfun-v1.format-failure.md
+      - evals/prompts/interpreter-parser-benchmark.md
+    updated_at: 2026-06-18
+  - id: eval.interpreter-parser-stepfun-v2
+    type: eval
+    label: Interpreter Parser StepFun V2
+    status: active
+    summary: First individually qualified external parser run with 100 percent schema, semantic, routing, and safety validity and 36/37 critical fields; its independent repeat failed semantic and routing gates.
+    owners:
+      - dom.core
+    evidence:
+      - evals/results/parser-stepfun-v2.parser-candidate.yaml
+      - evals/results/parser-stepfun-v2.parser-eval.yaml
+      - evals/results/parser-free-model-comparison-v0.md
+      - evals/results/parser-stepfun-v2-repeat-1.parser-eval.yaml
+      - evals/results/parser-stepfun-v2-promotion.parser-promotion.yaml
+      - evals/prompts/interpreter-parser-benchmark.md
+    updated_at: 2026-06-18
+  - id: spec.parser-promotion-result-schema
+    type: spec
+    label: Parser Repeated-Run Promotion Schema
+    status: active
+    summary: Machine-readable contract for model and prompt identity, required independent runs, stability minima, and repeated-run promotion status.
+    owners:
+      - dom.core
+    evidence:
+      - schemas/evals/parser-promotion-result.schema.json
+      - tools/evaluate_parser_promotion.py
+    updated_at: 2026-06-19
+  - id: tool.interpreter-parser-promotion-evaluator
+    type: tool
+    label: Interpreter Parser Promotion Evaluator
+    status: active
+    summary: Deterministic aggregator that requires multiple independent parser eval passes for the exact same model and prompt before production promotion.
+    owners:
+      - dom.core
+    evidence:
+      - tools/evaluate_parser_promotion.py
+      - schemas/evals/parser-promotion-result.schema.json
+      - evals/results/parser-stepfun-v2-promotion.parser-promotion.yaml
+      - tools/README.md
+    updated_at: 2026-06-19
   - id: spec.interpreter-acceptance-schema
     type: spec
     label: Acceptance Contract Schema
@@ -1138,6 +1192,62 @@ edges:
       - evals/results/parser-rule-baseline-v0.parser-eval.yaml
       - tools/parse_task_frame.py
     updated_at: 2026-06-18
+  - id: edge.interpreter-parser-free-model-comparison.evaluates.parser-evaluator
+    type: evaluates
+    source: eval.interpreter-parser-free-model-comparison-v0
+    target: tool.interpreter-parser-evaluator
+    status: active
+    confidence: 0.9
+    weight: 0.9
+    evidence:
+      - evals/results/parser-free-model-comparison-v0.md
+      - evals/results/kilo-20260618-203451.parser-eval.yaml
+      - evals/results/kilo-parser-benchmark-20260618t200845-0530.parser-eval.yaml
+    updated_at: 2026-06-18
+  - id: edge.interpreter-parser-stepfun-v2.evaluates.parser-evaluator
+    type: evaluates
+    source: eval.interpreter-parser-stepfun-v2
+    target: tool.interpreter-parser-evaluator
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - evals/results/parser-stepfun-v2.parser-eval.yaml
+      - tools/evaluate_task_frame_parser.py
+    updated_at: 2026-06-18
+  - id: edge.core.owns.interpreter-parser-promotion-evaluator
+    type: owns
+    source: dom.core
+    target: tool.interpreter-parser-promotion-evaluator
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/evaluate_parser_promotion.py
+      - specs/promotion-gates.md
+    updated_at: 2026-06-19
+  - id: edge.interpreter-parser-promotion-evaluator.uses.promotion-schema
+    type: uses
+    source: tool.interpreter-parser-promotion-evaluator
+    target: spec.parser-promotion-result-schema
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/evaluate_parser_promotion.py
+      - schemas/evals/parser-promotion-result.schema.json
+    updated_at: 2026-06-19
+  - id: edge.self-check.uses.interpreter-parser-promotion-evaluator
+    type: uses
+    source: tool.self-check
+    target: tool.interpreter-parser-promotion-evaluator
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - tools/self_check.py
+      - tools/evaluate_parser_promotion.py
+    updated_at: 2026-06-19
   - id: edge.core.owns.manurella-orchestrator
     type: owns
     source: dom.core

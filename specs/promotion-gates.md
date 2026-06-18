@@ -148,6 +148,14 @@ Optional baseline-vs-guided comparison:
 python tools/compare_results.py --baseline evals/results/baseline-example.md --guided evals/results/guided-example.md --threshold 0.5
 ```
 
+Parser model promotion requires repeated independent wins:
+
+```powershell
+python tools/evaluate_parser_promotion.py --repo . --promotion-id parser-model-promotion --eval evals/results/parser-run-1.parser-eval.yaml --eval evals/results/parser-run-2.parser-eval.yaml
+```
+
+Every supplied run must use the same exact model and prompt version and must pass its individual schema, semantic, Core-routing, safety, and accuracy gates. A single failed repeat blocks production promotion.
+
 ## Stop Rule
 
 If an artifact cannot pass its promotion gate, do not rename it as accepted. Keep it draft or research_candidate, record the failure, and add the smallest next packet needed to gather evidence.

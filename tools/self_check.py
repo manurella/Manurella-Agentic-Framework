@@ -111,6 +111,7 @@ def main(argv: list[str]) -> int:
         [python, "tools/parse_task_frame.py", "--repo", ".", "--fixtures"],
         [python, "tools/compile_acceptance_contract.py", "--repo", ".", "--fixtures"],
         [python, "tools/evaluate_task_frame_parser.py", "--repo", ".", "--self-test"],
+        [python, "tools/evaluate_parser_promotion.py", "--repo", ".", "--self-test"],
         [python, "tools/validate_interpreter.py", "--repo", "."],
         [python, "tools/compile_core_packet.py", "--repo", ".", "--fixtures"],
         [

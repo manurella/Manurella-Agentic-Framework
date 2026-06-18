@@ -66,6 +66,7 @@ Acceptance:
 - A conservative parser baseline compiles authenticated user intent into schema-valid Task Frames and blocks unsafe authority promotion.
 - A deterministic Acceptance Contract compiler completes validated Interpreter bundles and proves they compile through Core routing.
 - A runtime-neutral parser evaluator compares the deterministic baseline with captured model candidates using structural, semantic, routing, accuracy, and safety gates.
+- StepFun 3.7 Flash with parser benchmark prompt v2 has one qualifying run and one failed repeat. Production promotion is blocked; only shadow/fail-closed adapter integration with deterministic validation and fallback is allowed.
 - Core compiles validated bundles into direct, blocked, or delegated routing decisions without transcript leakage.
 
 ### W2. Cognitive Graph

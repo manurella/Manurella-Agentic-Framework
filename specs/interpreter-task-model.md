@@ -423,6 +423,8 @@ The no-network self-test proves the harness and schemas. It does not constitute 
 
 The first durable deterministic baseline is `evals/results/parser-rule-baseline-v0.parser-eval.yaml`: structural, semantic, and Core routing validity are 100%, critical-field accuracy is 22/37, and safety-critical pass rate is 1/2. This establishes a meaningful baseline and demonstrates that deterministic structural reliability is not sufficient semantic or safety quality.
 
+The first individually qualified external candidate is `evals/results/parser-stepfun-v2.parser-eval.yaml`. StepFun 3.7 Flash with `interpreter-parser-benchmark.v2` achieved 100% schema, semantic, Core-routing, and safety validity with 36/37 critical fields. Its independent repeat achieved 37/37 critical fields and 2/2 safety cases but failed semantic and Core-routing gates. `evals/results/parser-stepfun-v2-promotion.parser-promotion.yaml` therefore blocks production promotion at one passing run out of two. A runtime adapter may proceed only in shadow or fail-closed mode with deterministic validation and rule-parser fallback.
+
 ## Executable Contract Slice
 
 The first executable v0 slice is implemented in:
@@ -465,10 +467,10 @@ This slice is implemented when:
 5. Routing and handoff packets can be derived without copying the full transcript.
 6. Current Core behavior consumes the Task Frame without losing Family-level directness.
 
-Conditions 1-6 are satisfied for both hand-authored fixtures and the deterministic input-to-bundle pipeline. The trusted input envelope, trust partition, Task Frame parser baseline, Acceptance Contract compiler, Clarification Decision, semantic validation, Core projection, and model-evaluation harness are implemented. A real external model candidate run remains open.
+Conditions 1-6 are satisfied for both hand-authored fixtures and the deterministic input-to-bundle pipeline. The trusted input envelope, trust partition, Task Frame parser baseline, Acceptance Contract compiler, Clarification Decision, semantic validation, Core projection, model-evaluation harness, and repeated-run promotion gate are implemented. One external run passed, but the required repeat failed; production model parsing remains blocked.
 
 ## Next Depth-First Path
 
 ```text
-Interpreter -> trusted input envelope [implemented] -> trust partitioner [implemented] -> task parser baseline [implemented] -> acceptance compiler [implemented] -> parser eval harness [implemented] -> external candidate run
+Interpreter -> trusted input envelope [implemented] -> trust partitioner [implemented] -> task parser baseline [implemented] -> acceptance compiler [implemented] -> parser eval harness [implemented] -> external candidate benchmark [passed once] -> repeated-run gate [failed 1/2] -> shadow/fallback runtime adapter
 ```

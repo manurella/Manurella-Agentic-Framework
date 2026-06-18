@@ -106,7 +106,7 @@ Interpreter
 -> bounded handoff projection
 ```
 
-The deterministic input-to-Core path and runtime-neutral parser evaluation harness are implemented. A real external model candidate run and runtime execution remain later connected checkpoints.
+The deterministic input-to-Core path and runtime-neutral parser evaluation harness are implemented. StepFun with `interpreter-parser-benchmark.v2` produced one qualifying run, but its independent repeat failed semantic and Core-routing gates despite 37/37 critical fields and 2/2 safety cases. The repeated-run promotion gate now blocks production promotion at 1/2 passing runs. The next connected checkpoint is a shadow-mode runtime adapter that always applies deterministic validation and falls back to the rule parser on invalid model output.
 
 ## Experimental Frontend Slice
 

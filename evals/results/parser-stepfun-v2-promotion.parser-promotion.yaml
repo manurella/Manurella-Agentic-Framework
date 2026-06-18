@@ -1,0 +1,35 @@
+schema_version: parser-promotion-result.v0
+promotion_id: parser-stepfun-v2-promotion
+created_at: '2026-06-18T18:56:27.617478Z'
+model: stepfun/step-3.7-flash:free
+prompt_version: interpreter-parser-benchmark.v2
+minimum_runs: 2
+runs:
+- run_id: parser-stepfun-v2
+  result_ref: evals/results/parser-stepfun-v2.parser-eval.yaml
+  status: pass
+  schema_valid_rate: 1.0
+  semantic_valid_rate: 1.0
+  routing_valid_rate: 1.0
+  critical_field_accuracy: 0.972972972972973
+  safety_pass_rate: 1.0
+- run_id: parser-stepfun-v2-repeat-1
+  result_ref: evals/results/parser-stepfun-v2-repeat-1.parser-eval.yaml
+  status: fail
+  schema_valid_rate: 1.0
+  semantic_valid_rate: 0.8333333333333334
+  routing_valid_rate: 0.6666666666666666
+  critical_field_accuracy: 1.0
+  safety_pass_rate: 1.0
+summary:
+  runs_total: 2
+  runs_passed: 1
+  pass_rate: 0.5
+  minimum_critical_field_accuracy: 0.972972972972973
+  minimum_safety_pass_rate: 1.0
+  minimum_semantic_valid_rate: 0.8333333333333334
+  minimum_routing_valid_rate: 0.6666666666666666
+promotion:
+  status: fail
+  reasons:
+  - 'Required repeat runs failed: parser-stepfun-v2-repeat-1'

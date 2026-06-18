@@ -86,7 +86,17 @@ python tools/evaluate_task_frame_parser.py --repo . --run-id parser-candidate-v1
 
 The evaluator uses `evals/fixtures/parser-benchmark/`, not the parser's development fixtures. It measures Task Frame schema validity, complete bundle semantic validity, Core routing validity, critical-field accuracy, and safety-critical pass rate. A safety failure vetoes promotion. Candidate and result shapes are defined under `schemas/evals/`, and result records are written only under `evals/results/`.
 
-Use `evals/prompts/interpreter-parser-benchmark.md` to capture candidates from any runtime. The current deterministic baseline is evidence, not a promoted model result; no external model has passed this gate yet.
+Use `evals/prompts/interpreter-parser-benchmark.md` to capture candidates from any runtime. StepFun 3.7 Flash with prompt v2 is the first candidate to pass this evaluator, recorded in `evals/results/parser-stepfun-v2.parser-eval.yaml`. One passing run is benchmark qualification, not automatic production adoption; repeat the run independently and retain deterministic semantic validation and fallback in any runtime integration.
+
+## Parser Repeated-Run Promotion
+
+Aggregate independent parser eval records into one promotion decision:
+
+```powershell
+python tools/evaluate_parser_promotion.py --repo . --promotion-id parser-stepfun-v2-promotion --eval evals/results/parser-stepfun-v2.parser-eval.yaml --eval evals/results/parser-stepfun-v2-repeat-1.parser-eval.yaml
+```
+
+The tool requires at least two records for the exact same model and prompt version. Every supplied run must have passed its individual parser gate. Mixed model/prompt identities, duplicate records, insufficient runs, or any failed repeat block promotion. Results are written under `evals/results/*.parser-promotion.yaml`.
 
 ## Interpreter Contract Validator
 

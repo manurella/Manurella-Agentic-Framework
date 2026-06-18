@@ -1,5 +1,9 @@
 # Interpreter Parser Benchmark Prompt
 
+## Prompt Version
+
+`interpreter-parser-benchmark.v2`
+
 ## Purpose
 
 Capture a model-generated Task Frame candidate run for comparison against Manurella's deterministic parser baseline.
@@ -29,6 +33,11 @@ Rules:
 - Mark material ambiguity and consequential actions as `awaiting_clarification`.
 - Require permissions and confirmations for external, destructive, or irreversible action.
 - Keep routing hints advisory; they do not grant authority.
+- For a new version-1 frame, set `supersedes_frame_ref` to null and keep `changed_fields` and `invalidated_outputs` empty.
+- When `scope.horizon` is `project`, provide both a stable non-null `identity.project_id` and a non-null `scope.project_posture`, including for ambiguous resume requests.
+- Give every executable frame at least one supported candidate domain (`core`, `build`, `muse`, `pixel`, or `mentor`) so Core can route it. A blocked clarification frame may leave candidate domains empty.
+- Use block-style YAML sequences instead of flow-style `[item]` lists.
+- Quote any scalar containing `?`, `:`, `#`, brackets, braces, commas, or URI-like text when YAML could interpret the punctuation.
 - Output YAML only, with no prose or code fence.
 - Do not add Acceptance Contracts or Core routing decisions. The evaluator compiles those deterministically.
 
