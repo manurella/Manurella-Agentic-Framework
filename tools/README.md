@@ -10,7 +10,23 @@ Run the full local framework smoke suite:
 python tools/self_check.py --repo .
 ```
 
-It runs the framework validator, Kilo exporter dry-run, result-record helper smoke, Mentor packet helper smoke, Mentor output scorer smoke, Mentor run recorder smoke, comparator smoke, and removes its temporary smoke records.
+It runs the framework validator, Interpreter contract fixture suite, Kilo exporter dry-run, result-record helper smoke, Mentor packet helper smoke, Mentor output scorer smoke, Mentor run recorder smoke, comparator smoke, and removes its temporary smoke records.
+
+## Interpreter Contract Validator
+
+Validate the Task Frame and Acceptance Contract schemas, semantic invariants, Family A-E projections, project postures, and representative fixtures:
+
+```powershell
+python tools/validate_interpreter.py --repo .
+```
+
+Validate one Interpreter bundle directly:
+
+```powershell
+python tools/validate_interpreter.py --repo . --input evals/fixtures/interpreter/quick-task.yaml
+```
+
+The validator checks the versioned JSON Schemas under `schemas/interpreter/`, then applies invariants that JSON Schema alone cannot express: reference reciprocity, revision lineage, project context, uncertainty state, clarification blocking, audit non-mutation, consequential confirmation, permission records, freshness, and critical rubric references. It also derives the legacy Family A-E label and project posture for adapter compatibility.
 
 ## Framework Validator
 

@@ -36,6 +36,9 @@ Artifacts:
 - `specs/kernel.md`
 - `specs/brain-cognitive-kernel.md`
 - `specs/interpreter-task-model.md`
+- `schemas/interpreter/task-frame.schema.json`
+- `schemas/interpreter/acceptance-contract.schema.json`
+- `tools/validate_interpreter.py`
 - `specs/core-operating-protocol.md`
 - `specs/agent-schema.md`
 - `specs/runtime-control.md`
@@ -48,6 +51,7 @@ Acceptance:
 - The main orchestrator uses Family-level task classification, handoff packets, quality review, and recovery rules.
 - Fast Mode and Standard Mode are explicit workflow envelopes.
 - Effort levels are reasoning-depth policies, not vague quality labels.
+- Interpreter contracts pass structural, semantic, compatibility-projection, and negative fixture checks.
 
 ### W2. Cognitive Graph
 

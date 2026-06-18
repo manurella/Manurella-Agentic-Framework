@@ -1,5 +1,5 @@
 version: 0
-updated_at: 2026-06-16
+updated_at: 2026-06-18
 status: draft
 nodes:
   - id: dom.core
@@ -470,18 +470,19 @@ nodes:
     type: tool
     label: Self Check
     status: active
-    summary: One-command local smoke suite for framework validation, Kilo export dry-run, result helper, Mentor learner-state helper, Mentor packet helper, Mentor output scorer, Mentor run recorder, and comparator.
+    summary: One-command local smoke suite for framework validation, Interpreter contracts, Kilo export dry-run, result helpers, Mentor tools, and comparison checks.
     owners:
       - manurella
     evidence:
       - tools/self_check.py
       - tools/README.md
+      - tools/validate_interpreter.py
       - tools/create_learner_state.py
       - tools/create_mentor_packet.py
       - tools/score_mentor_output.py
       - tools/record_mentor_run.py
       - specs/promotion-gates.md
-    updated_at: 2026-06-17
+    updated_at: 2026-06-18
   - id: doc.kilo-test-runbook
     type: runbook
     label: Kilo Test Runbook
@@ -624,6 +625,69 @@ nodes:
       - evals/results/frontend-a11y-visual-qa-kilo-mixed-run.md
       - evals/results/build-kilo-smoke.md
     updated_at: 2026-06-17
+  - id: spec.interpreter-task-model
+    type: spec
+    label: Interpreter And Task Model
+    status: active
+    summary: Trust-aware compiler boundary for versioned Task Frames, Acceptance Contracts, clarification, routing hints, and provenance.
+    owners:
+      - dom.core
+    evidence:
+      - specs/interpreter-task-model.md
+      - research/synthesis/interpreter-task-model-synthesis.md
+    updated_at: 2026-06-18
+  - id: spec.interpreter-task-frame-schema
+    type: spec
+    label: Task Frame Schema
+    status: active
+    summary: Strict JSON Schema for the portable versioned Task Frame contract.
+    owners:
+      - dom.core
+    evidence:
+      - schemas/interpreter/task-frame.schema.json
+      - specs/interpreter-task-model.md
+    updated_at: 2026-06-18
+  - id: spec.interpreter-acceptance-schema
+    type: spec
+    label: Acceptance Contract Schema
+    status: active
+    summary: Strict JSON Schema for task outcomes, quality, evidence, verification, delivery, and control conditions.
+    owners:
+      - dom.core
+    evidence:
+      - schemas/interpreter/acceptance-contract.schema.json
+      - specs/interpreter-task-model.md
+    updated_at: 2026-06-18
+  - id: tool.interpreter-validator
+    type: tool
+    label: Interpreter Contract Validator
+    status: active
+    summary: Deterministic structural and semantic validator with Family A-E and project-posture compatibility projection.
+    owners:
+      - dom.core
+    evidence:
+      - tools/validate_interpreter.py
+      - schemas/interpreter/task-frame.schema.json
+      - schemas/interpreter/acceptance-contract.schema.json
+      - tools/README.md
+    updated_at: 2026-06-18
+  - id: eval.interpreter-contract-fixtures
+    type: eval
+    label: Interpreter Contract Fixture Suite
+    status: active
+    summary: Seven representative positive fixtures and four focused negative cases for schemas, semantic policy, and compatibility projection.
+    owners:
+      - dom.core
+    evidence:
+      - evals/fixtures/interpreter/conversation.yaml
+      - evals/fixtures/interpreter/quick-task.yaml
+      - evals/fixtures/interpreter/project.yaml
+      - evals/fixtures/interpreter/ambiguous.yaml
+      - evals/fixtures/interpreter/correction.yaml
+      - evals/fixtures/interpreter/cross-domain.yaml
+      - evals/fixtures/interpreter/consequential.yaml
+      - tools/validate_interpreter.py
+    updated_at: 2026-06-18
 edges:
   - id: edge.core.owns.manurella-orchestrator
     type: owns
@@ -1360,3 +1424,92 @@ edges:
       - tools/self_check.py
       - tools/record_mentor_run.py
     updated_at: 2026-06-17
+  - id: edge.core.owns.interpreter-task-model
+    type: owns
+    source: dom.core
+    target: spec.interpreter-task-model
+    status: active
+    confidence: 0.9
+    weight: 0.9
+    evidence:
+      - specs/interpreter-task-model.md
+      - domains/core/agents/manurella-orchestrator.md
+    updated_at: 2026-06-18
+  - id: edge.interpreter.uses.task-frame-schema
+    type: uses
+    source: spec.interpreter-task-model
+    target: spec.interpreter-task-frame-schema
+    status: active
+    confidence: 0.9
+    weight: 0.9
+    evidence:
+      - specs/interpreter-task-model.md
+      - schemas/interpreter/task-frame.schema.json
+    updated_at: 2026-06-18
+  - id: edge.interpreter.uses.acceptance-schema
+    type: uses
+    source: spec.interpreter-task-model
+    target: spec.interpreter-acceptance-schema
+    status: active
+    confidence: 0.9
+    weight: 0.9
+    evidence:
+      - specs/interpreter-task-model.md
+      - schemas/interpreter/acceptance-contract.schema.json
+    updated_at: 2026-06-18
+  - id: edge.interpreter-validator.uses.task-frame-schema
+    type: uses
+    source: tool.interpreter-validator
+    target: spec.interpreter-task-frame-schema
+    status: active
+    confidence: 0.9
+    weight: 0.9
+    evidence:
+      - tools/validate_interpreter.py
+      - schemas/interpreter/task-frame.schema.json
+    updated_at: 2026-06-18
+  - id: edge.interpreter-validator.uses.acceptance-schema
+    type: uses
+    source: tool.interpreter-validator
+    target: spec.interpreter-acceptance-schema
+    status: active
+    confidence: 0.9
+    weight: 0.9
+    evidence:
+      - tools/validate_interpreter.py
+      - schemas/interpreter/acceptance-contract.schema.json
+    updated_at: 2026-06-18
+  - id: edge.interpreter-fixtures.evaluate.validator
+    type: evaluates
+    source: eval.interpreter-contract-fixtures
+    target: tool.interpreter-validator
+    status: active
+    confidence: 0.8
+    weight: 0.8
+    evidence:
+      - evals/fixtures/interpreter/conversation.yaml
+      - evals/fixtures/interpreter/negative/audit-mutation.yaml
+      - tools/validate_interpreter.py
+    updated_at: 2026-06-18
+  - id: edge.interpreter-validator.evaluated-by.fixtures
+    type: evaluated_by
+    source: tool.interpreter-validator
+    target: eval.interpreter-contract-fixtures
+    status: active
+    confidence: 0.8
+    weight: 0.8
+    evidence:
+      - tools/validate_interpreter.py
+      - evals/fixtures/interpreter/quick-task.yaml
+    updated_at: 2026-06-18
+  - id: edge.self-check.uses.interpreter-validator
+    type: uses
+    source: tool.self-check
+    target: tool.interpreter-validator
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - tools/self_check.py
+      - tools/validate_interpreter.py
+    updated_at: 2026-06-18

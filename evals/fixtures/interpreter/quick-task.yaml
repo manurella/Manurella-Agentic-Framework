@@ -1,0 +1,159 @@
+fixture_id: interpreter.quick-task
+scenario: One bounded documentation fix on an existing artifact.
+expected_validation: pass
+expected_projection:
+  family_class: A
+  project_posture: sprint
+task_frame:
+  identity:
+    frame_id: tf.quick-readme
+    version: 1
+    parent_frame_id: null
+    root_frame_id: tf.quick-readme
+    project_id: project.manurella
+  source:
+    raw_request: Fix the outdated validator command in the README.
+    turn_refs: [turn.2]
+    trusted_context_refs: [README.md]
+    untrusted_data_refs: []
+    timestamp: "2026-06-18T09:05:00Z"
+    locale: en-LK
+  objective:
+    normalized_goal: Correct the validator command in README.md.
+    work_types: [transform]
+    desired_outcomes:
+      - id: outcome.correct-command
+        statement: README.md contains the current framework validation command.
+        kind: artifact
+        priority: required
+        source_authority: user_asserted
+    autonomy: execute
+  scope:
+    horizon: turn
+    clarity: executable
+    project_posture: sprint
+    artifacts:
+      - id: artifact.readme
+        kind: markdown
+        description: Repository README documentation.
+        required: true
+    dependencies: []
+  constraints:
+    hard:
+      - id: constraint.only-command
+        statement: Change only the outdated command and directly related wording.
+        source_authority: interpreter_inferred
+    soft: []
+    exclusions: []
+    deadline: null
+    freshness: current
+  uncertainty:
+    ambiguities: []
+    assumptions: []
+    missing_information: []
+    contradictions: []
+  governance:
+    consequence: controlled
+    reversibility: reversible
+    data_classification: internal
+    permissions_required: []
+    confirmations_required: []
+    policy_flags: []
+  execution_preferences:
+    requested_mode: fast
+    requested_effort: low
+    latency_preference: immediate bounded edit
+    cost_preference: null
+  acceptance_contract_ref: ac.quick-readme@1
+  routing_hints:
+    candidate_domains: [build]
+    required_capabilities: [documentation_edit, command_verification]
+    likely_tools: [filesystem, shell]
+    memory_requirements: []
+    unresolved_routing_questions: []
+  provenance:
+    interpreter_version: 0.1.0
+    created_at: "2026-06-18T09:05:01Z"
+    entries:
+      - field_path: source.raw_request
+        authority: immutable_source
+        source_refs: [turn.2]
+      - field_path: objective.normalized_goal
+        authority: interpreter_inferred
+        source_refs: [turn.2, README.md]
+      - field_path: scope.project_posture
+        authority: interpreter_inferred
+        source_refs: [README.md]
+    supersedes_frame_ref: null
+    changed_fields: []
+    invalidated_outputs: []
+  lifecycle:
+    status: ready
+    updated_at: "2026-06-18T09:05:01Z"
+acceptance_contract:
+  contract_id: ac.quick-readme
+  version: 1
+  task_frame_ref: tf.quick-readme@1
+  required_outcomes:
+    - id: criterion.current-command
+      statement: The documented command matches the repository validator entrypoint.
+      source_authority: interpreter_inferred
+  required_artifacts:
+    - id: criterion.readme-updated
+      statement: README.md contains the corrected command.
+      source_authority: user_asserted
+  hard_checks:
+    - id: check.validator-help
+      statement: The documented command invokes a real local script successfully.
+      source_authority: interpreter_inferred
+  forbidden_results:
+    - id: forbidden.unrelated-edit
+      statement: No unrelated documentation is changed.
+      source_authority: policy_derived
+  quality_rubric:
+    dimensions:
+      - id: correctness
+        description: The command and surrounding instruction are correct.
+        weight: 1.0
+        minimum_score: 100
+        critical: true
+        evaluator: build-verifier
+        evidence: [tools/validate_framework.py]
+    minimum_score: 100
+    critical_dimensions: [correctness]
+  evidence_requirements:
+    freshness: current
+    citations_required: false
+    provenance_required: true
+    required_evidence:
+      - id: evidence.command
+        statement: Record the validation command result.
+        source_authority: interpreter_inferred
+  verification_plan:
+    deterministic_checks:
+      - id: deterministic.validator-command
+        description: Run the documented validator command.
+        required: true
+    model_checks: []
+    human_review: []
+  delivery:
+    partial_completion_allowed: false
+    checkpoint_requirements: []
+    final_format: repository edit and concise verification summary
+  control:
+    stop_conditions:
+      - id: stop.verified-edit
+        statement: Stop after the narrow edit and validator check pass.
+        source_authority: interpreter_inferred
+    escalation_conditions:
+      - id: escalate.command-invalid
+        statement: Escalate if the repository has no matching validator entrypoint.
+        source_authority: interpreter_inferred
+    signoff_required: false
+clarification_decision:
+  action: proceed
+  reasons: [The target file, defect, and verification path are explicit.]
+  affected_uncertainty_ids: []
+  question: null
+  options: []
+  blocks_execution: false

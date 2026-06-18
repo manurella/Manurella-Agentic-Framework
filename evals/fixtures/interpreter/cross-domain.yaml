@@ -1,0 +1,193 @@
+fixture_id: interpreter.cross-domain
+scenario: One bounded outcome requires coordinated Build and Pixel artifacts.
+expected_validation: pass
+expected_projection:
+  family_class: B
+  project_posture: sprint
+task_frame:
+  identity:
+    frame_id: tf.cross-domain-launch
+    version: 1
+    parent_frame_id: null
+    root_frame_id: tf.cross-domain-launch
+    project_id: project.product-launch
+  source:
+    raw_request: Add the launch hero to the app and create the matching visual prompt.
+    turn_refs: [turn.7]
+    trusted_context_refs: [artifact.application, artifact.brand-brief]
+    untrusted_data_refs: []
+    timestamp: "2026-06-18T09:25:00Z"
+    locale: en-LK
+  objective:
+    normalized_goal: Deliver a working launch hero and a matching visual-generation prompt.
+    work_types: [create, transform]
+    desired_outcomes:
+      - id: outcome.hero-ui
+        statement: The application contains the launch hero.
+        kind: artifact
+        priority: required
+        source_authority: user_asserted
+      - id: outcome.hero-visual
+        statement: A visual prompt matches the hero's brand and composition intent.
+        kind: artifact
+        priority: required
+        source_authority: user_asserted
+    autonomy: execute
+  scope:
+    horizon: session
+    clarity: executable
+    project_posture: sprint
+    artifacts:
+      - id: artifact.hero-component
+        kind: code
+        description: Implemented application hero component.
+        required: true
+      - id: artifact.hero-visual-prompt
+        kind: image-prompt
+        description: Matching visual-generation prompt with constraints.
+        required: true
+    dependencies:
+      - ref: artifact.brand-brief
+        kind: artifact
+        relationship: constrains both child artifacts
+  constraints:
+    hard:
+      - id: constraint.brand-consistency
+        statement: Both artifacts must follow the trusted brand brief.
+        source_authority: user_asserted
+    soft: []
+    exclusions: []
+    deadline: null
+    freshness: current
+  uncertainty:
+    ambiguities: []
+    assumptions: []
+    missing_information: []
+    contradictions: []
+  governance:
+    consequence: controlled
+    reversibility: reversible
+    data_classification: internal
+    permissions_required: []
+    confirmations_required: []
+    policy_flags: []
+  execution_preferences:
+    requested_mode: standard
+    requested_effort: high
+    latency_preference: show the first working hero before polish
+    cost_preference: null
+  acceptance_contract_ref: ac.cross-domain-launch@1
+  routing_hints:
+    candidate_domains: [build, pixel]
+    required_capabilities: [frontend_implementation, art_direction, prompt_compilation]
+    likely_tools: [filesystem, shell, browser]
+    memory_requirements: [brand_continuity]
+    unresolved_routing_questions: []
+  provenance:
+    interpreter_version: 0.1.0
+    created_at: "2026-06-18T09:25:01Z"
+    entries:
+      - field_path: source.raw_request
+        authority: immutable_source
+        source_refs: [turn.7]
+      - field_path: objective.normalized_goal
+        authority: interpreter_inferred
+        source_refs: [turn.7, artifact.brand-brief]
+      - field_path: constraints.hard
+        authority: user_asserted
+        source_refs: [turn.7, artifact.brand-brief]
+    supersedes_frame_ref: null
+    changed_fields: []
+    invalidated_outputs: []
+  lifecycle:
+    status: ready
+    updated_at: "2026-06-18T09:25:01Z"
+acceptance_contract:
+  contract_id: ac.cross-domain-launch
+  version: 1
+  task_frame_ref: tf.cross-domain-launch@1
+  required_outcomes:
+    - id: criterion.working-hero
+      statement: The launch hero works in the application.
+      source_authority: user_asserted
+    - id: criterion.matching-prompt
+      statement: The visual prompt expresses the same brand and composition intent.
+      source_authority: user_asserted
+  required_artifacts:
+    - id: criterion.hero-artifacts
+      statement: Deliver both the code component and visual prompt.
+      source_authority: interpreter_inferred
+  hard_checks:
+    - id: check.cross-artifact-consistency
+      statement: Shared brand constraints are satisfied by both artifacts.
+      source_authority: policy_derived
+  forbidden_results:
+    - id: forbidden.disconnected-artifacts
+      statement: Do not accept independently good artifacts that conflict with each other.
+      source_authority: policy_derived
+  quality_rubric:
+    dimensions:
+      - id: implementation
+        description: The hero is functional, accessible, and verified.
+        weight: 0.5
+        minimum_score: 80
+        critical: true
+        evaluator: build-quality-gate
+        evidence: [artifact.application]
+      - id: visual-continuity
+        description: The prompt preserves the shared subject, composition, and brand constraints.
+        weight: 0.5
+        minimum_score: 80
+        critical: true
+        evaluator: pixel-audit-judge
+        evidence: [artifact.brand-brief]
+    minimum_score: 80
+    critical_dimensions: [implementation, visual-continuity]
+  evidence_requirements:
+    freshness: current
+    citations_required: false
+    provenance_required: true
+    required_evidence:
+      - id: evidence.ui-check
+        statement: Record build and browser verification for the hero.
+        source_authority: interpreter_inferred
+      - id: evidence.prompt-check
+        statement: Record the Pixel continuity review.
+        source_authority: interpreter_inferred
+  verification_plan:
+    deterministic_checks:
+      - id: deterministic.application
+        description: Run the relevant application tests and build.
+        required: true
+    model_checks:
+      - id: model.visual-continuity
+        description: Evaluate the prompt against the brand brief.
+        required: true
+    human_review:
+      - id: human.cross-artifact
+        description: Inspect the hero and prompt together at the checkpoint.
+        required: true
+  delivery:
+    partial_completion_allowed: true
+    checkpoint_requirements:
+      - id: checkpoint.working-hero
+        statement: Present the working hero before final prompt polish.
+        source_authority: user_asserted
+    final_format: code changes, visual prompt, and verification summary
+  control:
+    stop_conditions:
+      - id: stop.both-verified
+        statement: Stop when both artifacts and their consistency check pass.
+        source_authority: interpreter_inferred
+    escalation_conditions:
+      - id: escalate.brand-conflict
+        statement: Escalate if the brand brief conflicts with the existing application.
+        source_authority: interpreter_inferred
+    signoff_required: false
+clarification_decision:
+  action: proceed
+  reasons: [The two artifacts and their shared acceptance constraint are explicit.]
+  affected_uncertainty_ids: []
+  question: null
+  options: []
+  blocks_execution: false

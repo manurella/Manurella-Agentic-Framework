@@ -1,0 +1,11 @@
+fixture_id: interpreter.blocking-uncertainty-marked-executable
+scenario: Semantic validation rejects executable framing with open material uncertainty.
+base_fixture: ../ambiguous.yaml
+mutations:
+  - path: task_frame.scope.clarity
+    value: executable
+expected_validation: fail
+expected_error_codes: [semantic.executable_has_blocking_uncertainty]
+expected_projection:
+  family_class: E
+  project_posture: genesis

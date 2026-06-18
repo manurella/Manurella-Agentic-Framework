@@ -1,0 +1,11 @@
+fixture_id: interpreter.audit-mutation
+scenario: Semantic validation rejects mutating work under audit posture.
+base_fixture: ../quick-task.yaml
+mutations:
+  - path: task_frame.scope.project_posture
+    value: audit
+expected_validation: fail
+expected_error_codes: [semantic.audit_mutation]
+expected_projection:
+  family_class: A
+  project_posture: audit

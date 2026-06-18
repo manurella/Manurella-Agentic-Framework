@@ -1,0 +1,143 @@
+fixture_id: interpreter.conversation
+scenario: Direct grounded discussion without workflow ceremony.
+expected_validation: pass
+expected_projection:
+  family_class: D
+  project_posture: null
+task_frame:
+  identity:
+    frame_id: tf.conversation
+    version: 1
+    parent_frame_id: null
+    root_frame_id: tf.conversation
+    project_id: null
+  source:
+    raw_request: What do you think should define a trustworthy agent framework?
+    turn_refs: [turn.1]
+    trusted_context_refs: [MANURELLA.md]
+    untrusted_data_refs: []
+    timestamp: "2026-06-18T09:00:00Z"
+    locale: en-LK
+  objective:
+    normalized_goal: Discuss the properties of a trustworthy agent framework.
+    work_types: [converse]
+    desired_outcomes:
+      - id: outcome.discussion
+        statement: Provide a grounded point of view that makes the trade-offs clear.
+        kind: conversation
+        priority: required
+        source_authority: user_asserted
+    autonomy: advise
+  scope:
+    horizon: turn
+    clarity: executable
+    project_posture: null
+    artifacts: []
+    dependencies: []
+  constraints:
+    hard: []
+    soft: []
+    exclusions: []
+    deadline: null
+    freshness: stable
+  uncertainty:
+    ambiguities: []
+    assumptions: []
+    missing_information: []
+    contradictions: []
+  governance:
+    consequence: minimal
+    reversibility: reversible
+    data_classification: internal
+    permissions_required: []
+    confirmations_required: []
+    policy_flags: []
+  execution_preferences:
+    requested_mode: fast
+    requested_effort: low
+    latency_preference: concise response
+    cost_preference: null
+  acceptance_contract_ref: ac.conversation@1
+  routing_hints:
+    candidate_domains: [core]
+    required_capabilities: [grounded_discussion]
+    likely_tools: []
+    memory_requirements: []
+    unresolved_routing_questions: []
+  provenance:
+    interpreter_version: 0.1.0
+    created_at: "2026-06-18T09:00:01Z"
+    entries:
+      - field_path: source.raw_request
+        authority: immutable_source
+        source_refs: [turn.1]
+      - field_path: objective.normalized_goal
+        authority: interpreter_inferred
+        source_refs: [turn.1]
+      - field_path: governance.consequence
+        authority: policy_derived
+        source_refs: [policy.core]
+    supersedes_frame_ref: null
+    changed_fields: []
+    invalidated_outputs: []
+  lifecycle:
+    status: ready
+    updated_at: "2026-06-18T09:00:01Z"
+acceptance_contract:
+  contract_id: ac.conversation
+  version: 1
+  task_frame_ref: tf.conversation@1
+  required_outcomes:
+    - id: criterion.grounded-view
+      statement: The response gives a clear position with defensible trade-offs.
+      source_authority: interpreter_inferred
+  required_artifacts: []
+  hard_checks:
+    - id: check.directness
+      statement: Do not force delegation or project ceremony.
+      source_authority: policy_derived
+  forbidden_results:
+    - id: forbidden.workflow-theater
+      statement: Do not replace the discussion with a generic workflow.
+      source_authority: policy_derived
+  quality_rubric:
+    dimensions:
+      - id: groundedness
+        description: Claims are coherent and tied to the framework context.
+        weight: 1.0
+        minimum_score: 80
+        critical: true
+        evaluator: core-quality-gate
+        evidence: [MANURELLA.md]
+    minimum_score: 80
+    critical_dimensions: [groundedness]
+  evidence_requirements:
+    freshness: stable
+    citations_required: false
+    provenance_required: true
+    required_evidence: []
+  verification_plan:
+    deterministic_checks: []
+    model_checks:
+      - id: model.directness
+        description: Check that the response directly answers the discussion prompt.
+        required: true
+    human_review: []
+  delivery:
+    partial_completion_allowed: false
+    checkpoint_requirements: []
+    final_format: concise prose
+  control:
+    stop_conditions:
+      - id: stop.answer-complete
+        statement: Stop when the position and key trade-offs are clear.
+        source_authority: interpreter_inferred
+    escalation_conditions: []
+    signoff_required: false
+clarification_decision:
+  action: proceed
+  reasons: [The discussion target is clear and reversible.]
+  affected_uncertainty_ids: []
+  question: null
+  options: []
+  blocks_execution: false

@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.local/schemas/interpreter/acceptance-contract/0.1.0",
+  "title": "Manurella Acceptance Contract",
+  "description": "Versioned success, evidence, verification, delivery, and control contract for one Task Frame.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "version",
+    "task_frame_ref",
+    "required_outcomes",
+    "required_artifacts",
+    "hard_checks",
+    "forbidden_results",
+    "quality_rubric",
+    "evidence_requirements",
+    "verification_plan",
+    "delivery",
+    "control"
+  ],
+  "properties": {
+    "contract_id": { "$ref": "#/$defs/nonEmptyString" },
+    "version": { "type": "integer", "minimum": 1 },
+    "task_frame_ref": { "$ref": "#/$defs/versionedRef" },
+    "required_outcomes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/criterion" }
+    },
+    "required_artifacts": { "$ref": "#/$defs/criterionArray" },
+    "hard_checks": { "$ref": "#/$defs/criterionArray" },
+    "forbidden_results": { "$ref": "#/$defs/criterionArray" },
+    "quality_rubric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dimensions", "minimum_score", "critical_dimensions"],
+      "properties": {
+        "dimensions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/rubricDimension" }
+        },
+        "minimum_score": {
+          "oneOf": [
+            { "type": "number", "minimum": 0, "maximum": 100 },
+            { "type": "null" }
+          ]
+        },
+        "critical_dimensions": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "evidence_requirements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["freshness", "citations_required", "provenance_required", "required_evidence"],
+      "properties": {
+        "freshness": { "enum": ["stable", "current", "real_time"] },
+        "citations_required": { "type": "boolean" },
+        "provenance_required": { "type": "boolean" },
+        "required_evidence": { "$ref": "#/$defs/criterionArray" }
+      }
+    },
+    "verification_plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["deterministic_checks", "model_checks", "human_review"],
+      "properties": {
+        "deterministic_checks": { "$ref": "#/$defs/checkArray" },
+        "model_checks": { "$ref": "#/$defs/checkArray" },
+        "human_review": { "$ref": "#/$defs/checkArray" }
+      }
+    },
+    "delivery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["partial_completion_allowed", "checkpoint_requirements", "final_format"],
+      "properties": {
+        "partial_completion_allowed": { "type": "boolean" },
+        "checkpoint_requirements": { "$ref": "#/$defs/criterionArray" },
+        "final_format": { "$ref": "#/$defs/nullableString" }
+      }
+    },
+    "control": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stop_conditions", "escalation_conditions", "signoff_required"],
+      "properties": {
+        "stop_conditions": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/criterion" }
+        },
+        "escalation_conditions": { "$ref": "#/$defs/criterionArray" },
+        "signoff_required": { "type": "boolean" }
+      }
+    }
+  },
+  "$defs": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "nullableString": {
+      "oneOf": [
+        { "$ref": "#/$defs/nonEmptyString" },
+        { "type": "null" }
+      ]
+    },
+    "versionedRef": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*@[1-9][0-9]*$"
+    },
+    "stringArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/nonEmptyString" }
+    },
+    "criterion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "statement", "source_authority"],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonEmptyString" },
+        "statement": { "$ref": "#/$defs/nonEmptyString" },
+        "source_authority": {
+          "enum": ["user_asserted", "interpreter_inferred", "policy_derived"]
+        }
+      }
+    },
+    "criterionArray": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/criterion" }
+    },
+    "rubricDimension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "description", "weight", "minimum_score", "critical", "evaluator", "evidence"],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonEmptyString" },
+        "description": { "$ref": "#/$defs/nonEmptyString" },
+        "weight": { "type": "number", "minimum": 0, "maximum": 1 },
+        "minimum_score": { "type": "number", "minimum": 0, "maximum": 100 },
+        "critical": { "type": "boolean" },
+        "evaluator": { "$ref": "#/$defs/nonEmptyString" },
+        "evidence": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "description", "required"],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonEmptyString" },
+        "description": { "$ref": "#/$defs/nonEmptyString" },
+        "required": { "type": "boolean" }
+      }
+    },
+    "checkArray": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/check" }
+    }
+  }
+}

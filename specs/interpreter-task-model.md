@@ -6,7 +6,7 @@
 - Parent: `sys.brain`
 - Level: 2
 - Lifecycle: specified
-- Runtime implementation: pending
+- Runtime implementation: contract validator v0; interpretation pipeline pending
 
 ## Purpose
 
@@ -363,6 +363,19 @@ Evaluation covers:
 - correction and version invalidation behavior
 
 The framework-wide 80/100 quality gate applies, with critical safety and permission failures acting as vetoes rather than weighted deductions.
+
+## Executable Contract Slice
+
+The first executable v0 slice is implemented in:
+
+- `schemas/interpreter/task-frame.schema.json`
+- `schemas/interpreter/acceptance-contract.schema.json`
+- `tools/validate_interpreter.py`
+- `evals/fixtures/interpreter/`
+
+The JSON Schemas enforce the portable structural contract. The validator adds cross-object and policy invariants, then derives Family A-E and project-posture compatibility views. Positive fixtures cover conversation, quick work, a full project, ambiguity, correction, cross-domain work, and consequential action. Focused negative fixtures prove that schema, ambiguity, posture, and confirmation failures are rejected.
+
+This slice does not parse natural language, select a route, compile a handoff packet, or execute work. Those remain separate Brain and Router responsibilities.
 
 ## Completion Conditions
 

@@ -3,6 +3,14 @@
 ```mermaid
 mindmap
   root((Manurella))
+    Brain
+      Interpreter
+        Task Frame Schema
+        Acceptance Contract Schema
+        Semantic Validator
+        Family A-E Projection
+        Project Posture Projection
+        Contract Fixture Suite
     Domains
       Build
         Agents
@@ -70,6 +78,21 @@ Build -> frontend work -> specialist topology -> verification -> eval feedback
 ```
 
 This slice is intentionally not complete yet. The graph should grow from evaluated behavior, not from speculative completeness.
+
+## Current Depth-First Slice
+
+The first executable Brain checkpoint is active:
+
+```text
+Interpreter
+-> Task Frame schema
+-> Acceptance Contract schema
+-> semantic validator
+-> Family and project-posture projection
+-> representative positive and negative fixtures
+```
+
+Natural-language parsing, Router consumption, handoff compilation, and runtime execution remain later connected checkpoints.
 
 ## Experimental Frontend Slice
 

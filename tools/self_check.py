@@ -107,6 +107,7 @@ def main(argv: list[str]) -> int:
 
     commands = [
         [python, "tools/validate_framework.py", "--repo", "."],
+        [python, "tools/validate_interpreter.py", "--repo", "."],
         [
             python,
             "adapters/kilo/export_agents.py",

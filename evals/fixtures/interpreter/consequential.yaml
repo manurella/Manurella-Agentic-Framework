@@ -1,0 +1,164 @@
+fixture_id: interpreter.consequential
+scenario: External consequential action requires explicit permission and confirmation.
+expected_validation: pass
+expected_projection:
+  family_class: A
+  project_posture: null
+task_frame:
+  identity:
+    frame_id: tf.publish-release
+    version: 1
+    parent_frame_id: null
+    root_frame_id: tf.publish-release
+    project_id: project.manurella-release
+  source:
+    raw_request: Publish the release announcement to the public company account.
+    turn_refs: [turn.8]
+    trusted_context_refs: [artifact.release-announcement]
+    untrusted_data_refs: []
+    timestamp: "2026-06-18T09:30:00Z"
+    locale: en-LK
+  objective:
+    normalized_goal: Publish the approved release announcement to the public company account after confirmation.
+    work_types: [act]
+    desired_outcomes:
+      - id: outcome.public-post
+        statement: The approved announcement is published to the intended public account.
+        kind: state_change
+        priority: required
+        source_authority: user_asserted
+    autonomy: execute_with_approval
+  scope:
+    horizon: turn
+    clarity: executable
+    project_posture: null
+    artifacts: []
+    dependencies: []
+  constraints:
+    hard:
+      - id: constraint.exact-account
+        statement: Use only the authenticated company account and approved announcement.
+        source_authority: policy_derived
+    soft: []
+    exclusions: []
+    deadline: null
+    freshness: current
+  uncertainty:
+    ambiguities: []
+    assumptions: []
+    missing_information: []
+    contradictions: []
+  governance:
+    consequence: consequential
+    reversibility: partially_reversible
+    data_classification: restricted
+    permissions_required:
+      - id: permission.company-social
+        capability: publish to authenticated company account
+        status: required
+    confirmations_required:
+      - id: confirmation.public-publish
+        subject: publish the approved announcement publicly
+        status: required
+    policy_flags: [external_public_action, authenticated_identity]
+  execution_preferences:
+    requested_mode: standard
+    requested_effort: medium
+    latency_preference: null
+    cost_preference: null
+  acceptance_contract_ref: ac.publish-release@1
+  routing_hints:
+    candidate_domains: [core]
+    required_capabilities: [external_action, identity_verification]
+    likely_tools: [company-social-connector]
+    memory_requirements: [approval_audit_log]
+    unresolved_routing_questions: []
+  provenance:
+    interpreter_version: 0.1.0
+    created_at: "2026-06-18T09:30:01Z"
+    entries:
+      - field_path: source.raw_request
+        authority: immutable_source
+        source_refs: [turn.8]
+      - field_path: objective.normalized_goal
+        authority: interpreter_inferred
+        source_refs: [turn.8, artifact.release-announcement]
+      - field_path: governance.confirmations_required
+        authority: policy_derived
+        source_refs: [policy.external-actions]
+    supersedes_frame_ref: null
+    changed_fields: []
+    invalidated_outputs: []
+  lifecycle:
+    status: awaiting_clarification
+    updated_at: "2026-06-18T09:30:01Z"
+acceptance_contract:
+  contract_id: ac.publish-release
+  version: 1
+  task_frame_ref: tf.publish-release@1
+  required_outcomes:
+    - id: criterion.publication
+      statement: Publish exactly once to the confirmed account.
+      source_authority: user_asserted
+  required_artifacts: []
+  hard_checks:
+    - id: check.account-identity
+      statement: Verify the authenticated account identity before publishing.
+      source_authority: policy_derived
+    - id: check.approved-content
+      statement: Compare the outgoing post with the approved announcement.
+      source_authority: policy_derived
+  forbidden_results:
+    - id: forbidden.unconfirmed-publish
+      statement: Do not publish without explicit confirmation at the action boundary.
+      source_authority: policy_derived
+  quality_rubric:
+    dimensions:
+      - id: action-integrity
+        description: Account, content, confirmation, and single-publication guarantees all hold.
+        weight: 1.0
+        minimum_score: 100
+        critical: true
+        evaluator: deterministic-action-gate
+        evidence: [artifact.release-announcement]
+    minimum_score: 100
+    critical_dimensions: [action-integrity]
+  evidence_requirements:
+    freshness: current
+    citations_required: false
+    provenance_required: true
+    required_evidence:
+      - id: evidence.confirmation
+        statement: Record authenticated confirmation and publication receipt.
+        source_authority: policy_derived
+  verification_plan:
+    deterministic_checks:
+      - id: deterministic.preflight
+        description: Verify identity, exact content, confirmation, and idempotency key.
+        required: true
+    model_checks: []
+    human_review:
+      - id: human.confirmation
+        description: The authenticated user confirms the exact public action.
+        required: true
+  delivery:
+    partial_completion_allowed: false
+    checkpoint_requirements: []
+    final_format: action receipt and audit summary
+  control:
+    stop_conditions:
+      - id: stop.receipt
+        statement: Stop after one verified publication receipt or before action if confirmation is denied.
+        source_authority: policy_derived
+    escalation_conditions:
+      - id: escalate.identity
+        statement: Escalate if account identity or authorization cannot be verified.
+        source_authority: policy_derived
+    signoff_required: true
+clarification_decision:
+  action: confirm
+  reasons: [Publishing publicly is consequential and uses an authenticated external identity.]
+  affected_uncertainty_ids: []
+  question: Confirm publishing the approved announcement to the authenticated public company account now?
+  options: [Confirm publish, Do not publish]
+  blocks_execution: true

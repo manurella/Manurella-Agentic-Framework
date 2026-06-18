@@ -1,0 +1,138 @@
+fixture_id: interpreter.ambiguous
+scenario: Material ambiguity changes the terminal artifact and blocks execution.
+expected_validation: pass
+expected_projection:
+  family_class: E
+  project_posture: genesis
+task_frame:
+  identity:
+    frame_id: tf.ambiguous-design
+    version: 1
+    parent_frame_id: null
+    root_frame_id: tf.ambiguous-design
+    project_id: project.unknown-design
+  source:
+    raw_request: Make the new design for me.
+    turn_refs: [turn.4]
+    trusted_context_refs: []
+    untrusted_data_refs: []
+    timestamp: "2026-06-18T09:15:00Z"
+    locale: en-LK
+  objective:
+    normalized_goal: Create an unspecified new design artifact.
+    work_types: [create]
+    desired_outcomes:
+      - id: outcome.design
+        statement: Produce the design artifact intended by the user.
+        kind: artifact
+        priority: required
+        source_authority: user_asserted
+    autonomy: draft
+  scope:
+    horizon: turn
+    clarity: ambiguous
+    project_posture: genesis
+    artifacts: []
+    dependencies: []
+  constraints:
+    hard: []
+    soft: []
+    exclusions: []
+    deadline: null
+    freshness: stable
+  uncertainty:
+    ambiguities:
+      - id: ambiguity.design-artifact
+        kind: ambiguity
+        statement: The requested design could be a UI screen, visual asset, or architecture design.
+        source_refs: [turn.4]
+        affected_fields: [scope.artifacts, routing_hints.candidate_domains]
+        impact: material
+        status: open
+        resolution: null
+    assumptions: []
+    missing_information: []
+    contradictions: []
+  governance:
+    consequence: minimal
+    reversibility: reversible
+    data_classification: internal
+    permissions_required: []
+    confirmations_required: []
+    policy_flags: []
+  execution_preferences:
+    requested_mode: fast
+    requested_effort: medium
+    latency_preference: one grouped clarification
+    cost_preference: null
+  acceptance_contract_ref: ac.ambiguous-design@1
+  routing_hints:
+    candidate_domains: [build, pixel]
+    required_capabilities: [artifact_definition]
+    likely_tools: []
+    memory_requirements: []
+    unresolved_routing_questions: ["Which design artifact is required?"]
+  provenance:
+    interpreter_version: 0.1.0
+    created_at: "2026-06-18T09:15:01Z"
+    entries:
+      - field_path: source.raw_request
+        authority: immutable_source
+        source_refs: [turn.4]
+      - field_path: scope.clarity
+        authority: interpreter_inferred
+        source_refs: [turn.4]
+      - field_path: governance.consequence
+        authority: policy_derived
+        source_refs: [policy.core]
+    supersedes_frame_ref: null
+    changed_fields: []
+    invalidated_outputs: []
+  lifecycle:
+    status: awaiting_clarification
+    updated_at: "2026-06-18T09:15:01Z"
+acceptance_contract:
+  contract_id: ac.ambiguous-design
+  version: 1
+  task_frame_ref: tf.ambiguous-design@1
+  required_outcomes:
+    - id: criterion.correct-artifact
+      statement: The produced artifact must match the user's intended design medium.
+      source_authority: user_asserted
+  required_artifacts: []
+  hard_checks: []
+  forbidden_results:
+    - id: forbidden.guessed-medium
+      statement: Do not choose a materially different design medium without clarification.
+      source_authority: policy_derived
+  quality_rubric:
+    dimensions: []
+    minimum_score: null
+    critical_dimensions: []
+  evidence_requirements:
+    freshness: stable
+    citations_required: false
+    provenance_required: true
+    required_evidence: []
+  verification_plan:
+    deterministic_checks: []
+    model_checks: []
+    human_review: []
+  delivery:
+    partial_completion_allowed: false
+    checkpoint_requirements: []
+    final_format: null
+  control:
+    stop_conditions:
+      - id: stop.clarification
+        statement: Stop interpretation after asking the grouped clarification.
+        source_authority: policy_derived
+    escalation_conditions: []
+    signoff_required: false
+clarification_decision:
+  action: ask
+  reasons: [The missing artifact type changes the primary domain and acceptance criteria.]
+  affected_uncertainty_ids: [ambiguity.design-artifact]
+  question: Do you mean a UI screen, a generated visual asset, or a system architecture design?
+  options: [UI screen, Visual asset, System architecture]
+  blocks_execution: true

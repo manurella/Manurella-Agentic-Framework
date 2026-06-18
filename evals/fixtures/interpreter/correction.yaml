@@ -1,0 +1,167 @@
+fixture_id: interpreter.correction
+scenario: Authenticated user correction creates a nondestructive frame revision.
+expected_validation: pass
+expected_projection:
+  family_class: A
+  project_posture: sprint
+task_frame:
+  identity:
+    frame_id: tf.corrected-copy
+    version: 2
+    parent_frame_id: null
+    root_frame_id: tf.corrected-copy
+    project_id: project.landing-page
+  source:
+    raw_request: "Correction: keep the existing headline and only rewrite the supporting sentence."
+    turn_refs: [turn.5, turn.6]
+    trusted_context_refs: [artifact.landing-copy]
+    untrusted_data_refs: []
+    timestamp: "2026-06-18T09:20:00Z"
+    locale: en-LK
+  objective:
+    normalized_goal: Rewrite only the landing-page supporting sentence while preserving the headline.
+    work_types: [transform]
+    desired_outcomes:
+      - id: outcome.supporting-copy
+        statement: The supporting sentence is improved and the headline is unchanged.
+        kind: artifact
+        priority: required
+        source_authority: user_asserted
+    autonomy: draft
+  scope:
+    horizon: turn
+    clarity: executable
+    project_posture: sprint
+    artifacts:
+      - id: artifact.landing-copy
+        kind: copy
+        description: Existing landing-page headline and supporting sentence.
+        required: true
+    dependencies: []
+  constraints:
+    hard:
+      - id: constraint.keep-headline
+        statement: Preserve the existing headline exactly.
+        source_authority: user_asserted
+    soft: []
+    exclusions: []
+    deadline: null
+    freshness: stable
+  uncertainty:
+    ambiguities: []
+    assumptions:
+      - id: assumption.rewrite-headline
+        kind: assumption
+        statement: The earlier frame assumed the headline could also be rewritten.
+        source_refs: [turn.5, turn.6]
+        affected_fields: [scope.artifacts, constraints.hard]
+        impact: material
+        status: invalidated
+        resolution: User explicitly restricted the edit to the supporting sentence.
+    missing_information: []
+    contradictions: []
+  governance:
+    consequence: minimal
+    reversibility: reversible
+    data_classification: internal
+    permissions_required: []
+    confirmations_required: []
+    policy_flags: []
+  execution_preferences:
+    requested_mode: fast
+    requested_effort: low
+    latency_preference: immediate corrected draft
+    cost_preference: null
+  acceptance_contract_ref: ac.corrected-copy@2
+  routing_hints:
+    candidate_domains: [muse]
+    required_capabilities: [line_editing]
+    likely_tools: []
+    memory_requirements: [artifact.landing-copy]
+    unresolved_routing_questions: []
+  provenance:
+    interpreter_version: 0.1.0
+    created_at: "2026-06-18T09:20:01Z"
+    entries:
+      - field_path: source.raw_request
+        authority: immutable_source
+        source_refs: [turn.6]
+      - field_path: constraints.hard
+        authority: user_asserted
+        source_refs: [turn.6]
+      - field_path: objective.normalized_goal
+        authority: interpreter_inferred
+        source_refs: [turn.5, turn.6]
+    supersedes_frame_ref: tf.corrected-copy@1
+    changed_fields: [objective.normalized_goal, constraints.hard, scope.artifacts]
+    invalidated_outputs: [routing.tf.corrected-copy@1, plan.tf.corrected-copy@1]
+  lifecycle:
+    status: ready
+    updated_at: "2026-06-18T09:20:01Z"
+acceptance_contract:
+  contract_id: ac.corrected-copy
+  version: 2
+  task_frame_ref: tf.corrected-copy@2
+  required_outcomes:
+    - id: criterion.supporting-sentence
+      statement: Deliver one improved supporting sentence.
+      source_authority: user_asserted
+  required_artifacts:
+    - id: criterion.copy-draft
+      statement: Return the preserved headline with the revised supporting sentence for context.
+      source_authority: interpreter_inferred
+  hard_checks:
+    - id: check.headline-exact
+      statement: The headline is byte-for-byte unchanged.
+      source_authority: user_asserted
+  forbidden_results:
+    - id: forbidden.headline-change
+      statement: Do not rewrite or normalize the headline.
+      source_authority: user_asserted
+  quality_rubric:
+    dimensions:
+      - id: copy-quality
+        description: The supporting sentence is clear, specific, and consistent with the headline.
+        weight: 1.0
+        minimum_score: 80
+        critical: true
+        evaluator: muse-line-style-editor
+        evidence: [artifact.landing-copy]
+    minimum_score: 80
+    critical_dimensions: [copy-quality]
+  evidence_requirements:
+    freshness: stable
+    citations_required: false
+    provenance_required: true
+    required_evidence:
+      - id: evidence.diff
+        statement: Compare the headline against the trusted artifact.
+        source_authority: interpreter_inferred
+  verification_plan:
+    deterministic_checks:
+      - id: deterministic.headline
+        description: Compare the original and delivered headline exactly.
+        required: true
+    model_checks:
+      - id: model.copy-quality
+        description: Evaluate the supporting sentence against the copy rubric.
+        required: true
+    human_review: []
+  delivery:
+    partial_completion_allowed: false
+    checkpoint_requirements: []
+    final_format: headline plus revised supporting sentence
+  control:
+    stop_conditions:
+      - id: stop.corrected-draft
+        statement: Stop after the corrected draft passes the headline check.
+        source_authority: interpreter_inferred
+    escalation_conditions: []
+    signoff_required: false
+clarification_decision:
+  action: proceed
+  reasons: [The correction resolves the earlier assumption and narrows the task.]
+  affected_uncertainty_ids: [assumption.rewrite-headline]
+  question: null
+  options: []
+  blocks_execution: false

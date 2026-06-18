@@ -1,0 +1,11 @@
+fixture_id: interpreter.invalid-version
+scenario: JSON Schema rejects a non-positive Task Frame version.
+base_fixture: ../quick-task.yaml
+mutations:
+  - path: task_frame.identity.version
+    value: 0
+expected_validation: fail
+expected_error_codes: [schema.minimum]
+expected_projection:
+  family_class: A
+  project_posture: sprint

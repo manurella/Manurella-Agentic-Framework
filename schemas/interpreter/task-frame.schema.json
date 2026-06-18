@@ -1,0 +1,335 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.local/schemas/interpreter/task-frame/0.1.0",
+  "title": "Manurella Task Frame",
+  "description": "Runtime-neutral, versioned interpretation of a user request. Execution state and model reasoning do not belong in this contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "identity",
+    "source",
+    "objective",
+    "scope",
+    "constraints",
+    "uncertainty",
+    "governance",
+    "execution_preferences",
+    "acceptance_contract_ref",
+    "routing_hints",
+    "provenance",
+    "lifecycle"
+  ],
+  "properties": {
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["frame_id", "version", "parent_frame_id", "root_frame_id", "project_id"],
+      "properties": {
+        "frame_id": { "$ref": "#/$defs/nonEmptyString" },
+        "version": { "type": "integer", "minimum": 1 },
+        "parent_frame_id": { "$ref": "#/$defs/nullableString" },
+        "root_frame_id": { "$ref": "#/$defs/nonEmptyString" },
+        "project_id": { "$ref": "#/$defs/nullableString" }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "raw_request",
+        "turn_refs",
+        "trusted_context_refs",
+        "untrusted_data_refs",
+        "timestamp",
+        "locale"
+      ],
+      "properties": {
+        "raw_request": { "$ref": "#/$defs/nonEmptyString" },
+        "turn_refs": { "$ref": "#/$defs/stringArray" },
+        "trusted_context_refs": { "$ref": "#/$defs/stringArray" },
+        "untrusted_data_refs": { "$ref": "#/$defs/stringArray" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "locale": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    },
+    "objective": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["normalized_goal", "work_types", "desired_outcomes", "autonomy"],
+      "properties": {
+        "normalized_goal": { "$ref": "#/$defs/nonEmptyString" },
+        "work_types": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": ["converse", "answer", "create", "transform", "analyze", "decide", "plan", "act", "monitor", "learn"]
+          }
+        },
+        "desired_outcomes": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/outcome" }
+        },
+        "autonomy": {
+          "enum": ["advise", "draft", "prepare", "execute_with_approval", "execute"]
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["horizon", "clarity", "project_posture", "artifacts", "dependencies"],
+      "properties": {
+        "horizon": { "enum": ["turn", "session", "project"] },
+        "clarity": { "enum": ["executable", "safely_inferable", "ambiguous", "contradictory"] },
+        "project_posture": {
+          "type": ["string", "null"],
+          "enum": ["genesis", "sprint", "audit", "salvage", "reimagine", "resume", null]
+        },
+        "artifacts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/artifact" }
+        },
+        "dependencies": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/dependency" }
+        }
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hard", "soft", "exclusions", "deadline", "freshness"],
+      "properties": {
+        "hard": { "$ref": "#/$defs/constraintArray" },
+        "soft": { "$ref": "#/$defs/constraintArray" },
+        "exclusions": { "$ref": "#/$defs/constraintArray" },
+        "deadline": {
+          "oneOf": [
+            { "type": "string", "format": "date-time" },
+            { "type": "null" }
+          ]
+        },
+        "freshness": { "enum": ["stable", "current", "real_time"] }
+      }
+    },
+    "uncertainty": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ambiguities", "assumptions", "missing_information", "contradictions"],
+      "properties": {
+        "ambiguities": { "$ref": "#/$defs/uncertaintyArray" },
+        "assumptions": { "$ref": "#/$defs/uncertaintyArray" },
+        "missing_information": { "$ref": "#/$defs/uncertaintyArray" },
+        "contradictions": { "$ref": "#/$defs/uncertaintyArray" }
+      }
+    },
+    "governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "consequence",
+        "reversibility",
+        "data_classification",
+        "permissions_required",
+        "confirmations_required",
+        "policy_flags"
+      ],
+      "properties": {
+        "consequence": { "enum": ["minimal", "controlled", "consequential", "critical"] },
+        "reversibility": { "enum": ["reversible", "partially_reversible", "irreversible"] },
+        "data_classification": { "enum": ["public", "internal", "confidential", "restricted"] },
+        "permissions_required": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/permission" }
+        },
+        "confirmations_required": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/confirmation" }
+        },
+        "policy_flags": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "execution_preferences": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requested_mode", "requested_effort", "latency_preference", "cost_preference"],
+      "properties": {
+        "requested_mode": { "type": ["string", "null"], "enum": ["fast", "standard", null] },
+        "requested_effort": {
+          "type": ["string", "null"],
+          "enum": ["low", "medium", "high", "max", "ultra", "sentient", null]
+        },
+        "latency_preference": { "$ref": "#/$defs/nullableString" },
+        "cost_preference": { "$ref": "#/$defs/nullableString" }
+      }
+    },
+    "acceptance_contract_ref": { "$ref": "#/$defs/versionedRef" },
+    "routing_hints": { "$ref": "#/$defs/routingHints" },
+    "provenance": { "$ref": "#/$defs/provenance" },
+    "lifecycle": { "$ref": "#/$defs/lifecycle" }
+  },
+  "$defs": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "nullableString": {
+      "oneOf": [
+        { "$ref": "#/$defs/nonEmptyString" },
+        { "type": "null" }
+      ]
+    },
+    "versionedRef": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*@[1-9][0-9]*$"
+    },
+    "stringArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/nonEmptyString" }
+    },
+    "outcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "statement", "kind", "priority", "source_authority"],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonEmptyString" },
+        "statement": { "$ref": "#/$defs/nonEmptyString" },
+        "kind": { "enum": ["conversation", "answer", "artifact", "decision", "state_change", "learning"] },
+        "priority": { "enum": ["required", "preferred"] },
+        "source_authority": { "$ref": "#/$defs/authority" }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "description", "required"],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonEmptyString" },
+        "kind": { "$ref": "#/$defs/nonEmptyString" },
+        "description": { "$ref": "#/$defs/nonEmptyString" },
+        "required": { "type": "boolean" }
+      }
+    },
+    "dependency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ref", "kind", "relationship"],
+      "properties": {
+        "ref": { "$ref": "#/$defs/nonEmptyString" },
+        "kind": { "enum": ["frame", "artifact"] },
+        "relationship": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    },
+    "constraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "statement", "source_authority"],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonEmptyString" },
+        "statement": { "$ref": "#/$defs/nonEmptyString" },
+        "source_authority": { "$ref": "#/$defs/authority" }
+      }
+    },
+    "constraintArray": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/constraint" }
+    },
+    "uncertaintyItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "statement", "source_refs", "affected_fields", "impact", "status", "resolution"],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonEmptyString" },
+        "kind": { "enum": ["ambiguity", "assumption", "missing", "contradiction"] },
+        "statement": { "$ref": "#/$defs/nonEmptyString" },
+        "source_refs": { "$ref": "#/$defs/stringArray" },
+        "affected_fields": { "$ref": "#/$defs/stringArray" },
+        "impact": { "enum": ["benign", "material", "consequential"] },
+        "status": { "enum": ["open", "accepted_for_now", "user_confirmed", "resolved", "invalidated"] },
+        "resolution": { "$ref": "#/$defs/nullableString" }
+      }
+    },
+    "uncertaintyArray": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/uncertaintyItem" }
+    },
+    "permission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "capability", "status"],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonEmptyString" },
+        "capability": { "$ref": "#/$defs/nonEmptyString" },
+        "status": { "enum": ["required", "granted", "denied"] }
+      }
+    },
+    "confirmation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "subject", "status"],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonEmptyString" },
+        "subject": { "$ref": "#/$defs/nonEmptyString" },
+        "status": { "enum": ["required", "granted", "denied"] }
+      }
+    },
+    "routingHints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["candidate_domains", "required_capabilities", "likely_tools", "memory_requirements", "unresolved_routing_questions"],
+      "properties": {
+        "candidate_domains": { "$ref": "#/$defs/stringArray" },
+        "required_capabilities": { "$ref": "#/$defs/stringArray" },
+        "likely_tools": { "$ref": "#/$defs/stringArray" },
+        "memory_requirements": { "$ref": "#/$defs/stringArray" },
+        "unresolved_routing_questions": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "authority": {
+      "enum": ["immutable_source", "user_asserted", "interpreter_inferred", "policy_derived"]
+    },
+    "provenanceEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["field_path", "authority", "source_refs"],
+      "properties": {
+        "field_path": { "$ref": "#/$defs/nonEmptyString" },
+        "authority": { "$ref": "#/$defs/authority" },
+        "source_refs": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["interpreter_version", "created_at", "entries", "supersedes_frame_ref", "changed_fields", "invalidated_outputs"],
+      "properties": {
+        "interpreter_version": { "$ref": "#/$defs/nonEmptyString" },
+        "created_at": { "type": "string", "format": "date-time" },
+        "entries": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/provenanceEntry" }
+        },
+        "supersedes_frame_ref": {
+          "oneOf": [
+            { "$ref": "#/$defs/versionedRef" },
+            { "type": "null" }
+          ]
+        },
+        "changed_fields": { "$ref": "#/$defs/stringArray" },
+        "invalidated_outputs": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "updated_at"],
+      "properties": {
+        "status": {
+          "enum": ["interpreting", "awaiting_clarification", "ready", "executing", "verifying", "completed", "blocked", "repairing", "cancelled", "superseded"]
+        },
+        "updated_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

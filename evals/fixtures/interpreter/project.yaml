@@ -1,0 +1,183 @@
+fixture_id: interpreter.project
+scenario: New substantial framework component with durable project state.
+expected_validation: pass
+expected_projection:
+  family_class: C
+  project_posture: genesis
+task_frame:
+  identity:
+    frame_id: tf.project-atlas
+    version: 1
+    parent_frame_id: null
+    root_frame_id: tf.project-atlas
+    project_id: project.framework-atlas-ui
+  source:
+    raw_request: Build the first interactive Framework Atlas explorer as a new project.
+    turn_refs: [turn.3]
+    trusted_context_refs: [docs/atlas-constitution.md, cognition/graph.yaml]
+    untrusted_data_refs: []
+    timestamp: "2026-06-18T09:10:00Z"
+    locale: en-LK
+  objective:
+    normalized_goal: Create the first usable interactive explorer for the Framework Atlas.
+    work_types: [plan, create]
+    desired_outcomes:
+      - id: outcome.usable-atlas
+        statement: A user can navigate canonical graph nodes and inspect linked evidence.
+        kind: state_change
+        priority: required
+        source_authority: user_asserted
+    autonomy: prepare
+  scope:
+    horizon: project
+    clarity: executable
+    project_posture: genesis
+    artifacts:
+      - id: artifact.atlas-application
+        kind: software-system
+        description: Interactive Atlas explorer backed by canonical graph data.
+        required: true
+    dependencies: []
+  constraints:
+    hard:
+      - id: constraint.graph-source
+        statement: The explorer must read canonical repository graph data rather than duplicate it.
+        source_authority: policy_derived
+    soft:
+      - id: constraint.local-first
+        statement: Prefer a local-first walking skeleton.
+        source_authority: interpreter_inferred
+    exclusions: []
+    deadline: null
+    freshness: current
+  uncertainty:
+    ambiguities: []
+    assumptions:
+      - id: assumption.read-only-v0
+        kind: assumption
+        statement: The first slice is read-only because graph editing is not yet governed.
+        source_refs: [docs/atlas-constitution.md]
+        affected_fields: [objective.normalized_goal]
+        impact: benign
+        status: accepted_for_now
+        resolution: null
+    missing_information: []
+    contradictions: []
+  governance:
+    consequence: controlled
+    reversibility: reversible
+    data_classification: internal
+    permissions_required: []
+    confirmations_required: []
+    policy_flags: [read_only_graph_v0]
+  execution_preferences:
+    requested_mode: standard
+    requested_effort: high
+    latency_preference: visible project checkpoints
+    cost_preference: null
+  acceptance_contract_ref: ac.project-atlas@1
+  routing_hints:
+    candidate_domains: [build, core]
+    required_capabilities: [architecture, frontend, graph_validation]
+    likely_tools: [filesystem, shell, browser]
+    memory_requirements: [project_state, graph_provenance]
+    unresolved_routing_questions: []
+  provenance:
+    interpreter_version: 0.1.0
+    created_at: "2026-06-18T09:10:01Z"
+    entries:
+      - field_path: source.raw_request
+        authority: immutable_source
+        source_refs: [turn.3]
+      - field_path: objective.normalized_goal
+        authority: interpreter_inferred
+        source_refs: [turn.3, docs/atlas-constitution.md]
+      - field_path: constraints.hard
+        authority: policy_derived
+        source_refs: [docs/atlas-constitution.md]
+    supersedes_frame_ref: null
+    changed_fields: []
+    invalidated_outputs: []
+  lifecycle:
+    status: ready
+    updated_at: "2026-06-18T09:10:01Z"
+acceptance_contract:
+  contract_id: ac.project-atlas
+  version: 1
+  task_frame_ref: tf.project-atlas@1
+  required_outcomes:
+    - id: criterion.navigation
+      statement: Users can navigate nodes and inspect evidence from canonical graph data.
+      source_authority: user_asserted
+  required_artifacts:
+    - id: criterion.application
+      statement: A runnable local application and verification instructions exist.
+      source_authority: interpreter_inferred
+  hard_checks:
+    - id: check.canonical-source
+      statement: No second manually maintained graph source is introduced.
+      source_authority: policy_derived
+  forbidden_results:
+    - id: forbidden.write-path
+      statement: The v0 explorer cannot mutate canonical graph data.
+      source_authority: policy_derived
+  quality_rubric:
+    dimensions:
+      - id: usability
+        description: The primary navigation and evidence workflow is understandable.
+        weight: 0.5
+        minimum_score: 80
+        critical: true
+        evaluator: human-review
+        evidence: [docs/atlas-constitution.md]
+      - id: fidelity
+        description: Rendered information matches cognition/graph.yaml.
+        weight: 0.5
+        minimum_score: 100
+        critical: true
+        evaluator: deterministic-graph-check
+        evidence: [cognition/graph.yaml]
+    minimum_score: 80
+    critical_dimensions: [usability, fidelity]
+  evidence_requirements:
+    freshness: current
+    citations_required: false
+    provenance_required: true
+    required_evidence:
+      - id: evidence.walking-skeleton
+        statement: Record build output and inspected browser evidence.
+        source_authority: interpreter_inferred
+  verification_plan:
+    deterministic_checks:
+      - id: deterministic.graph-load
+        description: Validate that every displayed node comes from the graph source.
+        required: true
+    model_checks: []
+    human_review:
+      - id: human.usability
+        description: Inspect the navigation workflow at the first usable checkpoint.
+        required: true
+  delivery:
+    partial_completion_allowed: true
+    checkpoint_requirements:
+      - id: checkpoint.walking-skeleton
+        statement: Present a runnable read-only explorer before polish.
+        source_authority: policy_derived
+    final_format: runnable application with verification record
+  control:
+    stop_conditions:
+      - id: stop.acceptance-met
+        statement: Stop when the application and all critical checks pass.
+        source_authority: interpreter_inferred
+    escalation_conditions:
+      - id: escalate.graph-contract
+        statement: Escalate if canonical graph structure cannot support the explorer.
+        source_authority: interpreter_inferred
+    signoff_required: false
+clarification_decision:
+  action: proceed_with_assumption
+  reasons: [A read-only walking skeleton is reversible and matches the Atlas constitution.]
+  affected_uncertainty_ids: [assumption.read-only-v0]
+  question: null
+  options: []
+  blocks_execution: false
