@@ -97,6 +97,8 @@ Interpreter
 -> Task Frame schema
 -> Acceptance Contract Compiler
 -> Acceptance Contract schema
+-> Parser Benchmark Corpus
+-> Model Candidate Evaluator
 -> semantic validator
 -> Family and project-posture projection
 -> representative positive and negative fixtures
@@ -104,7 +106,7 @@ Interpreter
 -> bounded handoff projection
 ```
 
-The deterministic path from trusted input through Task Frame, Acceptance Contract, clarification, semantic validation, and Core projection is implemented. Model-backed parser evaluation and runtime execution remain later connected checkpoints.
+The deterministic input-to-Core path and runtime-neutral parser evaluation harness are implemented. A real external model candidate run and runtime execution remain later connected checkpoints.
 
 ## Experimental Frontend Slice
 

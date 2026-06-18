@@ -756,6 +756,69 @@ nodes:
       - evals/fixtures/acceptance-compiler/project.yaml
       - tools/compile_acceptance_contract.py
     updated_at: 2026-06-18
+  - id: spec.parser-candidate-run-schema
+    type: spec
+    label: Parser Candidate Run Schema
+    status: active
+    summary: Runtime-neutral contract for captured model Task Frame candidates with exact runtime, model, prompt, and timestamp metadata.
+    owners:
+      - dom.core
+    evidence:
+      - schemas/evals/parser-candidate-run.schema.json
+      - evals/prompts/interpreter-parser-benchmark.md
+    updated_at: 2026-06-18
+  - id: spec.parser-eval-result-schema
+    type: spec
+    label: Parser Evaluation Result Schema
+    status: active
+    summary: Machine-readable baseline-versus-candidate record for parser validity, accuracy, routing, safety, deltas, and promotion vetoes.
+    owners:
+      - dom.core
+    evidence:
+      - schemas/evals/parser-eval-result.schema.json
+      - tools/evaluate_task_frame_parser.py
+    updated_at: 2026-06-18
+  - id: tool.interpreter-parser-evaluator
+    type: tool
+    label: Interpreter Parser Evaluator
+    status: active
+    summary: Runtime-neutral evaluator for deterministic baseline and captured model Task Frames across schema, semantics, Core routing, field accuracy, and safety.
+    owners:
+      - dom.core
+    evidence:
+      - tools/evaluate_task_frame_parser.py
+      - schemas/evals/parser-candidate-run.schema.json
+      - schemas/evals/parser-eval-result.schema.json
+      - tools/README.md
+    updated_at: 2026-06-18
+  - id: eval.interpreter-parser-benchmark-corpus
+    type: eval
+    label: Interpreter Parser Benchmark Corpus
+    status: active
+    summary: Independent six-case corpus exposing deterministic gaps in paraphrase, implicit intent, composition, resume ambiguity, destructive euphemism, and indirect injection.
+    owners:
+      - dom.core
+    evidence:
+      - evals/fixtures/parser-benchmark/paraphrased-edit.yaml
+      - evals/fixtures/parser-benchmark/cross-domain.yaml
+      - evals/fixtures/parser-benchmark/implicit-audit.yaml
+      - evals/fixtures/parser-benchmark/vague-resume.yaml
+      - evals/fixtures/parser-benchmark/destructive-euphemism.yaml
+      - evals/fixtures/parser-benchmark/indirect-injection.yaml
+      - evals/prompts/interpreter-parser-benchmark.md
+    updated_at: 2026-06-18
+  - id: eval.interpreter-parser-rule-baseline
+    type: eval
+    label: Interpreter Parser Rule Baseline
+    status: active
+    summary: Deterministic parser baseline achieved 100 percent schema, semantic, and routing validity, 22/37 critical fields, and 1/2 safety cases on the independent corpus.
+    owners:
+      - dom.core
+    evidence:
+      - evals/results/parser-rule-baseline-v0.parser-eval.yaml
+      - evals/fixtures/parser-benchmark/destructive-euphemism.yaml
+      - tools/evaluate_task_frame_parser.py
+    updated_at: 2026-06-18
   - id: spec.interpreter-acceptance-schema
     type: spec
     label: Acceptance Contract Schema
@@ -996,6 +1059,84 @@ edges:
     evidence:
       - tools/self_check.py
       - tools/compile_acceptance_contract.py
+    updated_at: 2026-06-18
+  - id: edge.core.owns.interpreter-parser-evaluator
+    type: owns
+    source: dom.core
+    target: tool.interpreter-parser-evaluator
+    status: active
+    confidence: 0.9
+    weight: 0.9
+    evidence:
+      - tools/evaluate_task_frame_parser.py
+      - specs/interpreter-task-model.md
+    updated_at: 2026-06-18
+  - id: edge.interpreter-parser-evaluator.uses.candidate-schema
+    type: uses
+    source: tool.interpreter-parser-evaluator
+    target: spec.parser-candidate-run-schema
+    status: active
+    confidence: 0.9
+    weight: 0.9
+    evidence:
+      - tools/evaluate_task_frame_parser.py
+      - schemas/evals/parser-candidate-run.schema.json
+    updated_at: 2026-06-18
+  - id: edge.interpreter-parser-evaluator.uses.result-schema
+    type: uses
+    source: tool.interpreter-parser-evaluator
+    target: spec.parser-eval-result-schema
+    status: active
+    confidence: 0.9
+    weight: 0.9
+    evidence:
+      - tools/evaluate_task_frame_parser.py
+      - schemas/evals/parser-eval-result.schema.json
+    updated_at: 2026-06-18
+  - id: edge.interpreter-parser-evaluator.uses.acceptance-compiler
+    type: uses
+    source: tool.interpreter-parser-evaluator
+    target: tool.interpreter-acceptance-compiler
+    status: active
+    confidence: 0.9
+    weight: 0.9
+    evidence:
+      - tools/evaluate_task_frame_parser.py
+      - tools/compile_acceptance_contract.py
+    updated_at: 2026-06-18
+  - id: edge.interpreter-parser-corpus.evaluates.parser-evaluator
+    type: evaluates
+    source: eval.interpreter-parser-benchmark-corpus
+    target: tool.interpreter-parser-evaluator
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - evals/fixtures/parser-benchmark/destructive-euphemism.yaml
+      - evals/fixtures/parser-benchmark/indirect-injection.yaml
+      - tools/evaluate_task_frame_parser.py
+    updated_at: 2026-06-18
+  - id: edge.self-check.uses.interpreter-parser-evaluator
+    type: uses
+    source: tool.self-check
+    target: tool.interpreter-parser-evaluator
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - tools/self_check.py
+      - tools/evaluate_task_frame_parser.py
+    updated_at: 2026-06-18
+  - id: edge.interpreter-parser-rule-baseline.evaluates.parser
+    type: evaluates
+    source: eval.interpreter-parser-rule-baseline
+    target: tool.interpreter-task-frame-parser
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - evals/results/parser-rule-baseline-v0.parser-eval.yaml
+      - tools/parse_task_frame.py
     updated_at: 2026-06-18
   - id: edge.core.owns.manurella-orchestrator
     type: owns

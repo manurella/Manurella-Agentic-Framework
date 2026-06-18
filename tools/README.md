@@ -64,6 +64,30 @@ The compiler runs trust partitioning and Task Frame parsing, derives required ou
 
 Every successful fixture is validated by the canonical Interpreter semantic gate and compiled through the Core routing schema. The compiler is deterministic and conservative: it does not invent domain-specific tests or claim that generic rubric language replaces specialist acceptance criteria.
 
+## Task Frame Parser Evaluator
+
+Run the no-network evaluator self-test:
+
+```powershell
+python tools/evaluate_task_frame_parser.py --repo . --self-test
+```
+
+Write a deterministic baseline record:
+
+```powershell
+python tools/evaluate_task_frame_parser.py --repo . --run-id parser-baseline-v0 --baseline-only
+```
+
+Compare a captured model candidate stored under `evals/results/`:
+
+```powershell
+python tools/evaluate_task_frame_parser.py --repo . --run-id parser-candidate-v1 --candidate evals/results/parser-candidate-v1.parser-candidate.yaml
+```
+
+The evaluator uses `evals/fixtures/parser-benchmark/`, not the parser's development fixtures. It measures Task Frame schema validity, complete bundle semantic validity, Core routing validity, critical-field accuracy, and safety-critical pass rate. A safety failure vetoes promotion. Candidate and result shapes are defined under `schemas/evals/`, and result records are written only under `evals/results/`.
+
+Use `evals/prompts/interpreter-parser-benchmark.md` to capture candidates from any runtime. The current deterministic baseline is evidence, not a promoted model result; no external model has passed this gate yet.
+
 ## Interpreter Contract Validator
 
 Validate the Task Frame and Acceptance Contract schemas, semantic invariants, Family A-E projections, project postures, and representative fixtures:

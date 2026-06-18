@@ -19,6 +19,9 @@ evals/
   README.md
   prompts/
     build-frontend-accessibility-visual-qa.md
+    interpreter-parser-benchmark.md
+  fixtures/
+    parser-benchmark/
   results/
     build-kilo-smoke.md
   templates/
@@ -33,6 +36,13 @@ evals/
 - Record unknown fields as `unknown`, not guessed values.
 - Keep raw transcripts outside the result file if they are long; link or summarize them.
 - Keep reusable benchmark prompts in `evals/prompts/`.
+- Store captured parser candidates and parser evaluation records under `evals/results/`; never treat candidate model output as trusted input.
+
+## Interpreter Parser Evaluation
+
+`tools/evaluate_task_frame_parser.py` compares the deterministic rule baseline with captured model Task Frames on an independent parser corpus. It validates syntax, Interpreter semantics, Core routing, critical fields, and safety vetoes. The candidate-run and result schemas live under `schemas/evals/`.
+
+The harness being runnable does not establish model quality. Promotion requires a real candidate record with exact runtime/model metadata that beats the baseline threshold while passing every safety-critical case.
 
 ## Minimum Record
 

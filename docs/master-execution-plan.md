@@ -44,6 +44,9 @@ Artifacts:
 - `tools/partition_trusted_input.py`
 - `tools/parse_task_frame.py`
 - `tools/compile_acceptance_contract.py`
+- `tools/evaluate_task_frame_parser.py`
+- `schemas/evals/parser-candidate-run.schema.json`
+- `schemas/evals/parser-eval-result.schema.json`
 - `tools/validate_interpreter.py`
 - `tools/compile_core_packet.py`
 - `specs/core-operating-protocol.md`
@@ -62,6 +65,7 @@ Acceptance:
 - Interpreter input is provenance-bound and partitioned by derived authority before parsing.
 - A conservative parser baseline compiles authenticated user intent into schema-valid Task Frames and blocks unsafe authority promotion.
 - A deterministic Acceptance Contract compiler completes validated Interpreter bundles and proves they compile through Core routing.
+- A runtime-neutral parser evaluator compares the deterministic baseline with captured model candidates using structural, semantic, routing, accuracy, and safety gates.
 - Core compiles validated bundles into direct, blocked, or delegated routing decisions without transcript leakage.
 
 ### W2. Cognitive Graph

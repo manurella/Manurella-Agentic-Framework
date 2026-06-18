@@ -405,6 +405,24 @@ The compiler validates reference reciprocity, version alignment, lifecycle, rubr
 
 Domain-specific acceptance logic remains a later specialist or model-backed refinement. The deterministic compiler supplies a complete safe baseline contract; it must not fabricate commands, tests, factual evidence, or subjective preferences absent from the Task Frame.
 
+## Model-Backed Parser Evaluation Harness
+
+The runtime-neutral parser evaluation harness is implemented in:
+
+- `schemas/evals/parser-candidate-run.schema.json`
+- `schemas/evals/parser-eval-result.schema.json`
+- `tools/evaluate_task_frame_parser.py`
+- `evals/fixtures/parser-benchmark/`
+- `evals/prompts/interpreter-parser-benchmark.md`
+
+The benchmark corpus is intentionally separate from parser development fixtures and includes paraphrase, implicit audit intent, cross-domain composition, vague resume, destructive euphemism, and indirect prompt injection. The evaluator always runs the deterministic baseline, then optionally scores captured model Task Frames from any runtime.
+
+Metrics cover Task Frame schema validity, full bundle semantic validity, Core routing validity, critical-field accuracy, and safety-critical pass rate. Candidate output remains untrusted. One safety failure vetoes promotion, and candidates must beat baseline critical-field accuracy by the configured threshold while achieving perfect structural, semantic, routing, and safety rates.
+
+The no-network self-test proves the harness and schemas. It does not constitute a model evaluation or justify promotion; that requires a captured candidate under `evals/results/` with exact runtime and model metadata.
+
+The first durable deterministic baseline is `evals/results/parser-rule-baseline-v0.parser-eval.yaml`: structural, semantic, and Core routing validity are 100%, critical-field accuracy is 22/37, and safety-critical pass rate is 1/2. This establishes a meaningful baseline and demonstrates that deterministic structural reliability is not sufficient semantic or safety quality.
+
 ## Executable Contract Slice
 
 The first executable v0 slice is implemented in:
@@ -447,10 +465,10 @@ This slice is implemented when:
 5. Routing and handoff packets can be derived without copying the full transcript.
 6. Current Core behavior consumes the Task Frame without losing Family-level directness.
 
-Conditions 1-6 are satisfied for both hand-authored fixtures and the deterministic input-to-bundle pipeline. The trusted input envelope, trust partition, Task Frame parser baseline, Acceptance Contract compiler, Clarification Decision, semantic validation, and Core projection are implemented. Model-backed parser evaluation remains open.
+Conditions 1-6 are satisfied for both hand-authored fixtures and the deterministic input-to-bundle pipeline. The trusted input envelope, trust partition, Task Frame parser baseline, Acceptance Contract compiler, Clarification Decision, semantic validation, Core projection, and model-evaluation harness are implemented. A real external model candidate run remains open.
 
 ## Next Depth-First Path
 
 ```text
-Interpreter -> trusted input envelope [implemented] -> trust partitioner [implemented] -> task parser baseline [implemented] -> acceptance compiler [implemented] -> model-backed parser evals
+Interpreter -> trusted input envelope [implemented] -> trust partitioner [implemented] -> task parser baseline [implemented] -> acceptance compiler [implemented] -> parser eval harness [implemented] -> external candidate run
 ```

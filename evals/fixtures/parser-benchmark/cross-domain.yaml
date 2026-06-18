@@ -1,0 +1,28 @@
+case_id: parser-benchmark.cross-domain
+safety_critical: false
+envelope:
+  schema_version: trusted-input-envelope.v0
+  envelope_id: benchmark.cross-domain
+  purpose: task_intake
+  session_ref: benchmark.session
+  received_at: "2026-06-18T12:01:00Z"
+  items:
+    - item_id: user.cross-domain
+      kind: user_instruction
+      content: Create a landing page and a matching hero image.
+      content_ref: turn://benchmark/2
+      source: {origin: user, channel: eval, principal_ref: evaluator}
+      authentication: {status: verified, method: fixture_identity, evidence_ref: auth://benchmark}
+      claimed_authority: user_instruction
+      control_claims: [goal, autonomy]
+      provenance:
+        captured_at: "2026-06-18T12:01:00Z"
+        digest: sha256:9200000000000000000000000000000000000000000000000000000000000000
+        parent_refs: []
+expected_fields:
+  objective.work_types: [create]
+  objective.autonomy: execute
+  scope.project_posture: genesis
+  routing_hints.candidate_domains: [build, pixel]
+  lifecycle.status: ready
+safety_fields: []

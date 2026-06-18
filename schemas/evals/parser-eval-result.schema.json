@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020/schema",
+  "$id": "https://manurella.dev/schemas/evals/parser-eval-result.schema.json",
+  "title": "Manurella Parser Evaluation Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "created_at", "benchmark_ref", "baseline", "candidate", "comparison", "promotion"],
+  "properties": {
+    "schema_version": { "const": "parser-eval-result.v0" },
+    "run_id": { "type": "string", "minLength": 1 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "benchmark_ref": { "type": "string", "minLength": 1 },
+    "baseline": { "$ref": "#/$defs/runResult" },
+    "candidate": { "oneOf": [{ "$ref": "#/$defs/runResult" }, { "type": "null" }] },
+    "comparison": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["critical_field_accuracy_delta", "safety_pass_rate_delta", "semantic_valid_rate_delta", "routing_valid_rate_delta"],
+          "properties": {
+            "critical_field_accuracy_delta": { "type": "number" },
+            "safety_pass_rate_delta": { "type": "number" },
+            "semantic_valid_rate_delta": { "type": "number" },
+            "routing_valid_rate_delta": { "type": "number" }
+          }
+        },
+        { "type": "null" }
+      ]
+    },
+    "promotion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "minimum_accuracy_delta", "reasons"],
+      "properties": {
+        "status": { "enum": ["not_evaluated", "pass", "fail"] },
+        "minimum_accuracy_delta": { "type": "number", "minimum": 0 },
+        "reasons": { "$ref": "#/$defs/stringArray" }
+      }
+    }
+  },
+  "$defs": {
+    "stringArray": { "type": "array", "items": { "type": "string" } },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cases_total", "schema_valid_rate", "semantic_valid_rate", "routing_valid_rate",
+        "critical_fields_correct", "critical_fields_total", "critical_field_accuracy",
+        "safety_cases_passed", "safety_cases_total", "safety_pass_rate"
+      ],
+      "properties": {
+        "cases_total": { "type": "integer", "minimum": 1 },
+        "schema_valid_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "semantic_valid_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "routing_valid_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "critical_fields_correct": { "type": "integer", "minimum": 0 },
+        "critical_fields_total": { "type": "integer", "minimum": 1 },
+        "critical_field_accuracy": { "type": "number", "minimum": 0, "maximum": 1 },
+        "safety_cases_passed": { "type": "integer", "minimum": 0 },
+        "safety_cases_total": { "type": "integer", "minimum": 1 },
+        "safety_pass_rate": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "caseResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_id", "schema_valid", "semantic_valid", "routing_valid", "critical_fields_correct", "critical_fields_total", "safety_pass", "errors"],
+      "properties": {
+        "case_id": { "type": "string", "minLength": 1 },
+        "schema_valid": { "type": "boolean" },
+        "semantic_valid": { "type": "boolean" },
+        "routing_valid": { "type": "boolean" },
+        "critical_fields_correct": { "type": "integer", "minimum": 0 },
+        "critical_fields_total": { "type": "integer", "minimum": 1 },
+        "safety_pass": { "type": "boolean" },
+        "errors": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "runResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["runtime", "model", "prompt_version", "summary", "cases"],
+      "properties": {
+        "runtime": { "type": "string", "minLength": 1 },
+        "model": { "type": "string", "minLength": 1 },
+        "prompt_version": { "type": "string", "minLength": 1 },
+        "summary": { "$ref": "#/$defs/summary" },
+        "cases": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/caseResult" } }
+      }
+    }
+  }
+}
