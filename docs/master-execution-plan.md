@@ -53,12 +53,15 @@ Goal: make framework memory navigable instead of buried in prose.
 
 Artifacts:
 
+- `docs/atlas-constitution.md`
+- `docs/manurella-root-ontology.md`
 - `cognition/graph.yaml`
 - `cognition/mindmap.md`
 - graph update notes inside eval records
 
 Acceptance:
 
+- Work proceeds through connected depth-first vertical slices that end in implementation and evidence.
 - Every active agent, mode, effort, eval, and recurring failure has a graph node.
 - Promotion from draft to accepted requires graph evidence.
 - Failures from evals create or update failure-mode nodes.
