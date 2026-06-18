@@ -1,0 +1,28 @@
+locale: en-LK
+envelope:
+  schema_version: trusted-input-envelope.v0
+  envelope_id: parser.quick-fix
+  purpose: task_intake
+  session_ref: session.parser
+  received_at: "2026-06-18T11:00:00Z"
+  items:
+    - item_id: user.quick-fix
+      kind: user_instruction
+      content: Fix the outdated validator command in README.md. Only change the command.
+      content_ref: turn://parser/1
+      source: {origin: user, channel: codex, principal_ref: user.1}
+      authentication: {status: verified, method: session_identity, evidence_ref: auth://parser}
+      claimed_authority: user_instruction
+      control_claims: [goal, autonomy, constraint]
+      provenance:
+        captured_at: "2026-06-18T11:00:00Z"
+        digest: sha256:1000000000000000000000000000000000000000000000000000000000000000
+        parent_refs: []
+expected_fields:
+  objective.work_types: [transform]
+  objective.autonomy: execute
+  scope.clarity: executable
+  scope.project_posture: sprint
+  scope.artifacts.0.kind: md
+  routing_hints.candidate_domains: [build]
+  lifecycle.status: ready

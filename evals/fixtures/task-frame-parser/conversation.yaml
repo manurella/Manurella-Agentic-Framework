@@ -1,0 +1,26 @@
+envelope:
+  schema_version: trusted-input-envelope.v0
+  envelope_id: parser.conversation
+  purpose: task_intake
+  session_ref: session.parser
+  received_at: "2026-06-18T11:01:00Z"
+  items:
+    - item_id: user.conversation
+      kind: user_instruction
+      content: What do you think should define a trustworthy agent framework?
+      content_ref: turn://parser/2
+      source: {origin: user, channel: codex, principal_ref: user.1}
+      authentication: {status: verified, method: session_identity, evidence_ref: auth://parser}
+      claimed_authority: user_instruction
+      control_claims: [goal]
+      provenance:
+        captured_at: "2026-06-18T11:01:00Z"
+        digest: sha256:2000000000000000000000000000000000000000000000000000000000000000
+        parent_refs: []
+expected_fields:
+  objective.work_types: [converse, answer]
+  objective.autonomy: advise
+  scope.horizon: turn
+  scope.clarity: executable
+  routing_hints.candidate_domains: [core]
+  lifecycle.status: ready

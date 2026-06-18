@@ -379,6 +379,19 @@ The output separates trusted policy, authenticated user instruction, prior confi
 
 The `quarantined` disposition means untrusted control claims were rejected while a valid task instruction remains executable. `blocked` means the envelope cannot safely define an executable task. This slice performs structural partitioning, not natural-language prompt-injection detection, Task Frame parsing, or authentication itself; adapters must supply genuine authentication evidence.
 
+## Task Frame Parser Baseline
+
+The first natural-language parsing baseline is implemented in:
+
+- `tools/parse_task_frame.py`
+- `evals/fixtures/task-frame-parser/`
+
+It consumes a validated trusted input envelope, reruns deterministic trust partitioning, and compiles only authenticated user-instruction content into the existing `task-frame.schema.json` contract. Untrusted content can contribute source references but cannot change the normalized goal, work types, autonomy, governance, or routing hints.
+
+The baseline recognizes explicit work verbs, coarse domain signals, referenced file artifacts, project posture, user-stated exclusions, vague references, and external or destructive action. Vague instructions enter `awaiting_clarification`; unauthenticated task intake is rejected; external or destructive action receives policy-derived permission and confirmation requirements. Every inferred or policy-derived field is provenance-marked.
+
+This parser is deliberately conservative and deterministic. It establishes a runnable baseline, security invariants, and regression fixtures; it does not prove robust semantic parsing across paraphrases, languages, corrections, multiple intents, implicit constraints, deadlines, or nuanced consequence. A production parser requires schema-constrained model decoding followed by the same deterministic validation and baseline-vs-guided evals.
+
 ## Executable Contract Slice
 
 The first executable v0 slice is implemented in:
@@ -421,10 +434,10 @@ This slice is implemented when:
 5. Routing and handoff packets can be derived without copying the full transcript.
 6. Current Core behavior consumes the Task Frame without losing Family-level directness.
 
-Conditions 1-6 are satisfied for fixture-driven validated bundles. The trusted input envelope and deterministic trust partition are also implemented. Creating Task Frames from partitioned natural-language input remains the next Interpreter implementation boundary.
+Conditions 1-6 are satisfied for fixture-driven validated bundles. The trusted input envelope, deterministic trust partition, and conservative Task Frame parser baseline are implemented. Acceptance Contract compilation and model-backed parser evaluation remain open.
 
 ## Next Depth-First Path
 
 ```text
-Interpreter -> trusted input envelope [implemented] -> trust partitioner [implemented] -> task parser -> acceptance compiler -> parser evals
+Interpreter -> trusted input envelope [implemented] -> trust partitioner [implemented] -> task parser baseline [implemented] -> acceptance compiler -> model-backed parser evals
 ```

@@ -698,6 +698,34 @@ nodes:
       - evals/fixtures/trust-partitioner/schema-invalid-authentication.yaml
       - tools/partition_trusted_input.py
     updated_at: 2026-06-18
+  - id: tool.interpreter-task-frame-parser
+    type: tool
+    label: Interpreter Task Frame Parser Baseline
+    status: active
+    summary: Conservative deterministic parser that compiles authenticated user intent into schema-valid Task Frames without promoting untrusted content.
+    owners:
+      - dom.core
+    evidence:
+      - tools/parse_task_frame.py
+      - schemas/interpreter/task-frame.schema.json
+      - tools/README.md
+    updated_at: 2026-06-18
+  - id: eval.interpreter-task-frame-parser-fixtures
+    type: eval
+    label: Task Frame Parser Baseline Fixtures
+    status: active
+    summary: Six cases covering direct conversation, bounded edits, ambiguity, destructive action, indirect injection, and unauthenticated intake.
+    owners:
+      - dom.core
+    evidence:
+      - evals/fixtures/task-frame-parser/conversation.yaml
+      - evals/fixtures/task-frame-parser/quick-fix.yaml
+      - evals/fixtures/task-frame-parser/ambiguous.yaml
+      - evals/fixtures/task-frame-parser/consequential-delete.yaml
+      - evals/fixtures/task-frame-parser/quarantined-injection.yaml
+      - evals/fixtures/task-frame-parser/blocked-unauthenticated.yaml
+      - tools/parse_task_frame.py
+    updated_at: 2026-06-18
   - id: spec.interpreter-acceptance-schema
     type: spec
     label: Acceptance Contract Schema
@@ -826,6 +854,62 @@ edges:
     evidence:
       - tools/self_check.py
       - tools/partition_trusted_input.py
+    updated_at: 2026-06-18
+  - id: edge.core.owns.interpreter-task-frame-parser
+    type: owns
+    source: dom.core
+    target: tool.interpreter-task-frame-parser
+    status: active
+    confidence: 0.8
+    weight: 0.9
+    evidence:
+      - tools/parse_task_frame.py
+      - specs/interpreter-task-model.md
+    updated_at: 2026-06-18
+  - id: edge.interpreter-task-frame-parser.uses.trust-partitioner
+    type: uses
+    source: tool.interpreter-task-frame-parser
+    target: tool.interpreter-trust-partitioner
+    status: active
+    confidence: 0.9
+    weight: 0.9
+    evidence:
+      - tools/parse_task_frame.py
+      - tools/partition_trusted_input.py
+    updated_at: 2026-06-18
+  - id: edge.interpreter-task-frame-parser.uses.task-frame-schema
+    type: uses
+    source: tool.interpreter-task-frame-parser
+    target: spec.interpreter-task-frame-schema
+    status: active
+    confidence: 0.9
+    weight: 0.9
+    evidence:
+      - tools/parse_task_frame.py
+      - schemas/interpreter/task-frame.schema.json
+    updated_at: 2026-06-18
+  - id: edge.interpreter-parser-fixtures.evaluate.parser
+    type: evaluates
+    source: eval.interpreter-task-frame-parser-fixtures
+    target: tool.interpreter-task-frame-parser
+    status: active
+    confidence: 0.8
+    weight: 0.8
+    evidence:
+      - evals/fixtures/task-frame-parser/quarantined-injection.yaml
+      - evals/fixtures/task-frame-parser/consequential-delete.yaml
+      - tools/parse_task_frame.py
+    updated_at: 2026-06-18
+  - id: edge.self-check.uses.interpreter-task-frame-parser
+    type: uses
+    source: tool.self-check
+    target: tool.interpreter-task-frame-parser
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - tools/self_check.py
+      - tools/parse_task_frame.py
     updated_at: 2026-06-18
   - id: edge.core.owns.manurella-orchestrator
     type: owns

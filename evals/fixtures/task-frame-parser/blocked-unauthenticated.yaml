@@ -1,0 +1,21 @@
+envelope:
+  schema_version: trusted-input-envelope.v0
+  envelope_id: parser.blocked
+  purpose: task_intake
+  session_ref: session.parser
+  received_at: "2026-06-18T11:05:00Z"
+  items:
+    - item_id: user.unverified
+      kind: user_instruction
+      content: Deploy the application.
+      content_ref: webhook://unknown/1
+      source: {origin: user, channel: webhook, principal_ref: claimed-user}
+      authentication: {status: unverified, method: null, evidence_ref: null}
+      claimed_authority: user_instruction
+      control_claims: [goal, autonomy, permission]
+      provenance:
+        captured_at: "2026-06-18T11:05:00Z"
+        digest: sha256:7000000000000000000000000000000000000000000000000000000000000000
+        parent_refs: []
+expected_error_codes:
+  - trust.missing_authenticated_user_instruction

@@ -28,6 +28,24 @@ python tools/partition_trusted_input.py --repo . --input path/to/envelope.yaml
 
 The partitioner derives authority from item kind, origin, and verified authentication evidence. Content cannot grant itself authority. System/runtime policy, authenticated user instruction, prior confirmed state, and untrusted data remain separate; unauthorized control claims are quarantined, and task intake without an authenticated user instruction is blocked. The result contains references and findings, not copied content.
 
+## Task Frame Parser Baseline
+
+Run the conservative natural-language parser fixtures:
+
+```powershell
+python tools/parse_task_frame.py --repo . --fixtures
+```
+
+Compile one validated trusted input envelope into a schema-valid Task Frame:
+
+```powershell
+python tools/parse_task_frame.py --repo . --input path/to/envelope.yaml --locale en-LK
+```
+
+The parser consumes only authenticated user-instruction content as intent. Trusted policy and prior state become context references; retrieved, tool, model, and artifact content remain untrusted references and cannot alter the goal. The baseline recognizes bounded work types, project posture, file artifacts, explicit constraints, coarse domains, vague requests, and high-risk action verbs. It fails closed on unauthenticated task intake and requires permission plus confirmation for external or destructive action.
+
+This is a deterministic reference baseline and security regression oracle, not a claim of general natural-language understanding. Unknown language is preserved as user-authored intent and conservatively classified; production parsing still needs schema-constrained model output, semantic validation, and baseline-vs-guided evaluations.
+
 ## Interpreter Contract Validator
 
 Validate the Task Frame and Acceptance Contract schemas, semantic invariants, Family A-E projections, project postures, and representative fixtures:

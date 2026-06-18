@@ -42,6 +42,7 @@ Artifacts:
 - `schemas/interpreter/trust-partition.schema.json`
 - `schemas/core/routing-decision.schema.json`
 - `tools/partition_trusted_input.py`
+- `tools/parse_task_frame.py`
 - `tools/validate_interpreter.py`
 - `tools/compile_core_packet.py`
 - `specs/core-operating-protocol.md`
@@ -58,6 +59,7 @@ Acceptance:
 - Effort levels are reasoning-depth policies, not vague quality labels.
 - Interpreter contracts pass structural, semantic, compatibility-projection, and negative fixture checks.
 - Interpreter input is provenance-bound and partitioned by derived authority before parsing.
+- A conservative parser baseline compiles authenticated user intent into schema-valid Task Frames and blocks unsafe authority promotion.
 - Core compiles validated bundles into direct, blocked, or delegated routing decisions without transcript leakage.
 
 ### W2. Cognitive Graph
