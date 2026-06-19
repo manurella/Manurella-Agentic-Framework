@@ -1,0 +1,125 @@
+schema_version: guarded-parser-decision.v0
+adapter_version: guarded-model-inference.v0
+mode: guarded
+disposition: candidate_selected
+selected_parser: model-inference-compiler
+promotion:
+  result_ref: evals/results/stepfun-inference-v1-promotion.parser-promotion.yaml
+  status: pass
+  identity_match: true
+candidate:
+  model: stepfun/step-3.7-flash:free
+  prompt_version: interpreter-inference-benchmark.v1
+  would_be_eligible: true
+  schema_valid: true
+  trust_aligned: true
+  semantic_valid: true
+  routing_valid: true
+  issues: []
+selected_task_frame:
+  identity:
+    frame_id: tf.benchmark.cross-domain
+    version: 1
+    parent_frame_id: null
+    root_frame_id: tf.benchmark.cross-domain
+    project_id: null
+  source:
+    raw_request: Create a landing page and a matching hero image.
+    turn_refs: &id001
+    - turn://benchmark/2
+    trusted_context_refs: []
+    untrusted_data_refs: []
+    timestamp: '2026-06-18T12:01:00Z'
+    locale: en-US
+  objective:
+    normalized_goal: Create a landing page and a matching hero image.
+    work_types:
+    - create
+    desired_outcomes:
+    - id: outcome.model-inference
+      statement: Create a landing page and a matching hero image.
+      kind: artifact
+      priority: required
+      source_authority: interpreter_inferred
+    autonomy: execute_with_approval
+  scope:
+    horizon: session
+    clarity: executable
+    project_posture: genesis
+    artifacts:
+    - id: artifact.1
+      kind: web_page
+      description: landing page
+      required: true
+    - id: artifact.2
+      kind: image
+      description: matching hero image
+      required: true
+    dependencies: []
+  constraints:
+    hard: []
+    soft: []
+    exclusions: []
+    deadline: null
+    freshness: stable
+  uncertainty:
+    ambiguities: []
+    assumptions: []
+    missing_information: []
+    contradictions: []
+  governance:
+    consequence: controlled
+    reversibility: reversible
+    data_classification: internal
+    permissions_required:
+    - id: permission.model-inferred-action
+      capability: external_action
+      status: required
+    confirmations_required:
+    - id: confirmation.model-inferred-action
+      subject: Confirm consequential or irreversible action
+      status: required
+    policy_flags:
+    - model_inferred_high_risk
+  execution_preferences:
+    requested_mode: null
+    requested_effort: null
+    latency_preference: null
+    cost_preference: null
+  acceptance_contract_ref: ac.benchmark.cross-domain@1
+  routing_hints:
+    candidate_domains:
+    - build
+    - pixel
+    required_capabilities:
+    - create_task
+    likely_tools: []
+    memory_requirements: []
+    unresolved_routing_questions: []
+  provenance:
+    interpreter_version: model-inference-compiler.v0
+    created_at: '2026-06-18T12:01:00Z'
+    entries:
+    - field_path: source.raw_request
+      authority: immutable_source
+      source_refs: *id001
+    - field_path: objective.normalized_goal
+      authority: interpreter_inferred
+      source_refs: &id002
+      - user.cross-domain
+    - field_path: governance
+      authority: policy_derived
+      source_refs: *id002
+    - field_path: routing_hints
+      authority: interpreter_inferred
+      source_refs: *id002
+    - field_path: objective,scope,constraints,uncertainty,governance,routing_hints
+      authority: interpreter_inferred
+      source_refs:
+      - user.cross-domain
+    supersedes_frame_ref: null
+    changed_fields: []
+    invalidated_outputs: []
+  lifecycle:
+    status: awaiting_clarification
+    updated_at: '2026-06-18T12:01:00Z'

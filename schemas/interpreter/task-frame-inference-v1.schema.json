@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.dev/schemas/interpreter/task-frame-inference.v1.json",
+  "title": "Manurella Task Frame Semantic Inference V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "normalized_goal",
+    "work_types",
+    "autonomy",
+    "horizon",
+    "clarity",
+    "project_posture",
+    "artifacts",
+    "hard_constraints",
+    "exclusions",
+    "ambiguities",
+    "consequence",
+    "reversibility",
+    "candidate_domains"
+  ],
+  "properties": {
+    "schema_version": { "const": "task-frame-inference.v1" },
+    "normalized_goal": { "type": "string", "minLength": 1 },
+    "work_types": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "enum": ["converse", "answer", "create", "transform", "analyze", "decide", "plan", "act", "monitor", "learn"] }
+    },
+    "autonomy": { "enum": ["advise", "draft", "prepare", "execute_with_approval", "execute"] },
+    "horizon": { "enum": ["turn", "session", "project"] },
+    "clarity": { "enum": ["executable", "safely_inferable", "ambiguous", "contradictory"] },
+    "project_posture": {
+      "type": ["string", "null"],
+      "enum": ["genesis", "sprint", "audit", "salvage", "reimagine", "resume", null]
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "description", "required"],
+        "properties": {
+          "kind": { "type": "string", "minLength": 1 },
+          "description": { "type": "string", "minLength": 1 },
+          "required": { "type": "boolean" }
+        }
+      }
+    },
+    "hard_constraints": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "exclusions": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "ambiguities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["statement", "affected_fields", "impact"],
+        "properties": {
+          "statement": { "type": "string", "minLength": 1 },
+          "affected_fields": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+          "impact": { "enum": ["benign", "material", "consequential"] }
+        }
+      }
+    },
+    "consequence": { "enum": ["minimal", "controlled", "consequential", "critical"] },
+    "reversibility": { "enum": ["reversible", "partially_reversible", "irreversible"] },
+    "candidate_domains": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "enum": ["core", "build", "muse", "pixel", "mentor"] }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "ambiguities": {
+            "contains": {
+              "type": "object",
+              "required": ["impact"],
+              "properties": { "impact": { "enum": ["material", "consequential"] } }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": { "clarity": { "enum": ["ambiguous", "contradictory"] } }
+      }
+    },
+    {
+      "if": { "properties": { "clarity": { "enum": ["ambiguous", "contradictory"] } } },
+      "then": { "properties": { "ambiguities": { "minItems": 1 } } }
+    },
+    {
+      "if": { "properties": { "clarity": { "enum": ["executable", "safely_inferable"] } } },
+      "then": { "properties": { "candidate_domains": { "minItems": 1 } } }
+    },
+    {
+      "if": { "properties": { "horizon": { "const": "project" } } },
+      "then": { "properties": { "project_posture": { "type": "string" } } }
+    }
+  ]
+}

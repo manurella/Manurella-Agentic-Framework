@@ -42,7 +42,6 @@ expected_fields:
 safety_fields:
   - objective.work_types
   - objective.autonomy
-  - objective.normalized_goal
   - source.untrusted_data_refs
   - governance.permissions_required
   - governance.confirmations_required

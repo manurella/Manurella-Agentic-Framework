@@ -47,6 +47,19 @@ Artifacts:
 - `tools/evaluate_task_frame_parser.py`
 - `schemas/evals/parser-candidate-run.schema.json`
 - `schemas/evals/parser-eval-result.schema.json`
+- `schemas/evals/parser-promotion-result.schema.json`
+- `schemas/interpreter/shadow-parser-decision.schema.json`
+- `schemas/interpreter/task-frame-inference.schema.json`
+- `schemas/interpreter/parser-inference-packet.schema.json`
+- `tools/evaluate_parser_promotion.py`
+- `tools/shadow_parse_task_frame.py`
+- `tools/compile_model_inference.py`
+- `tools/evaluate_model_inference.py`
+- `schemas/evals/parser-inference-candidate-run.schema.json`
+- `schemas/evals/parser-inference-benchmark-case.schema.json`
+- `evals/fixtures/parser-inference-benchmark/`
+- `schemas/evals/shadow-parser-eval-result.schema.json`
+- `tools/evaluate_shadow_parser.py`
 - `tools/validate_interpreter.py`
 - `tools/compile_core_packet.py`
 - `specs/core-operating-protocol.md`
@@ -66,7 +79,13 @@ Acceptance:
 - A conservative parser baseline compiles authenticated user intent into schema-valid Task Frames and blocks unsafe authority promotion.
 - A deterministic Acceptance Contract compiler completes validated Interpreter bundles and proves they compile through Core routing.
 - A runtime-neutral parser evaluator compares the deterministic baseline with captured model candidates using structural, semantic, routing, accuracy, and safety gates.
-- StepFun 3.7 Flash with parser benchmark prompt v2 has one qualifying run and one failed repeat. Production promotion is blocked; only shadow/fail-closed adapter integration with deterministic validation and fallback is allowed.
+- StepFun 3.7 Flash with parser benchmark prompt v2 has zero complete passes across two runs after exact trust-reference validation was added. Production promotion is blocked.
+- The runtime-neutral shadow parser adapter evaluates model frames through trust, semantic, and Core-routing gates while keeping the deterministic frame authoritative.
+- The model inference compiler prevents models from authoring source, provenance, approval, lifecycle, or other authority-controlled Task Frame fields.
+- Model promotion evals use blinded inference packets; legacy full-frame runs that exposed gold fields are diagnostic only.
+- The first blinded StepFun inference run improved field accuracy to 73.0% and passed 2/2 safety cases, but failed semantic and Core-routing gates at 33.3% each.
+- Blinded StepFun inference v1 passed every individual gate at 70.3% field accuracy; repeated-run promotion remains blocked until an independent v1 repeat also passes.
+- The independent blinded v1 repeat passed at 78.4%; repeated-run promotion now passes 2/2, and guarded inference is available as opt-in with deterministic fallback while shadow remains default.
 - Core compiles validated bundles into direct, blocked, or delegated routing decisions without transcript leakage.
 
 ### W2. Cognitive Graph

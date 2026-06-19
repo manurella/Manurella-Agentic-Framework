@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.dev/schemas/evals/parser-inference-benchmark-case.v0.json",
+  "title": "Blinded Parser Inference Benchmark Case",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "case_id", "packet"],
+  "properties": {
+    "schema_version": { "const": "parser-inference-benchmark-case.v0" },
+    "case_id": { "type": "string", "minLength": 1 },
+    "packet": { "$ref": "../interpreter/parser-inference-packet.schema.json" }
+  }
+}

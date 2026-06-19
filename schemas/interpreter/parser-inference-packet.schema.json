@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.dev/schemas/interpreter/parser-inference-packet.v0.json",
+  "title": "Manurella Parser Inference Packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "packet_id", "authenticated_request", "turn_refs", "trusted_context_refs", "untrusted_data_refs", "output_schema_ref", "rules"],
+  "properties": {
+    "schema_version": { "const": "parser-inference-packet.v0" },
+    "packet_id": { "type": "string", "minLength": 1 },
+    "authenticated_request": { "type": "string", "minLength": 1 },
+    "turn_refs": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "trusted_context_refs": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "untrusted_data_refs": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "output_schema_ref": { "const": "schemas/interpreter/task-frame-inference-v1.schema.json" },
+    "rules": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } }
+  }
+}

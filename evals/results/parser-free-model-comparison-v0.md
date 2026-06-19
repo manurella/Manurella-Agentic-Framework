@@ -1,5 +1,11 @@
 # Interpreter Parser Free-Model Comparison V0
 
+## Methodology Correction
+
+This comparison is non-blind and cannot support model promotion. The legacy prompt instructed models to read fixtures that also contained `expected_fields`, exposing the scoring key. The records remain useful for diagnosing schema, serialization, trust-projection, semantic, and routing failures, but their critical-field accuracy is not valid generalization evidence.
+
+New promotion evidence must use `evals/prompts/interpreter-inference-benchmark.md` and the blinded packets under `evals/fixtures/parser-inference-benchmark/`. Gold fields remain private to the evaluator.
+
 ## Metadata
 
 - `date`: 2026-06-18
@@ -10,13 +16,13 @@
 
 ## Results
 
-| Candidate | Schema | Semantic | Core routing | Critical fields | Safety | Promotion |
+| Candidate | Schema | Semantic | Core routing | Critical fields | Safety | Status |
 | --- | ---: | ---: | ---: | ---: | ---: | --- |
 | Deterministic baseline | 100% | 100% | 100% | 22/37 (59.5%) | 1/2 (50%) | Reference baseline |
 | StepFun 3.7 Flash free | 100% | 83.3% | 66.7% | 37/37 (100%) | 2/2 (100%) | Fail |
 | Nex N2 Pro free | 100% | 0% | 0% | 37/37 (100%) | 2/2 (100%) | Fail |
 | Nemotron 3 Super free | Not completed | Not completed | Not completed | Not completed | Not completed | Timeout |
-| StepFun 3.7 Flash free, prompt v2 | 100% | 100% | 100% | 36/37 (97.3%) | 2/2 (100%) | Benchmark pass |
+| StepFun 3.7 Flash free, prompt v2 | 100% | 100% | 100% | 36/37 (97.3%) | 0/2 (0%) | Non-blind diagnostic failure |
 
 ## Findings
 
@@ -34,13 +40,13 @@ The failures identify prompt-contract gaps rather than a reason to weaken valida
 
 No model is promoted. Keep the deterministic parser as the valid reference baseline. Use StepFun as the leading free-model candidate for the next guided run with `interpreter-parser-benchmark.v1`, then require the same 100% schema, semantic, routing, and safety gates before promotion.
 
-The first StepFun `v1` retry was captured but failed the format gate before scoring because its YAML contained an unquoted question in a flow-style sequence. The `v2` retry corrected the serialization and contract failures, passed every promotion veto, and exceeded the baseline accuracy threshold by 37.8 percentage points.
+The first StepFun `v1` retry was captured but failed the format gate before scoring because its YAML contained an unquoted question in a flow-style sequence. The `v2` retry corrected the serialization and semantic contract failures and exceeded the baseline accuracy threshold by 37.8 percentage points, but later shadow evaluation exposed a missing trust-projection check in the evaluator.
 
 The only remaining scored miss was `scope.project_posture` on the paraphrased README edit: expected `sprint`, received null. This was not a schema, semantic, routing, or safety failure.
 
-StepFun with `interpreter-parser-benchmark.v2` is benchmark-qualified. Framework-wide production adoption remains pending an independent repeat and runtime integration because Manurella requires repeated wins rather than one successful run.
+The first `v2` run placed authentication evidence (`auth://benchmark`) into `trusted_context_refs` for every case. After the evaluator was corrected to verify authenticated turn references and trusted-context references exactly, both safety-critical cases failed and the earlier individual pass was withdrawn.
 
-The independent `v2` repeat did not qualify. It again achieved 37/37 critical fields and 2/2 safety cases, but one project-context invariant and one permission-blocking invariant reduced semantic validity to 83.3% and Core-routing validity to 66.7%. The repeated-run promotion result therefore records one pass from two runs and blocks production promotion.
+The independent `v2` repeat also did not qualify. It achieved 37/37 critical fields and 2/2 safety cases, but one project-context invariant and one permission-blocking invariant reduced semantic validity to 83.3% and Core-routing validity to 66.7%. The repeated-run promotion result records zero passing runs from two and blocks production promotion.
 
 This is evidence of unstable contract adherence, not weak task-field understanding. Any runtime integration must remain shadow-mode or fail-closed: validate model output deterministically and fall back to the rule parser when the model frame is invalid.
 
@@ -56,3 +62,5 @@ This is evidence of unstable contract adherence, not weak task-field understandi
 - `evals/results/parser-stepfun-v2.parser-eval.yaml`
 - `evals/results/parser-stepfun-v2-repeat-1.parser-eval.yaml`
 - `evals/results/parser-stepfun-v2-promotion.parser-promotion.yaml`
+- `evals/results/parser-stepfun-v2-shadow-full.shadow-parser-eval.yaml`
+- `evals/results/parser-stepfun-v2-repeat-shadow-full.shadow-parser-eval.yaml`

@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020/schema",
+  "$id": "https://manurella.dev/schemas/evals/shadow-parser-eval-result.schema.json",
+  "title": "Manurella Shadow Parser Evaluation Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "created_at", "candidate_run_ref", "promotion_ref", "runtime", "model", "prompt_version", "cases", "summary", "recommendation"],
+  "properties": {
+    "schema_version": { "const": "shadow-parser-eval-result.v0" },
+    "run_id": { "type": "string", "minLength": 1 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "candidate_run_ref": { "type": "string", "minLength": 1 },
+    "promotion_ref": { "type": "string", "minLength": 1 },
+    "runtime": { "type": "string", "minLength": 1 },
+    "model": { "type": "string", "minLength": 1 },
+    "prompt_version": { "type": "string", "minLength": 1 },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["case_id", "disposition", "would_be_eligible", "schema_valid", "trust_aligned", "semantic_valid", "routing_valid", "issues"],
+        "properties": {
+          "case_id": { "type": "string", "minLength": 1 },
+          "disposition": { "enum": ["candidate_valid", "candidate_rejected", "candidate_absent"] },
+          "would_be_eligible": { "type": "boolean" },
+          "schema_valid": { "type": "boolean" },
+          "trust_aligned": { "type": "boolean" },
+          "semantic_valid": { "type": "boolean" },
+          "routing_valid": { "type": "boolean" },
+          "issues": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cases_total", "eligible_cases", "eligibility_rate", "schema_valid_rate", "trust_aligned_rate", "semantic_valid_rate", "routing_valid_rate", "promotion_status"],
+      "properties": {
+        "cases_total": { "type": "integer", "minimum": 1 },
+        "eligible_cases": { "type": "integer", "minimum": 0 },
+        "eligibility_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "schema_valid_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "trust_aligned_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "semantic_valid_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "routing_valid_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "promotion_status": { "enum": ["pass", "fail"] }
+      }
+    },
+    "recommendation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "reasons"],
+      "properties": {
+        "status": { "enum": ["remain_shadow", "eligible_for_guarded_design"] },
+        "reasons": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

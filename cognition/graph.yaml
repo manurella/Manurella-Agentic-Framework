@@ -795,7 +795,7 @@ nodes:
     type: eval
     label: Interpreter Parser Benchmark Corpus
     status: active
-    summary: Independent six-case corpus exposing deterministic gaps in paraphrase, implicit intent, composition, resume ambiguity, destructive euphemism, and indirect injection.
+    summary: Private six-case gold corpus for scoring paraphrase, implicit intent, composition, resume ambiguity, destructive euphemism, and indirect injection; model-facing runs must use blinded packet projections.
     owners:
       - dom.core
     evidence:
@@ -823,7 +823,7 @@ nodes:
     type: eval
     label: Interpreter Parser Free-Model Comparison V0
     status: active
-    summary: StepFun and Nex both achieved 37/37 critical fields and 2/2 safety cases, but failed semantic or Core-routing promotion gates; Nemotron ended in an upstream idle timeout, and the first StepFun v1 retry failed YAML parsing. StepFun remains the leading unpromoted candidate.
+    summary: Non-blind diagnostic comparison retained for failure analysis only because the legacy prompt exposed gold expected fields; it cannot support model promotion.
     owners:
       - dom.core
     evidence:
@@ -838,7 +838,7 @@ nodes:
     type: eval
     label: Interpreter Parser StepFun V2
     status: active
-    summary: First individually qualified external parser run with 100 percent schema, semantic, routing, and safety validity and 36/37 critical fields; its independent repeat failed semantic and routing gates.
+    summary: Non-blind diagnostic run later rejected because full shadow evaluation found authentication evidence incorrectly inserted into trusted context; no promotion evidence is claimed.
     owners:
       - dom.core
     evidence:
@@ -872,6 +872,193 @@ nodes:
       - schemas/evals/parser-promotion-result.schema.json
       - evals/results/parser-stepfun-v2-promotion.parser-promotion.yaml
       - tools/README.md
+    updated_at: 2026-06-19
+  - id: spec.shadow-parser-decision-schema
+    type: spec
+    label: Shadow Parser Decision Schema
+    status: active
+    summary: Runtime-neutral contract for model-candidate eligibility evidence while the deterministic Task Frame remains authoritative.
+    owners:
+      - dom.core
+    evidence:
+      - schemas/interpreter/shadow-parser-decision.schema.json
+      - tools/shadow_parse_task_frame.py
+    updated_at: 2026-06-19
+  - id: tool.interpreter-shadow-parser
+    type: tool
+    label: Interpreter Shadow Parser
+    status: active
+    summary: Fail-closed adapter that validates untrusted model Task Frames against source trust, schema, semantics, and Core routing without activating model output.
+    owners:
+      - dom.core
+    evidence:
+      - tools/shadow_parse_task_frame.py
+      - schemas/interpreter/shadow-parser-decision.schema.json
+      - tools/README.md
+    updated_at: 2026-06-19
+  - id: eval.interpreter-shadow-parser-v0
+    type: eval
+    label: Interpreter Shadow Parser V0
+    status: active
+    summary: Adversarial smoke coverage plus full-corpus StepFun evaluation prove trust-misaligned and invalid routing candidates are rejected while the deterministic parser remains authoritative.
+    owners:
+      - dom.core
+    evidence:
+      - evals/results/parser-stepfun-v2-trust-rejected.shadow-parser.yaml
+      - evals/results/parser-stepfun-v2-repeat-rejected.shadow-parser.yaml
+      - evals/results/parser-stepfun-v2-shadow-full.shadow-parser-eval.yaml
+      - evals/results/parser-stepfun-v2-repeat-shadow-full.shadow-parser-eval.yaml
+      - tools/shadow_parse_task_frame.py
+    updated_at: 2026-06-19
+  - id: spec.shadow-parser-eval-result-schema
+    type: spec
+    label: Shadow Parser Eval Result Schema
+    status: active
+    summary: Compact full-corpus contract for shadow eligibility, trust alignment, semantic validity, routing validity, and guarded-mode recommendation.
+    owners:
+      - dom.core
+    evidence:
+      - schemas/evals/shadow-parser-eval-result.schema.json
+      - tools/evaluate_shadow_parser.py
+    updated_at: 2026-06-19
+  - id: tool.interpreter-shadow-parser-evaluator
+    type: tool
+    label: Interpreter Shadow Parser Evaluator
+    status: active
+    summary: Runs a captured model candidate across the complete parser corpus through the shadow adapter and blocks guarded design unless both corpus and repeated-run gates pass.
+    owners:
+      - dom.core
+    evidence:
+      - tools/evaluate_shadow_parser.py
+      - schemas/evals/shadow-parser-eval-result.schema.json
+      - evals/results/parser-stepfun-v2-shadow-full.shadow-parser-eval.yaml
+      - evals/results/parser-stepfun-v2-repeat-shadow-full.shadow-parser-eval.yaml
+    updated_at: 2026-06-19
+  - id: spec.task-frame-inference-schema
+    type: spec
+    label: Task Frame Inference Schema
+    status: active
+    summary: Narrow structured-decoding contract that limits model output to semantic classification and excludes authority-controlled Task Frame fields.
+    owners:
+      - dom.core
+    evidence:
+      - schemas/interpreter/task-frame-inference.schema.json
+      - schemas/interpreter/task-frame-inference-v1.schema.json
+      - tools/compile_model_inference.py
+    updated_at: 2026-06-19
+  - id: spec.parser-inference-packet-schema
+    type: spec
+    label: Parser Inference Packet Schema
+    status: active
+    summary: Bounded packet containing authenticated request text and reference-only trusted and untrusted context for model semantic inference.
+    owners:
+      - dom.core
+    evidence:
+      - schemas/interpreter/parser-inference-packet.schema.json
+      - tools/compile_model_inference.py
+    updated_at: 2026-06-19
+  - id: tool.interpreter-model-inference-compiler
+    type: tool
+    label: Interpreter Model Inference Compiler
+    status: active
+    summary: Creates bounded model packets and deterministically assembles semantic inference into shadow-validated Task Frames with authority fields controlled by Core.
+    owners:
+      - dom.core
+    evidence:
+      - tools/compile_model_inference.py
+      - schemas/interpreter/task-frame-inference.schema.json
+      - schemas/interpreter/parser-inference-packet.schema.json
+      - tools/README.md
+    updated_at: 2026-06-19
+  - id: spec.parser-inference-candidate-run-schema
+    type: spec
+    label: Parser Inference Candidate Run Schema
+    status: active
+    summary: Runtime-neutral captured-run contract for blinded semantic inference outputs and exact runtime metadata.
+    owners:
+      - dom.core
+    evidence:
+      - schemas/evals/parser-inference-candidate-run.schema.json
+      - evals/prompts/interpreter-inference-benchmark.md
+    updated_at: 2026-06-19
+  - id: eval.interpreter-inference-blinded-corpus
+    type: eval
+    label: Interpreter Inference Blinded Corpus
+    status: active
+    summary: Six generated model-facing packets with authenticated intent and bounded references but no gold fields, raw envelopes, authentication records, or retrieved content.
+    owners:
+      - dom.core
+    evidence:
+      - evals/fixtures/parser-inference-benchmark/paraphrased-edit.yaml
+      - evals/fixtures/parser-inference-benchmark/cross-domain.yaml
+      - evals/fixtures/parser-inference-benchmark/implicit-audit.yaml
+      - evals/fixtures/parser-inference-benchmark/vague-resume.yaml
+      - evals/fixtures/parser-inference-benchmark/destructive-euphemism.yaml
+      - evals/fixtures/parser-inference-benchmark/indirect-injection.yaml
+      - evals/prompts/interpreter-inference-benchmark.md
+    updated_at: 2026-06-19
+  - id: tool.interpreter-model-inference-evaluator
+    type: tool
+    label: Interpreter Model Inference Evaluator
+    status: active
+    summary: Privately joins blinded model inference outputs to gold cases, compiles through the deterministic authority boundary, and applies parser promotion gates.
+    owners:
+      - dom.core
+    evidence:
+      - tools/evaluate_model_inference.py
+      - schemas/evals/parser-inference-candidate-run.schema.json
+      - schemas/evals/parser-inference-benchmark-case.schema.json
+      - tools/README.md
+    updated_at: 2026-06-19
+  - id: eval.interpreter-inference-stepfun-v0
+    type: eval
+    label: Interpreter Inference StepFun V0
+    status: active
+    summary: First blinded external inference run achieved 27/37 critical fields and 2/2 explicit safety cases but only 2/6 semantic and Core-routing passes, so promotion failed.
+    owners:
+      - dom.core
+    evidence:
+      - evals/results/stepfun-inference-v0.inference-candidate.yaml
+      - evals/results/stepfun-inference-v0.parser-eval.yaml
+      - evals/prompts/interpreter-inference-benchmark.md
+    updated_at: 2026-06-19
+  - id: eval.interpreter-inference-stepfun-v1
+    type: eval
+    label: Interpreter Inference StepFun V1
+    status: active
+    summary: Two independent blinded v1 runs passed all schema, semantic, routing, and safety gates with 26/37 and 29/37 critical fields; repeated-run promotion passes.
+    owners:
+      - dom.core
+    evidence:
+      - evals/results/stepfun-inference-v1.inference-candidate.yaml
+      - evals/results/stepfun-inference-v1.parser-eval.yaml
+      - evals/results/stepfun-inference-v1-repeat-1.inference-candidate.yaml
+      - evals/results/stepfun-inference-v1-repeat-1.parser-eval.yaml
+      - evals/results/stepfun-inference-v1-promotion.parser-promotion.yaml
+      - evals/prompts/interpreter-inference-benchmark.md
+    updated_at: 2026-06-19
+  - id: spec.guarded-parser-decision-schema
+    type: spec
+    label: Guarded Parser Decision Schema
+    status: active
+    summary: Opt-in selection contract requiring exact repeated-run promotion identity and current-request validation before model inference can be authoritative.
+    owners:
+      - dom.core
+    evidence:
+      - schemas/interpreter/guarded-parser-decision.schema.json
+      - tools/compile_model_inference.py
+    updated_at: 2026-06-19
+  - id: eval.interpreter-guarded-inference-v0
+    type: eval
+    label: Interpreter Guarded Inference V0
+    status: active
+    summary: Real blinded StepFun inference selected only after exact 2/2 promotion identity and per-request schema, trust, semantic, and routing validation passed.
+    owners:
+      - dom.core
+    evidence:
+      - evals/results/stepfun-inference-v1-promotion.parser-promotion.yaml
+      - evals/results/stepfun-inference-v1-cross-domain.guarded-parser.yaml
+      - tools/compile_model_inference.py
     updated_at: 2026-06-19
   - id: spec.interpreter-acceptance-schema
     type: spec
@@ -1247,6 +1434,215 @@ edges:
     evidence:
       - tools/self_check.py
       - tools/evaluate_parser_promotion.py
+    updated_at: 2026-06-19
+  - id: edge.core.owns.interpreter-shadow-parser
+    type: owns
+    source: dom.core
+    target: tool.interpreter-shadow-parser
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/shadow_parse_task_frame.py
+      - specs/interpreter-task-model.md
+    updated_at: 2026-06-19
+  - id: edge.interpreter-shadow-parser.uses.decision-schema
+    type: uses
+    source: tool.interpreter-shadow-parser
+    target: spec.shadow-parser-decision-schema
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/shadow_parse_task_frame.py
+      - schemas/interpreter/shadow-parser-decision.schema.json
+    updated_at: 2026-06-19
+  - id: edge.interpreter-shadow-parser-v0.evaluates.shadow-parser
+    type: evaluates
+    source: eval.interpreter-shadow-parser-v0
+    target: tool.interpreter-shadow-parser
+    status: active
+    confidence: 0.9
+    weight: 0.9
+    evidence:
+      - evals/results/parser-stepfun-v2-trust-rejected.shadow-parser.yaml
+      - evals/results/parser-stepfun-v2-repeat-rejected.shadow-parser.yaml
+    updated_at: 2026-06-19
+  - id: edge.core.owns.interpreter-shadow-parser-evaluator
+    type: owns
+    source: dom.core
+    target: tool.interpreter-shadow-parser-evaluator
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/evaluate_shadow_parser.py
+      - specs/interpreter-task-model.md
+    updated_at: 2026-06-19
+  - id: edge.interpreter-shadow-parser-evaluator.uses.eval-schema
+    type: uses
+    source: tool.interpreter-shadow-parser-evaluator
+    target: spec.shadow-parser-eval-result-schema
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/evaluate_shadow_parser.py
+      - schemas/evals/shadow-parser-eval-result.schema.json
+    updated_at: 2026-06-19
+  - id: edge.self-check.uses.interpreter-shadow-parser-evaluator
+    type: uses
+    source: tool.self-check
+    target: tool.interpreter-shadow-parser-evaluator
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - tools/self_check.py
+      - tools/evaluate_shadow_parser.py
+    updated_at: 2026-06-19
+  - id: edge.core.owns.interpreter-model-inference-compiler
+    type: owns
+    source: dom.core
+    target: tool.interpreter-model-inference-compiler
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/compile_model_inference.py
+      - specs/interpreter-task-model.md
+    updated_at: 2026-06-19
+  - id: edge.interpreter-model-inference-compiler.uses.inference-schema
+    type: uses
+    source: tool.interpreter-model-inference-compiler
+    target: spec.task-frame-inference-schema
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/compile_model_inference.py
+      - schemas/interpreter/task-frame-inference.schema.json
+    updated_at: 2026-06-19
+  - id: edge.interpreter-model-inference-compiler.uses.packet-schema
+    type: uses
+    source: tool.interpreter-model-inference-compiler
+    target: spec.parser-inference-packet-schema
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/compile_model_inference.py
+      - schemas/interpreter/parser-inference-packet.schema.json
+    updated_at: 2026-06-19
+  - id: edge.self-check.uses.interpreter-model-inference-compiler
+    type: uses
+    source: tool.self-check
+    target: tool.interpreter-model-inference-compiler
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - tools/self_check.py
+      - tools/compile_model_inference.py
+    updated_at: 2026-06-19
+  - id: edge.core.owns.interpreter-model-inference-evaluator
+    type: owns
+    source: dom.core
+    target: tool.interpreter-model-inference-evaluator
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/evaluate_model_inference.py
+      - specs/interpreter-task-model.md
+    updated_at: 2026-06-19
+  - id: edge.interpreter-model-inference-evaluator.uses.candidate-schema
+    type: uses
+    source: tool.interpreter-model-inference-evaluator
+    target: spec.parser-inference-candidate-run-schema
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/evaluate_model_inference.py
+      - schemas/evals/parser-inference-candidate-run.schema.json
+    updated_at: 2026-06-19
+  - id: edge.interpreter-inference-blinded-corpus.evaluates.inference-evaluator
+    type: evaluates
+    source: eval.interpreter-inference-blinded-corpus
+    target: tool.interpreter-model-inference-evaluator
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - evals/fixtures/parser-inference-benchmark/indirect-injection.yaml
+      - tools/evaluate_model_inference.py
+    updated_at: 2026-06-19
+  - id: edge.self-check.uses.interpreter-model-inference-evaluator
+    type: uses
+    source: tool.self-check
+    target: tool.interpreter-model-inference-evaluator
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - tools/self_check.py
+      - tools/evaluate_model_inference.py
+    updated_at: 2026-06-19
+  - id: edge.interpreter-inference-stepfun-v0.evaluates.inference-compiler
+    type: evaluates
+    source: eval.interpreter-inference-stepfun-v0
+    target: tool.interpreter-model-inference-compiler
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - evals/results/stepfun-inference-v0.parser-eval.yaml
+      - tools/evaluate_model_inference.py
+    updated_at: 2026-06-19
+  - id: edge.interpreter-inference-stepfun-v1.evaluates.inference-compiler
+    type: evaluates
+    source: eval.interpreter-inference-stepfun-v1
+    target: tool.interpreter-model-inference-compiler
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - evals/results/stepfun-inference-v1.parser-eval.yaml
+      - tools/evaluate_model_inference.py
+    updated_at: 2026-06-19
+  - id: edge.interpreter-model-inference-compiler.uses.guarded-decision-schema
+    type: uses
+    source: tool.interpreter-model-inference-compiler
+    target: spec.guarded-parser-decision-schema
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/compile_model_inference.py
+      - schemas/interpreter/guarded-parser-decision.schema.json
+    updated_at: 2026-06-19
+  - id: edge.interpreter-guarded-inference-v0.evaluates.inference-compiler
+    type: evaluates
+    source: eval.interpreter-guarded-inference-v0
+    target: tool.interpreter-model-inference-compiler
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - evals/results/stepfun-inference-v1-cross-domain.guarded-parser.yaml
+      - evals/results/stepfun-inference-v1-promotion.parser-promotion.yaml
+    updated_at: 2026-06-19
+  - id: edge.self-check.uses.interpreter-shadow-parser
+    type: uses
+    source: tool.self-check
+    target: tool.interpreter-shadow-parser
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - tools/self_check.py
+      - tools/shadow_parse_task_frame.py
     updated_at: 2026-06-19
   - id: edge.core.owns.manurella-orchestrator
     type: owns

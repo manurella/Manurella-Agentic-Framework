@@ -423,7 +423,21 @@ The no-network self-test proves the harness and schemas. It does not constitute 
 
 The first durable deterministic baseline is `evals/results/parser-rule-baseline-v0.parser-eval.yaml`: structural, semantic, and Core routing validity are 100%, critical-field accuracy is 22/37, and safety-critical pass rate is 1/2. This establishes a meaningful baseline and demonstrates that deterministic structural reliability is not sufficient semantic or safety quality.
 
-The first individually qualified external candidate is `evals/results/parser-stepfun-v2.parser-eval.yaml`. StepFun 3.7 Flash with `interpreter-parser-benchmark.v2` achieved 100% schema, semantic, Core-routing, and safety validity with 36/37 critical fields. Its independent repeat achieved 37/37 critical fields and 2/2 safety cases but failed semantic and Core-routing gates. `evals/results/parser-stepfun-v2-promotion.parser-promotion.yaml` therefore blocks production promotion at one passing run out of two. A runtime adapter may proceed only in shadow or fail-closed mode with deterministic validation and rule-parser fallback.
+StepFun 3.7 Flash with `interpreter-parser-benchmark.v2` achieved high field accuracy in two runs, but neither now passes the complete gate. Full-corpus shadow evaluation found that the first run inserted authentication evidence into `trusted_context_refs`; the evaluator was strengthened to verify exact `turn_refs` and `trusted_context_refs`, withdrawing the earlier pass. The repeat preserved trust projection but failed one semantic and two Core-routing cases. `evals/results/parser-stepfun-v2-promotion.parser-promotion.yaml` blocks production promotion at zero passing runs out of two.
+
+`interpreter-parser-benchmark.v3` makes the source projection explicit: authenticated instruction content references populate `turn_refs`; only trusted policy and prior-confirmed-state content references populate `trusted_context_refs`; authentication evidence never becomes task context; and untrusted content references populate `untrusted_data_refs` exactly.
+
+The legacy full-frame model runs are non-blind diagnostics because their prompt exposed fixtures containing `expected_fields`. They cannot support promotion claims. The private gold corpus remains the scorer source, while models now receive only generated packets under `evals/fixtures/parser-inference-benchmark/`. `tools/evaluate_model_inference.py` validates that these packets contain no gold fields, envelopes, authentication records, or retrieved content before evaluating inference candidates.
+
+The first blinded external inference result is `evals/results/stepfun-inference-v0.parser-eval.yaml`. StepFun achieved 27/37 critical fields (73.0%) versus the 22/37 deterministic baseline and passed both explicit safety cases. It failed promotion because only 2/6 assembled frames passed full Interpreter semantics and Core routing. The result supports the inference-only architecture but does not support model activation.
+
+`task-frame-inference.v1` adds cross-field schema invariants: material or consequential ambiguity requires ambiguous or contradictory clarity; ambiguous work requires an ambiguity record; executable work requires at least one candidate domain; and project horizon requires project posture. Historical `v0` inference records remain valid under their original schema.
+
+The first blinded v1 result is `evals/results/stepfun-inference-v1.parser-eval.yaml`. It passed schema, semantic, Core-routing, and both safety gates, scoring 26/37 critical fields (70.3%) against the 59.5% baseline. This clears the individual evaluator by 10.8 percentage points but remains below production promotion because `evals/results/stepfun-inference-v1-promotion.parser-promotion.yaml` contains only one run and repeated evidence requires at least two.
+
+The independent blinded v1 repeat also passed every gate with 29/37 critical fields (78.4%). The repeated-run promotion record now passes at 2/2 runs, with minimum field accuracy 70.3% and minimum schema, semantic, routing, and safety rates of 100%.
+
+`guarded-model-inference.v0` is therefore available as an explicit opt-in adapter mode. It selects an assembled inference frame only when the promotion record passes, model and prompt identities match exactly, and the current frame passes schema, trust, semantic, and Core-routing validation. Otherwise it selects the deterministic baseline. Shadow remains the default until broader runtime observation and human residual-risk review support a default change.
 
 ## Executable Contract Slice
 
@@ -467,10 +481,38 @@ This slice is implemented when:
 5. Routing and handoff packets can be derived without copying the full transcript.
 6. Current Core behavior consumes the Task Frame without losing Family-level directness.
 
-Conditions 1-6 are satisfied for both hand-authored fixtures and the deterministic input-to-bundle pipeline. The trusted input envelope, trust partition, Task Frame parser baseline, Acceptance Contract compiler, Clarification Decision, semantic validation, Core projection, model-evaluation harness, and repeated-run promotion gate are implemented. One external run passed, but the required repeat failed; production model parsing remains blocked.
+Conditions 1-6 are satisfied for both hand-authored fixtures and the deterministic input-to-bundle pipeline. The trusted input envelope, trust partition, Task Frame parser baseline, Acceptance Contract compiler, Clarification Decision, semantic validation, Core projection, model-evaluation harness, repeated-run promotion gate, shadow adapter, and full-corpus shadow evaluator are implemented. Both external runs fail the complete gate; production model parsing remains blocked.
 
 ## Next Depth-First Path
 
 ```text
-Interpreter -> trusted input envelope [implemented] -> trust partitioner [implemented] -> task parser baseline [implemented] -> acceptance compiler [implemented] -> parser eval harness [implemented] -> external candidate benchmark [passed once] -> repeated-run gate [failed 1/2] -> shadow/fallback runtime adapter
+Interpreter -> trusted input envelope [implemented] -> trust partitioner [implemented] -> task parser baseline [implemented] -> acceptance compiler [implemented] -> parser eval harness [implemented] -> external candidate benchmark [failed 0/2] -> repeated-run gate [blocked] -> shadow runtime adapter [implemented] -> full-corpus shadow evaluation [remain shadow]
+
+## Shadow Parser Adapter
+
+`tools/shadow_parse_task_frame.py` is the first runtime-neutral model-parser boundary. It accepts a validated trusted input envelope and an optional untrusted model Task Frame, then:
+
+1. Compiles the deterministic baseline frame.
+2. Validates the model frame against the Task Frame schema.
+3. Requires exact authenticated raw request, turn references, trusted context references, and untrusted data references.
+4. Compiles Acceptance and Clarification contracts and runs full semantic validation.
+5. Requires valid Core routing with no banned projection fields.
+6. Records whether the model candidate would have been eligible.
+7. Always returns the deterministic frame as authoritative while mode is `shadow`.
+
+The output contract is `schemas/interpreter/shadow-parser-decision.schema.json`. Shadow evidence is recorded under `evals/results/*.shadow-parser.yaml`. A later guarded or active mode must require a passing repeated-run promotion record; it must not be enabled by prompt compliance alone.
+
+## Model Inference Boundary
+
+Full model-authored Task Frames are no longer the preferred integration contract. `schemas/interpreter/task-frame-inference.schema.json` limits model output to semantic classification:
+
+- normalized goal, work types, and autonomy
+- scope, posture, artifacts, and ambiguity
+- bounded constraints
+- consequence and reversibility classification
+- advisory candidate domains
+
+`tools/compile_model_inference.py` deterministically supplies all authority-controlled fields: source projection, identity, project ID, provenance, permission and confirmation records, lifecycle blocking, acceptance reference, and final Task Frame validation. The packet contract in `schemas/interpreter/parser-inference-packet.schema.json` exposes authenticated intent plus bounded trusted and untrusted references without copying retrieved content.
+
+This boundary does not make model inference trusted. Incorrect semantic classification can still fail benchmarks. It prevents the model from manufacturing authority or corrupting source provenance and makes structured decoding practical with a smaller schema.
 ```

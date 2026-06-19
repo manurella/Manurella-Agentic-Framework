@@ -156,8 +156,8 @@ def self_test(root: pathlib.Path) -> None:
     repeat = root / "evals" / "results" / "parser-stepfun-v2-repeat-1.parser-eval.yaml"
     if first.exists() and repeat.exists():
         result = aggregate(root, "parser-promotion-self-test", [first, repeat], 2)
-        if result["promotion"]["status"] != "fail" or result["summary"]["runs_passed"] != 1:
-            raise ValueError("self-test expected one passing and one failing repeat")
+        if result["promotion"]["status"] != "fail" or result["summary"]["runs_passed"] != 0:
+            raise ValueError("self-test expected both external runs to fail the complete gate")
     print("parser promotion self-test passed")
 
 

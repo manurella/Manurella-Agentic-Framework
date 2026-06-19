@@ -106,7 +106,7 @@ Interpreter
 -> bounded handoff projection
 ```
 
-The deterministic input-to-Core path and runtime-neutral parser evaluation harness are implemented. StepFun with `interpreter-parser-benchmark.v2` produced one qualifying run, but its independent repeat failed semantic and Core-routing gates despite 37/37 critical fields and 2/2 safety cases. The repeated-run promotion gate now blocks production promotion at 1/2 passing runs. The next connected checkpoint is a shadow-mode runtime adapter that always applies deterministic validation and falls back to the rule parser on invalid model output.
+The deterministic input-to-Core path, parser evaluation harness, repeated-run promotion gate, shadow adapter, inference-only compiler, blinded benchmark, and guarded inference mode are implemented. Blinded StepFun v1 passed two independent runs: 26/37 and 29/37 critical fields, both with 100% schema, semantic, routing, and safety validity. Guarded mode is now evidence-eligible and implemented with exact promotion identity plus per-request validation; shadow remains the default. The next connected checkpoint is guarded runtime observation across representative live requests before any default activation.
 
 ## Experimental Frontend Slice
 

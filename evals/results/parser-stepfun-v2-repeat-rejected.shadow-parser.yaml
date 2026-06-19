@@ -1,0 +1,109 @@
+schema_version: shadow-parser-decision.v0
+adapter_version: shadow-parser-adapter.v0
+mode: shadow
+disposition: candidate_rejected
+selected_parser: deterministic-rule-baseline
+candidate:
+  model: stepfun/step-3.7-flash:free
+  prompt_version: interpreter-parser-benchmark.v2
+  would_be_eligible: false
+  schema_valid: true
+  trust_aligned: true
+  semantic_valid: true
+  routing_valid: false
+  issues:
+  - routing.ProjectionError:required permission or confirmation is not blocking execution
+selected_task_frame:
+  identity:
+    frame_id: tf.benchmark.paraphrased-edit
+    version: 1
+    parent_frame_id: null
+    root_frame_id: tf.benchmark.paraphrased-edit
+    project_id: null
+  source:
+    raw_request: Please correct the stale validator invocation in README.md, and touch
+      nothing else.
+    turn_refs: &id001
+    - turn://benchmark/1
+    trusted_context_refs: []
+    untrusted_data_refs: []
+    timestamp: '2026-06-18T12:00:00Z'
+    locale: en-US
+  objective:
+    normalized_goal: Please correct the stale validator invocation in README.md, and
+      touch nothing else.
+    work_types:
+    - answer
+    desired_outcomes:
+    - id: outcome.user-request
+      statement: Please correct the stale validator invocation in README.md, and touch
+        nothing else.
+      kind: artifact
+      priority: required
+      source_authority: user_asserted
+    autonomy: advise
+  scope:
+    horizon: turn
+    clarity: executable
+    project_posture: sprint
+    artifacts:
+    - id: artifact.1
+      kind: md
+      description: Referenced artifact README.md.
+      required: true
+    dependencies: []
+  constraints:
+    hard: []
+    soft: []
+    exclusions: []
+    deadline: null
+    freshness: stable
+  uncertainty:
+    ambiguities: []
+    assumptions: []
+    missing_information: []
+    contradictions: []
+  governance:
+    consequence: minimal
+    reversibility: reversible
+    data_classification: internal
+    permissions_required: []
+    confirmations_required: []
+    policy_flags: []
+  execution_preferences:
+    requested_mode: null
+    requested_effort: null
+    latency_preference: null
+    cost_preference: null
+  acceptance_contract_ref: ac.benchmark.paraphrased-edit@1
+  routing_hints:
+    candidate_domains:
+    - build
+    required_capabilities:
+    - answer_task
+    likely_tools: []
+    memory_requirements: []
+    unresolved_routing_questions: []
+  provenance:
+    interpreter_version: rule-baseline.v0
+    created_at: '2026-06-18T12:00:00Z'
+    entries:
+    - field_path: source.raw_request
+      authority: immutable_source
+      source_refs: *id001
+    - field_path: objective.normalized_goal
+      authority: interpreter_inferred
+      source_refs: &id002
+      - user.paraphrased-edit
+    - field_path: governance
+      authority: policy_derived
+      source_refs: *id002
+    - field_path: routing_hints
+      authority: interpreter_inferred
+      source_refs: *id002
+    supersedes_frame_ref: null
+    changed_fields: []
+    invalidated_outputs: []
+  lifecycle:
+    status: ready
+    updated_at: '2026-06-18T12:00:00Z'

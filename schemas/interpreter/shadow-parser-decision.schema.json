@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020/schema",
+  "$id": "https://manurella.dev/schemas/interpreter/shadow-parser-decision.schema.json",
+  "title": "Manurella Shadow Parser Decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "adapter_version",
+    "mode",
+    "disposition",
+    "selected_parser",
+    "candidate",
+    "selected_task_frame"
+  ],
+  "properties": {
+    "schema_version": { "const": "shadow-parser-decision.v0" },
+    "adapter_version": { "const": "shadow-parser-adapter.v0" },
+    "mode": { "const": "shadow" },
+    "disposition": { "enum": ["candidate_valid", "candidate_rejected", "candidate_absent"] },
+    "selected_parser": { "const": "deterministic-rule-baseline" },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model", "prompt_version", "would_be_eligible", "schema_valid", "trust_aligned", "semantic_valid", "routing_valid", "issues"],
+      "properties": {
+        "model": { "type": ["string", "null"] },
+        "prompt_version": { "type": ["string", "null"] },
+        "would_be_eligible": { "type": "boolean" },
+        "schema_valid": { "type": "boolean" },
+        "trust_aligned": { "type": "boolean" },
+        "semantic_valid": { "type": "boolean" },
+        "routing_valid": { "type": "boolean" },
+        "issues": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "selected_task_frame": { "type": "object" }
+  }
+}

@@ -86,7 +86,9 @@ python tools/evaluate_task_frame_parser.py --repo . --run-id parser-candidate-v1
 
 The evaluator uses `evals/fixtures/parser-benchmark/`, not the parser's development fixtures. It measures Task Frame schema validity, complete bundle semantic validity, Core routing validity, critical-field accuracy, and safety-critical pass rate. A safety failure vetoes promotion. Candidate and result shapes are defined under `schemas/evals/`, and result records are written only under `evals/results/`.
 
-Use `evals/prompts/interpreter-parser-benchmark.md` to capture candidates from any runtime. StepFun 3.7 Flash with prompt v2 is the first candidate to pass this evaluator, recorded in `evals/results/parser-stepfun-v2.parser-eval.yaml`. One passing run is benchmark qualification, not automatic production adoption; repeat the run independently and retain deterministic semantic validation and fallback in any runtime integration.
+Use `evals/prompts/interpreter-parser-benchmark.md` to capture candidates from any runtime. The evaluator verifies schema, exact authenticated raw request and turn references, exact trusted and untrusted reference projection, Interpreter semantics, Core routing, critical-field accuracy, and safety. No external model currently passes the complete repeated-run gate.
+
+The legacy full-frame prompt is deprecated for promotion because its source fixtures exposed gold `expected_fields`. Keep historical results as diagnostic records only.
 
 ## Parser Repeated-Run Promotion
 
@@ -97,6 +99,74 @@ python tools/evaluate_parser_promotion.py --repo . --promotion-id parser-stepfun
 ```
 
 The tool requires at least two records for the exact same model and prompt version. Every supplied run must have passed its individual parser gate. Mixed model/prompt identities, duplicate records, insufficient runs, or any failed repeat block promotion. Results are written under `evals/results/*.parser-promotion.yaml`.
+
+## Shadow Task Frame Parser
+
+Evaluate a captured model Task Frame without allowing it to control execution:
+
+```powershell
+python tools/shadow_parse_task_frame.py --repo . --input evals/fixtures/parser-benchmark/paraphrased-edit.yaml --candidate-run evals/results/parser-stepfun-v2-repeat-1.parser-candidate.yaml --case-id parser-benchmark.paraphrased-edit
+```
+
+The adapter always keeps the deterministic rule parser authoritative. It validates candidate schema, exact authenticated source projection, untrusted-data references, full Interpreter semantics, and Core routing. The decision reports whether the model candidate would have been eligible, while missing or invalid candidates are rejected without repair. Shadow mode cannot activate model output even when it is valid.
+
+Run its adversarial smoke suite with:
+
+```powershell
+python tools/shadow_parse_task_frame.py --repo . --self-test
+```
+
+Evaluate a complete captured run through shadow mode:
+
+```powershell
+python tools/evaluate_shadow_parser.py --repo . --run-id parser-shadow-run --candidate-run evals/results/parser-candidate.parser-candidate.yaml --promotion evals/results/parser-model.parser-promotion.yaml
+```
+
+Guarded-mode design is recommended only when every corpus case is shadow-eligible and the repeated-run promotion record passes.
+
+## Model Inference Compiler
+
+Create a bounded model packet from a trusted input envelope:
+
+```powershell
+python tools/compile_model_inference.py --repo . --input evals/fixtures/parser-benchmark/indirect-injection.yaml --emit-packet
+```
+
+Compile a schema-valid semantic inference into a complete Task Frame and evaluate it in shadow mode:
+
+```powershell
+python tools/compile_model_inference.py --repo . --input path/to/envelope.yaml --inference path/to/task-frame-inference.yaml --model exact-model --prompt-version task-frame-inference.v0
+```
+
+The model inference contract excludes source, identity, provenance, permissions, confirmations, lifecycle, and tool actions. The deterministic compiler binds those fields, derives approval requirements and blocking state, then sends the assembled frame through the existing shadow validator. This prevents authentication evidence or retrieved content from becoming authority merely because a model emitted it.
+
+After repeated-run promotion passes, guarded mode may select a validated inference candidate:
+
+```powershell
+python tools/compile_model_inference.py --repo . --input path/to/envelope.yaml --inference-run evals/results/promoted.inference-candidate.yaml --case-id case.id --mode guarded --promotion evals/results/promoted.parser-promotion.yaml
+```
+
+Guarded mode requires an exact model and prompt-version match with a passing promotion record. The assembled candidate must still pass schema, trust, semantic, and Core-routing validation for the current request. Any promotion mismatch or validation failure selects the deterministic rule baseline. Shadow mode remains the default.
+
+## Blinded Model Inference Evaluation
+
+Regenerate blinded packets from the private gold corpus:
+
+```powershell
+python tools/evaluate_model_inference.py --repo . --prepare-packets --overwrite
+```
+
+Evaluate a captured inference candidate:
+
+```powershell
+python tools/evaluate_model_inference.py --repo . --run-id inference-run-v0 --candidate evals/results/inference-run-v0.inference-candidate.yaml
+```
+
+Models read only `evals/fixtures/parser-inference-benchmark/`. The evaluator privately joins those case IDs to `evals/fixtures/parser-benchmark/` for scoring, compiles each inference through the deterministic authority boundary, and then applies the existing schema, trust, semantic, routing, accuracy, and safety gates.
+
+The first blinded StepFun v0 result is `evals/results/stepfun-inference-v0.parser-eval.yaml`: 27/37 critical fields, 2/2 safety cases, and 2/6 semantic and routing passes. It is a failed promotion result and the baseline for inference prompt v1.
+
+The first blinded StepFun v1 result is `evals/results/stepfun-inference-v1.parser-eval.yaml`: 26/37 critical fields with 100% schema, semantic, routing, and safety validity. It passes the individual evaluator but remains unpromoted until an unchanged independent v1 repeat passes the repeated-run gate.
 
 ## Interpreter Contract Validator
 
