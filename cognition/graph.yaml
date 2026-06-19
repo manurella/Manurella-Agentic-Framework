@@ -1010,6 +1010,29 @@ nodes:
       - schemas/evals/parser-inference-benchmark-case.schema.json
       - tools/README.md
     updated_at: 2026-06-19
+  - id: spec.guarded-parser-observation-schema
+    type: spec
+    label: Guarded Parser Observation Result Schema
+    status: active
+    summary: Representative replay evidence contract that records guarded selection and fallback behavior while preventing replay-only evidence from enabling default activation.
+    owners:
+      - dom.core
+    evidence:
+      - schemas/evals/guarded-parser-observation-result.schema.json
+      - tools/evaluate_guarded_parser.py
+    updated_at: 2026-06-19
+  - id: tool.interpreter-guarded-parser-evaluator
+    type: tool
+    label: Interpreter Guarded Parser Evaluator
+    status: active
+    summary: Replays complete promoted inference captures through guarded selection and records per-request validation, selection, and fallback evidence.
+    owners:
+      - dom.core
+    evidence:
+      - tools/evaluate_guarded_parser.py
+      - schemas/evals/guarded-parser-observation-result.schema.json
+      - tools/README.md
+    updated_at: 2026-06-19
   - id: eval.interpreter-inference-stepfun-v0
     type: eval
     label: Interpreter Inference StepFun V0
@@ -1059,6 +1082,18 @@ nodes:
       - evals/results/stepfun-inference-v1-promotion.parser-promotion.yaml
       - evals/results/stepfun-inference-v1-cross-domain.guarded-parser.yaml
       - tools/compile_model_inference.py
+    updated_at: 2026-06-19
+  - id: eval.interpreter-guarded-replay-stepfun-v1
+    type: eval
+    label: Interpreter Guarded Replay StepFun V1
+    status: active
+    summary: Two promoted captures produced 12/12 guarded selections with no fallback, while activation remained blocked because representative replay is not live evidence.
+    owners:
+      - dom.core
+    evidence:
+      - evals/results/stepfun-inference-v1.guarded-observation.yaml
+      - evals/results/stepfun-inference-v1-promotion.parser-promotion.yaml
+      - tools/evaluate_guarded_parser.py
     updated_at: 2026-06-19
   - id: spec.interpreter-acceptance-schema
     type: spec
@@ -1632,6 +1667,48 @@ edges:
     evidence:
       - evals/results/stepfun-inference-v1-cross-domain.guarded-parser.yaml
       - evals/results/stepfun-inference-v1-promotion.parser-promotion.yaml
+    updated_at: 2026-06-19
+  - id: edge.core.owns.interpreter-guarded-parser-evaluator
+    type: owns
+    source: dom.core
+    target: tool.interpreter-guarded-parser-evaluator
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/evaluate_guarded_parser.py
+    updated_at: 2026-06-19
+  - id: edge.interpreter-guarded-parser-evaluator.uses.observation-schema
+    type: uses
+    source: tool.interpreter-guarded-parser-evaluator
+    target: spec.guarded-parser-observation-schema
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/evaluate_guarded_parser.py
+      - schemas/evals/guarded-parser-observation-result.schema.json
+    updated_at: 2026-06-19
+  - id: edge.interpreter-guarded-replay-stepfun-v1.evaluates.guarded-parser
+    type: evaluates
+    source: eval.interpreter-guarded-replay-stepfun-v1
+    target: tool.interpreter-guarded-parser-evaluator
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - evals/results/stepfun-inference-v1.guarded-observation.yaml
+    updated_at: 2026-06-19
+  - id: edge.self-check.uses.interpreter-guarded-parser-evaluator
+    type: uses
+    source: tool.self-check
+    target: tool.interpreter-guarded-parser-evaluator
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - tools/self_check.py
+      - tools/evaluate_guarded_parser.py
     updated_at: 2026-06-19
   - id: edge.self-check.uses.interpreter-shadow-parser
     type: uses

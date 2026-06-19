@@ -439,6 +439,8 @@ The independent blinded v1 repeat also passed every gate with 29/37 critical fie
 
 `guarded-model-inference.v0` is therefore available as an explicit opt-in adapter mode. It selects an assembled inference frame only when the promotion record passes, model and prompt identities match exactly, and the current frame passes schema, trust, semantic, and Core-routing validation. Otherwise it selects the deterministic baseline. Shadow remains the default until broader runtime observation and human residual-risk review support a default change.
 
+The first guarded representative replay is `evals/results/stepfun-inference-v1.guarded-observation.yaml`. Both promoted captures were replayed across the complete six-case corpus: all 12 assembled candidates passed the guarded checks and were selected, with zero promotion or validation fallbacks. This verifies the guarded mechanism against representative benchmark evidence, not live runtime behavior. The observation contract therefore records `insufficient_live_evidence`, keeps `shadow` as the default, and requires independently captured live requests plus human residual-risk review before any default change.
+
 ## Executable Contract Slice
 
 The first executable v0 slice is implemented in:

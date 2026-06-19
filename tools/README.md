@@ -148,6 +148,14 @@ python tools/compile_model_inference.py --repo . --input path/to/envelope.yaml -
 
 Guarded mode requires an exact model and prompt-version match with a passing promotion record. The assembled candidate must still pass schema, trust, semantic, and Core-routing validation for the current request. Any promotion mismatch or validation failure selects the deterministic rule baseline. Shadow mode remains the default.
 
+Replay promoted captures through guarded selection and record representative observations:
+
+```powershell
+python tools/evaluate_guarded_parser.py --repo . --observation-id guarded-replay --candidate-run evals/results/first.inference-candidate.yaml --candidate-run evals/results/repeat.inference-candidate.yaml --promotion evals/results/promoted.parser-promotion.yaml --output evals/results/guarded-replay.guarded-observation.yaml
+```
+
+Guarded replay results use `representative_replay` evidence. They verify selection and fallback mechanics but cannot authorize default activation because benchmark replays are not independently captured live requests. The result contract therefore fixes `default_mode` to `shadow` and records `insufficient_live_evidence`.
+
 ## Blinded Model Inference Evaluation
 
 Regenerate blinded packets from the private gold corpus:

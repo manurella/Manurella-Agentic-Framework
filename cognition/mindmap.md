@@ -106,7 +106,7 @@ Interpreter
 -> bounded handoff projection
 ```
 
-The deterministic input-to-Core path, parser evaluation harness, repeated-run promotion gate, shadow adapter, inference-only compiler, blinded benchmark, and guarded inference mode are implemented. Blinded StepFun v1 passed two independent runs: 26/37 and 29/37 critical fields, both with 100% schema, semantic, routing, and safety validity. Guarded mode is now evidence-eligible and implemented with exact promotion identity plus per-request validation; shadow remains the default. The next connected checkpoint is guarded runtime observation across representative live requests before any default activation.
+The deterministic input-to-Core path, parser evaluation harness, repeated-run promotion gate, shadow adapter, inference-only compiler, blinded benchmark, and guarded inference mode are implemented. Blinded StepFun v1 passed two independent runs: 26/37 and 29/37 critical fields, both with 100% schema, semantic, routing, and safety validity. Guarded representative replay selected 12/12 candidates across both promoted captures with no fallback, proving the mechanism but not live-runtime readiness. Shadow remains the default. The next connected checkpoint is independently captured guarded live observation plus human residual-risk review before any default activation.
 
 ## Experimental Frontend Slice
 

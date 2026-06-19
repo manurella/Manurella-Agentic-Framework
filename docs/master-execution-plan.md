@@ -86,6 +86,7 @@ Acceptance:
 - The first blinded StepFun inference run improved field accuracy to 73.0% and passed 2/2 safety cases, but failed semantic and Core-routing gates at 33.3% each.
 - Blinded StepFun inference v1 passed every individual gate at 70.3% field accuracy; repeated-run promotion remains blocked until an independent v1 repeat also passes.
 - The independent blinded v1 repeat passed at 78.4%; repeated-run promotion now passes 2/2, and guarded inference is available as opt-in with deterministic fallback while shadow remains default.
+- Guarded representative replay selected 12/12 promoted candidates across both captures with no fallback; replay evidence is not live evidence, so activation remains blocked and shadow remains default.
 - Core compiles validated bundles into direct, blocked, or delegated routing decisions without transcript leakage.
 
 ### W2. Cognitive Graph
