@@ -441,6 +441,8 @@ The independent blinded v1 repeat also passed every gate with 29/37 critical fie
 
 The first guarded representative replay is `evals/results/stepfun-inference-v1.guarded-observation.yaml`. Both promoted captures were replayed across the complete six-case corpus: all 12 assembled candidates passed the guarded checks and were selected, with zero promotion or validation fallbacks. This verifies the guarded mechanism against representative benchmark evidence, not live runtime behavior. The observation contract therefore records `insufficient_live_evidence`, keeps `shadow` as the default, and requires independently captured live requests plus human residual-risk review before any default change.
 
+Fresh live evidence uses `evals/prompts/interpreter-guarded-live-capture.md`, `schemas/evals/guarded-live-observation-result.schema.json`, and `tools/record_guarded_live_observation.py`. Capture must be explicitly authorized and sensitivity-reviewed. The durable result stores source references and a request fingerprint without copying raw request text or the selected Task Frame. It records the guarded disposition, validation dimensions, and human-review status while fixing the default parser mode to `shadow`. No individual live observation can authorize activation; aggregate thresholds and residual-risk criteria remain research-required.
+
 ## Executable Contract Slice
 
 The first executable v0 slice is implemented in:

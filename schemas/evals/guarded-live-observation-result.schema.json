@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.dev/schemas/evals/guarded-live-observation-result.schema.json",
+  "title": "Manurella Guarded Live Observation Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "observation_id", "evidence_class", "captured_at",
+    "source", "candidate", "promotion", "decision", "human_review", "activation"
+  ],
+  "properties": {
+    "schema_version": { "const": "guarded-live-observation-result.v0" },
+    "observation_id": { "type": "string", "minLength": 1 },
+    "evidence_class": { "const": "live_request" },
+    "captured_at": { "type": "string", "format": "date-time" },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "envelope_ref", "inference_ref", "request_fingerprint",
+        "capture_authorized", "sensitivity_review"
+      ],
+      "properties": {
+        "envelope_ref": { "type": "string", "minLength": 1 },
+        "inference_ref": { "type": "string", "minLength": 1 },
+        "request_fingerprint": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "capture_authorized": { "const": true },
+        "sensitivity_review": { "enum": ["non_sensitive", "redacted"] }
+      }
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model", "prompt_version"],
+      "properties": {
+        "model": { "type": "string", "minLength": 1 },
+        "prompt_version": { "type": "string", "minLength": 1 }
+      }
+    },
+    "promotion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["result_ref", "status", "identity_match"],
+      "properties": {
+        "result_ref": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["pass", "fail"] },
+        "identity_match": { "type": "boolean" }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "disposition", "selected_parser", "schema_valid", "trust_aligned",
+        "semantic_valid", "routing_valid", "issues"
+      ],
+      "properties": {
+        "disposition": {
+          "enum": ["candidate_selected", "fallback_promotion", "fallback_validation"]
+        },
+        "selected_parser": {
+          "enum": ["model-inference-compiler", "deterministic-rule-baseline"]
+        },
+        "schema_valid": { "type": "boolean" },
+        "trust_aligned": { "type": "boolean" },
+        "semantic_valid": { "type": "boolean" },
+        "routing_valid": { "type": "boolean" },
+        "issues": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "human_review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "reviewer", "notes"],
+      "properties": {
+        "status": { "enum": ["pending", "pass", "fail"] },
+        "reviewer": { "type": ["string", "null"] },
+        "notes": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "enum": ["pass", "fail"] } } },
+          "then": {
+            "properties": {
+              "reviewer": { "type": "string", "minLength": 1 },
+              "notes": { "minItems": 1 }
+            }
+          }
+        }
+      ]
+    },
+    "activation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "default_mode", "reasons"],
+      "properties": {
+        "status": { "enum": ["pending_human_review", "evidence_recorded"] },
+        "default_mode": { "const": "shadow" },
+        "reasons": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

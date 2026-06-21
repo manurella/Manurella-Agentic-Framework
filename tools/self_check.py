@@ -117,6 +117,7 @@ def main(argv: list[str]) -> int:
         [python, "tools/compile_model_inference.py", "--repo", ".", "--self-test"],
         [python, "tools/evaluate_model_inference.py", "--repo", ".", "--self-test"],
         [python, "tools/evaluate_guarded_parser.py", "--repo", ".", "--self-test"],
+        [python, "tools/record_guarded_live_observation.py", "--repo", ".", "--self-test"],
         [python, "tools/validate_interpreter.py", "--repo", "."],
         [python, "tools/compile_core_packet.py", "--repo", ".", "--fixtures"],
         [

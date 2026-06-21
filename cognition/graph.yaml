@@ -1033,6 +1033,29 @@ nodes:
       - schemas/evals/guarded-parser-observation-result.schema.json
       - tools/README.md
     updated_at: 2026-06-19
+  - id: spec.guarded-live-observation-schema
+    type: spec
+    label: Guarded Live Observation Result Schema
+    status: active
+    summary: Privacy-bounded contract for authorized live request fingerprints, guarded decision summaries, and human residual-risk review without copied request text.
+    owners:
+      - dom.core
+    evidence:
+      - schemas/evals/guarded-live-observation-result.schema.json
+      - evals/prompts/interpreter-guarded-live-capture.md
+    updated_at: 2026-06-19
+  - id: tool.interpreter-guarded-live-recorder
+    type: tool
+    label: Interpreter Guarded Live Observation Recorder
+    status: active
+    summary: Records one authorized and sensitivity-reviewed live guarded decision using source references and a request fingerprint while keeping shadow as the default.
+    owners:
+      - dom.core
+    evidence:
+      - tools/record_guarded_live_observation.py
+      - schemas/evals/guarded-live-observation-result.schema.json
+      - tools/README.md
+    updated_at: 2026-06-19
   - id: eval.interpreter-inference-stepfun-v0
     type: eval
     label: Interpreter Inference StepFun V0
@@ -1709,6 +1732,38 @@ edges:
     evidence:
       - tools/self_check.py
       - tools/evaluate_guarded_parser.py
+    updated_at: 2026-06-19
+  - id: edge.core.owns.interpreter-guarded-live-recorder
+    type: owns
+    source: dom.core
+    target: tool.interpreter-guarded-live-recorder
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/record_guarded_live_observation.py
+    updated_at: 2026-06-19
+  - id: edge.interpreter-guarded-live-recorder.uses.live-observation-schema
+    type: uses
+    source: tool.interpreter-guarded-live-recorder
+    target: spec.guarded-live-observation-schema
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/record_guarded_live_observation.py
+      - schemas/evals/guarded-live-observation-result.schema.json
+    updated_at: 2026-06-19
+  - id: edge.self-check.uses.interpreter-guarded-live-recorder
+    type: uses
+    source: tool.self-check
+    target: tool.interpreter-guarded-live-recorder
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - tools/self_check.py
+      - tools/record_guarded_live_observation.py
     updated_at: 2026-06-19
   - id: edge.self-check.uses.interpreter-shadow-parser
     type: uses

@@ -156,6 +156,14 @@ python tools/evaluate_guarded_parser.py --repo . --observation-id guarded-replay
 
 Guarded replay results use `representative_replay` evidence. They verify selection and fallback mechanics but cannot authorize default activation because benchmark replays are not independently captured live requests. The result contract therefore fixes `default_mode` to `shadow` and records `insufficient_live_evidence`.
 
+For an authorized, sensitivity-reviewed live request, first obtain semantic YAML with `evals/prompts/interpreter-guarded-live-capture.md`, then record the guarded decision:
+
+```powershell
+python tools/record_guarded_live_observation.py --repo . --observation-id live-001 --input path/to/live-envelope.yaml --inference path/to/live-inference.yaml --model stepfun/step-3.7-flash:free --prompt-version interpreter-inference-benchmark.v1 --sensitivity-review non_sensitive --output evals/results/live-001.guarded-live-observation.yaml
+```
+
+The result stores a SHA-256 request fingerprint and source references, not copied request text or the selected Task Frame. Human review defaults to `pending`; a completed review requires `--review-status pass|fail`, `--reviewer`, and at least one `--review-note`. Individual live records always keep the default parser mode at `shadow`. Activation thresholds remain research- and review-required rather than being inferred from one successful request.
+
 ## Blinded Model Inference Evaluation
 
 Regenerate blinded packets from the private gold corpus:
