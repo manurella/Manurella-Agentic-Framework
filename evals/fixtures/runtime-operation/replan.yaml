@@ -1,0 +1,10 @@
+fixture_id: runtime-operation.replan
+brain_cycle_fixture: evals/fixtures/brain-cycle/repeated-failure.yaml
+prior_packet_ref: packet://project/failed
+expected:
+  packet_class: replan
+  strategy: model_predictive_replan
+  allowed_actions: [read]
+  blocked_actions: []
+  retry_count: 0
+  max_retries: 1

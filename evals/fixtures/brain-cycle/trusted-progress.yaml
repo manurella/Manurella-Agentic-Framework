@@ -1,0 +1,25 @@
+fixture_id: brain-cycle.trusted-progress
+interpreter_fixture: evals/fixtures/interpreter/project.yaml
+events:
+  - schema_version: observation-event.v0
+    observation_id: observation.project-progress
+    observed_at: "2026-06-21T08:07:00Z"
+    kind: artifact_change
+    source_ref: runtime://workspace
+    trust: trusted_runtime
+    effect: progress
+    statement: A required project artifact changed and is ready for verification.
+    evidence_refs: [artifact://project/output]
+    repeat_key: null
+    verification:
+      status: not_run
+      acceptance_status: not_evaluated
+      check_ids: []
+expected:
+  strategy: hierarchical_decomposition
+  disposition: continue
+  next_operation: verify
+  task_status: active
+  cycles_remaining: 7
+  repairs_remaining: 1
+  events_quarantined: 0

@@ -1,0 +1,10 @@
+fixture_id: runtime-operation.recovery
+brain_cycle_fixture: evals/fixtures/brain-cycle/budget-exhausted.yaml
+prior_packet_ref: packet://project/exhausted
+expected:
+  packet_class: recovery
+  strategy: hierarchical_decomposition
+  allowed_actions: [read]
+  blocked_actions: []
+  retry_count: 0
+  max_retries: 1

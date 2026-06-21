@@ -120,6 +120,14 @@ Safety stops, exhausted budgets, and escalation produce a resumable `blocked` ta
 
 `schemas/brain/brain-control-decision.schema.json` exposes measurable control facts rather than a self-reported confidence number: state/evidence change, repeated-event count, open contradictions, remaining budgets, verification status, disposition, reason codes, and next operation.
 
+## Execution And Recovery Boundary
+
+`tools/compile_runtime_operation.py` compiles each Brain control decision into `schemas/runtime/operation-packet.schema.json`. The packet is runtime-neutral and contains a bounded objective, assignment, action policy, expected outputs, evidence, stop rules, and resume checkpoint.
+
+Action permission is derived from the selected agent's checked-in contract, never from model-inferred likely tools. `allow` and `ask` remain distinguishable in `action_policy`; denied or Fast-mode-blocked capabilities appear in `blocked_actions`. This exposes when the current agent cannot perform a requested edit, shell command, or delegation so the Core execution controller can choose a permitted internal specialist or return a precise blocker.
+
+Recovery packets preserve the workspace checkpoint, trusted artifact references, last completed observation, and retry budget. They instruct the runtime to produce a narrower next packet instead of restarting. Stop packets allow no runtime action.
+
 ## Next Depth-First Path
 
 ```text
@@ -128,5 +136,6 @@ Brain State and Active Workspace [implemented]
 -> strategy selection [implemented v0]
 -> verification and bounded repair [implemented v0]
 -> metacognitive stopping [implemented v0]
--> recovery packet and execution controller
+-> execution and recovery packet [implemented v0]
+-> Phase 4 durable memory and Framework Atlas evidence flow
 ```

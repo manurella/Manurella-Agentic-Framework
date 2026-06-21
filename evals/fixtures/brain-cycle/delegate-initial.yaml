@@ -1,0 +1,11 @@
+fixture_id: brain-cycle.delegate-initial
+interpreter_fixture: evals/fixtures/interpreter/quick-task.yaml
+events: []
+expected:
+  strategy: reactive_tool
+  disposition: continue
+  next_operation: delegate
+  task_status: active
+  cycles_remaining: 2
+  repairs_remaining: 0
+  events_quarantined: 0

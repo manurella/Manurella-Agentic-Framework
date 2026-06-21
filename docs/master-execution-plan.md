@@ -70,6 +70,8 @@ Artifacts:
 - `schemas/brain/observation-event.schema.json`
 - `schemas/brain/brain-control-decision.schema.json`
 - `tools/advance_brain_cycle.py`
+- `schemas/runtime/operation-packet.schema.json`
+- `tools/compile_runtime_operation.py`
 - `specs/core-operating-protocol.md`
 - `specs/agent-schema.md`
 - `specs/runtime-control.md`
@@ -99,6 +101,7 @@ Acceptance:
 - Core compiles validated bundles into direct, blocked, or delegated routing decisions without transcript leakage.
 - Brain compiles validated Interpreter/Core artifacts into typed task/world/user/self/uncertainty state, a volatile active workspace, and a bounded privileged context packet.
 - Brain revises state only through typed trust-classified observations, quarantines untrusted content, selects a bounded cognitive strategy, and stops, repairs, replans, or escalates from measurable verification and budget state.
+- Brain control decisions compile into permission-bounded runtime operation packets with explicit blocked actions, evidence requirements, stops, and resumable recovery state.
 
 ### W2. Cognitive Graph
 

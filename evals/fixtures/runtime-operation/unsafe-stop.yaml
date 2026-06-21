@@ -1,0 +1,9 @@
+fixture_id: runtime-operation.unsafe-stop
+brain_cycle_fixture: evals/fixtures/brain-cycle/unsafe-stop.yaml
+expected:
+  packet_class: stop
+  strategy: reactive_tool
+  allowed_actions: []
+  blocked_actions: []
+  retry_count: 0
+  max_retries: 0

@@ -1,0 +1,9 @@
+fixture_id: runtime-operation.direct
+brain_cycle_fixture: evals/fixtures/brain-cycle/direct-initial.yaml
+expected:
+  packet_class: direct
+  strategy: direct_response
+  allowed_actions: [respond]
+  blocked_actions: []
+  retry_count: 0
+  max_retries: 0

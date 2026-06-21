@@ -37,6 +37,25 @@ resume_state:
   - string
 ```
 
+## Machine Operation Packet
+
+The prose packet shape remains the human- and weak-runtime authoring format. The Brain-to-runtime machine boundary is `schemas/runtime/operation-packet.schema.json`, compiled by `tools/compile_runtime_operation.py` from a schema-valid Brain cycle result.
+
+The machine packet adds:
+
+- exact Brain state and control-decision identity
+- packet class and selected cognitive strategy
+- selected domain, agent, mode, and effort
+- action policy derived from the selected agent's checked-in permission contract
+- allowed and blocked actions after mode policy is applied
+- permission and confirmation references
+- expected outputs, evidence requirements, and stop conditions
+- resumable checkpoint, artifact references, last completed step, and retry count
+
+Interpreter-inferred tool hints never grant runtime permissions. The compiler reads `domains/<domain>/agents/<agent>.md`, validates every permission field, applies the Fast no-nested-delegation ceiling, and exposes denied actions as `blocked_actions`. A runtime adapter must preserve or narrow this policy; it cannot broaden it.
+
+Budget or runtime exhaustion compiles to a `recovery` packet that reads the existing checkpoint and emits a narrower next packet. It does not restart the original workflow. Successful or unsafe terminal decisions compile to a `stop` packet with no allowed runtime actions.
+
 ## Packet Classes
 
 ### 1. Scout Packet

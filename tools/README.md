@@ -204,6 +204,15 @@ python tools/advance_brain_cycle.py --repo . --fixtures
 
 Only trusted runtime and authenticated user observations revise privileged state. External and model-inferred observations are quarantined without copying their statement text. The governor selects direct, reactive, hierarchical, repair, replan, stop, or escalation behavior from explicit verification, progress, safety, and budget state; it does not emit an unsupported confidence score.
 
+Compile a Brain cycle result into a portable runtime operation packet:
+
+```powershell
+python tools/compile_runtime_operation.py --repo . --cycle-result path/to/brain-cycle-result.yaml --prior-packet-ref packet://previous
+python tools/compile_runtime_operation.py --repo . --fixtures
+```
+
+The compiler reads the selected agent's checked-in permissions and intersects them with packet class and mode. It never promotes model-inferred tool hints into authority. Denied actions are retained as explicit `blocked_actions`; recovery packets resume from checkpoint and artifact references rather than restarting.
+
 ## Interpreter Contract Validator
 
 Validate the Task Frame and Acceptance Contract schemas, semantic invariants, Family A-E projections, project postures, and representative fixtures:

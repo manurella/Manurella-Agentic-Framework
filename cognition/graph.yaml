@@ -1292,7 +1292,85 @@ nodes:
       - evals/fixtures/brain-cycle/
       - tools/advance_brain_cycle.py
     updated_at: 2026-06-21
+  - id: spec.runtime-operation-packet-schema
+    type: spec
+    label: Runtime Operation Packet Schema
+    status: active
+    summary: Portable permission-bounded execution, verification, repair, replan, recovery, escalation, and stop packet contract.
+    owners:
+      - dom.core
+    evidence:
+      - schemas/runtime/operation-packet.schema.json
+      - specs/runtime-packet-protocol.md
+    updated_at: 2026-06-21
+  - id: tool.runtime-operation-compiler
+    type: tool
+    label: Runtime Operation Compiler
+    status: active
+    summary: Compiles Brain control decisions into runtime-neutral packets using checked-in agent permissions and resumable checkpoints.
+    owners:
+      - dom.core
+    evidence:
+      - tools/compile_runtime_operation.py
+      - evals/fixtures/runtime-operation/
+      - tools/README.md
+    updated_at: 2026-06-21
+  - id: eval.runtime-operation-v0
+    type: eval
+    label: Runtime Operation V0 Fixtures
+    status: active
+    summary: Covers direct, clarification, delegation, verification, repair, replan, recovery, completion stop, and unsafe stop packets with permission ceilings.
+    owners:
+      - dom.core
+    evidence:
+      - evals/fixtures/runtime-operation/
+      - tools/compile_runtime_operation.py
+    updated_at: 2026-06-21
 edges:
+  - id: edge.core.owns.runtime-operation-compiler
+    type: owns
+    source: dom.core
+    target: tool.runtime-operation-compiler
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/compile_runtime_operation.py
+      - specs/runtime-packet-protocol.md
+    updated_at: 2026-06-21
+  - id: edge.runtime-operation-compiler.uses.operation-schema
+    type: uses
+    source: tool.runtime-operation-compiler
+    target: spec.runtime-operation-packet-schema
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/compile_runtime_operation.py
+      - schemas/runtime/operation-packet.schema.json
+    updated_at: 2026-06-21
+  - id: edge.runtime-operation-v0.evaluates.compiler
+    type: evaluates
+    source: eval.runtime-operation-v0
+    target: tool.runtime-operation-compiler
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - evals/fixtures/runtime-operation/
+      - tools/compile_runtime_operation.py
+    updated_at: 2026-06-21
+  - id: edge.self-check.uses.runtime-operation-compiler
+    type: uses
+    source: tool.self-check
+    target: tool.runtime-operation-compiler
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - tools/self_check.py
+      - tools/compile_runtime_operation.py
+    updated_at: 2026-06-21
   - id: edge.core.owns.brain-cycle-controller
     type: owns
     source: dom.core

@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.dev/schemas/runtime/operation-packet.v0.json",
+  "title": "Manurella Runtime Operation Packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "packet_id", "state_ref", "control_decision_id", "packet_class", "strategy", "objective", "assignment", "mode", "effort", "timebox_minutes", "action_policy", "allowed_actions", "blocked_actions", "forbidden_actions", "inputs", "permissions", "expected_outputs", "evidence_required", "stop_conditions", "resume"],
+  "properties": {
+    "schema_version": { "const": "operation-packet.v0" },
+    "packet_id": { "type": "string", "minLength": 1 },
+    "state_ref": { "type": "string", "minLength": 1 },
+    "control_decision_id": { "type": "string", "minLength": 1 },
+    "packet_class": { "enum": ["direct", "clarification", "confirmation", "refusal", "delegation", "verification", "repair", "replan", "recovery", "escalation", "stop"] },
+    "strategy": { "enum": ["clarify", "confirm", "refuse", "direct_response", "reactive_tool", "plan_and_execute", "hierarchical_decomposition", "search_deliberation", "model_predictive_replan"] },
+    "objective": { "type": "string", "minLength": 1 },
+    "assignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["domain", "agent", "secondary_domains"],
+      "properties": {
+        "domain": { "type": "string", "minLength": 1 },
+        "agent": { "type": "string", "minLength": 1 },
+        "secondary_domains": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "mode": { "enum": ["fast", "standard"] },
+    "effort": { "enum": ["low", "medium", "high", "max", "ultra", "sentient"] },
+    "timebox_minutes": { "type": "integer", "minimum": 1, "maximum": 30 },
+    "action_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["read", "edit", "shell", "browser", "web", "delegate", "respond"],
+      "properties": {
+        "read": { "$ref": "#/$defs/permissionStatus" },
+        "edit": { "$ref": "#/$defs/permissionStatus" },
+        "shell": { "$ref": "#/$defs/permissionStatus" },
+        "browser": { "$ref": "#/$defs/permissionStatus" },
+        "web": { "$ref": "#/$defs/permissionStatus" },
+        "delegate": { "$ref": "#/$defs/permissionStatus" },
+        "respond": { "$ref": "#/$defs/permissionStatus" }
+      }
+    },
+    "allowed_actions": {
+      "type": "array",
+      "items": { "enum": ["read", "edit", "shell", "browser", "web", "delegate", "respond"] },
+      "uniqueItems": true
+    },
+    "blocked_actions": {
+      "type": "array",
+      "items": { "enum": ["read", "edit", "shell", "browser", "web", "delegate", "respond"] },
+      "uniqueItems": true
+    },
+    "forbidden_actions": { "$ref": "#/$defs/stringArray" },
+    "inputs": { "$ref": "#/$defs/stringArray" },
+    "permissions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required_permission_refs", "required_confirmation_refs"],
+      "properties": {
+        "required_permission_refs": { "$ref": "#/$defs/stringArray" },
+        "required_confirmation_refs": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "expected_outputs": { "$ref": "#/$defs/stringArray" },
+    "evidence_required": { "$ref": "#/$defs/stringArray" },
+    "stop_conditions": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "resume": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["checkpoint_ref", "prior_packet_ref", "artifact_refs", "last_completed_step", "retry_count", "max_retries"],
+      "properties": {
+        "checkpoint_ref": { "type": "string", "minLength": 1 },
+        "prior_packet_ref": { "type": ["string", "null"] },
+        "artifact_refs": { "$ref": "#/$defs/stringArray" },
+        "last_completed_step": { "type": ["string", "null"] },
+        "retry_count": { "type": "integer", "minimum": 0 },
+        "max_retries": { "type": "integer", "minimum": 0 }
+      }
+    }
+  },
+  "$defs": {
+    "stringArray": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "permissionStatus": { "enum": ["allow", "ask", "deny"] }
+  }
+}

@@ -1,0 +1,10 @@
+fixture_id: runtime-operation.repair
+brain_cycle_fixture: evals/fixtures/brain-cycle/repair-once.yaml
+prior_packet_ref: packet://project/initial
+expected:
+  packet_class: repair
+  strategy: reactive_tool
+  allowed_actions: [read, browser, web]
+  blocked_actions: [edit, shell]
+  retry_count: 1
+  max_retries: 1

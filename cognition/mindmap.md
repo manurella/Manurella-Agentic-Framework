@@ -112,6 +112,8 @@ The Phase 3 Brain runtime-state slice now compiles validated Interpreter/Core ar
 
 Observation-driven revision, v0 strategy selection, external-verification handling, bounded repair, repeated-failure/stall replanning, unsafe/budget stops, and untrusted-observation quarantine are now executable. Governed stops remain resumable `blocked` state. The remaining Phase 3 slice is the execution/recovery packet boundary that carries these decisions into Phase 5 Core runtime work.
 
+Phase 3's execution/recovery boundary is now implemented. Brain control decisions compile into runtime-neutral packets whose action ceiling comes from checked-in agent permissions rather than inferred tools; blocked capabilities are explicit, and recovery resumes from workspace/artifact checkpoints. Phase 3 is complete at v0. The next depth-first branch is Phase 4 durable memory and Framework Atlas evidence flow.
+
 ## Experimental Frontend Slice
 
 The frontend nodes are draft graph candidates only. They are not accepted agents, not exported runtime agents, and not official routing targets until benchmark evidence supports promotion.

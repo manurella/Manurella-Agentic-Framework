@@ -122,6 +122,7 @@ def main(argv: list[str]) -> int:
         [python, "tools/compile_core_packet.py", "--repo", ".", "--fixtures"],
         [python, "tools/compile_brain_workspace.py", "--repo", ".", "--fixtures"],
         [python, "tools/advance_brain_cycle.py", "--repo", ".", "--fixtures"],
+        [python, "tools/compile_runtime_operation.py", "--repo", ".", "--fixtures"],
         [
             python,
             "adapters/kilo/export_agents.py",

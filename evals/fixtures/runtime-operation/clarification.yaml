@@ -1,0 +1,9 @@
+fixture_id: runtime-operation.clarification
+brain_cycle_fixture: evals/fixtures/brain-cycle/blocked-clarification.yaml
+expected:
+  packet_class: clarification
+  strategy: clarify
+  allowed_actions: [respond]
+  blocked_actions: []
+  retry_count: 0
+  max_retries: 0

@@ -1,0 +1,9 @@
+fixture_id: runtime-operation.delegation
+brain_cycle_fixture: evals/fixtures/brain-cycle/delegate-initial.yaml
+expected:
+  packet_class: delegation
+  strategy: reactive_tool
+  allowed_actions: [read, browser, web]
+  blocked_actions: [edit, shell, delegate]
+  retry_count: 0
+  max_retries: 0

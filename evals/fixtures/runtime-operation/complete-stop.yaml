@@ -1,0 +1,9 @@
+fixture_id: runtime-operation.complete-stop
+brain_cycle_fixture: evals/fixtures/brain-cycle/acceptance-complete.yaml
+expected:
+  packet_class: stop
+  strategy: hierarchical_decomposition
+  allowed_actions: []
+  blocked_actions: []
+  retry_count: 0
+  max_retries: 1
