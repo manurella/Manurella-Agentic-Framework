@@ -114,7 +114,7 @@ Observation-driven revision, v0 strategy selection, external-verification handli
 
 Phase 3's execution/recovery boundary is now implemented. Brain control decisions compile into runtime-neutral packets whose action ceiling comes from checked-in agent permissions rather than inferred tools; blocked capabilities are explicit, and recovery resumes from workspace/artifact checkpoints. Phase 3 is complete at v0. The next depth-first branch is Phase 4 durable memory and Framework Atlas evidence flow.
 
-Phase 4's promotion, file-store application, and retrieval slices are implemented. Claim-structured proposals pass deterministic trust, conflict, permission, review, support, and benchmark gates; the separate writer is idempotent and enforces explicit supersession. Retrieval filters expiry, overdue review, lifecycle, scope, principal, type, limits, and contradictory claims into an auditable bounded packet. Reviewed Atlas proposals still do not mutate the graph; Atlas application is the next depth-first slice.
+Phase 4 is complete at v0. Claim-structured proposals pass deterministic trust, conflict, permission, review, support, and benchmark gates; separate idempotent writers apply reviewed memory and narrow Atlas mutations. Retrieval filters expiry, overdue review, lifecycle, scope, principal, type, limits, and contradictory claims into an auditable bounded packet. Atlas application supports only existing lifecycle and repository evidence changes, validates candidates before atomic replacement, and cannot add, delete, merge, or rewire graph entities. The next depth-first branch is Phase 5 Core runtime and adapter integration.
 
 ## Experimental Frontend Slice
 

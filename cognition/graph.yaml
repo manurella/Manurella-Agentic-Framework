@@ -1340,6 +1340,7 @@ nodes:
       - schemas/memory/memory-promotion-decision.schema.json
       - schemas/memory/memory-application-result.schema.json
       - schemas/memory/memory-retrieval-packet.schema.json
+      - schemas/memory/atlas-application-result.schema.json
     updated_at: 2026-06-21
   - id: ctx.canonical-memory-store
     type: context
@@ -1421,6 +1422,29 @@ nodes:
     evidence:
       - evals/fixtures/memory-retrieval/
       - tools/retrieve_memory.py
+    updated_at: 2026-06-21
+  - id: tool.atlas-decision-applier
+    type: tool
+    label: Atlas Decision Applier
+    status: active
+    summary: Dry-run-by-default writer for reviewed existing-target lifecycle and repository evidence mutations, with idempotence and pre-write graph validation.
+    owners:
+      - dom.core
+    evidence:
+      - tools/apply_atlas_decision.py
+      - schemas/memory/atlas-application-result.schema.json
+      - evals/fixtures/atlas-application/
+    updated_at: 2026-06-21
+  - id: eval.atlas-application-v0
+    type: eval
+    label: Atlas Application V0 Fixtures
+    status: active
+    summary: Covers lifecycle and evidence application, replay, target failures, status vocabulary, repository containment, unsupported mutations, and non-Atlas rejection.
+    owners:
+      - dom.core
+    evidence:
+      - evals/fixtures/atlas-application/
+      - tools/apply_atlas_decision.py
     updated_at: 2026-06-21
 edges:
   - id: edge.core.owns.memory-proposal-evaluator
@@ -1565,6 +1589,50 @@ edges:
     evidence:
       - tools/self_check.py
       - tools/retrieve_memory.py
+    updated_at: 2026-06-21
+  - id: edge.core.owns.atlas-decision-applier
+    type: owns
+    source: dom.core
+    target: tool.atlas-decision-applier
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/apply_atlas_decision.py
+      - specs/memory-and-atlas.md
+    updated_at: 2026-06-21
+  - id: edge.atlas-decision-applier.uses.promotion-contracts
+    type: uses
+    source: tool.atlas-decision-applier
+    target: spec.memory-promotion-contracts
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/apply_atlas_decision.py
+      - schemas/memory/atlas-application-result.schema.json
+    updated_at: 2026-06-21
+  - id: edge.atlas-application-v0.evaluates.applier
+    type: evaluates
+    source: eval.atlas-application-v0
+    target: tool.atlas-decision-applier
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - evals/fixtures/atlas-application/
+      - tools/apply_atlas_decision.py
+    updated_at: 2026-06-21
+  - id: edge.self-check.uses.atlas-decision-applier
+    type: uses
+    source: tool.self-check
+    target: tool.atlas-decision-applier
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - tools/self_check.py
+      - tools/apply_atlas_decision.py
     updated_at: 2026-06-21
   - id: edge.core.owns.runtime-operation-compiler
     type: owns

@@ -155,6 +155,14 @@ class Validator:
             self.error(f"cognition/graph.yaml: invalid YAML: {exc}")
             return
 
+        self.validate_graph_data(data)
+
+    def validate_graph_data(self, data: Any) -> None:
+        """Validate an already parsed graph document against repository evidence."""
+        if not isinstance(data, dict):
+            self.error("cognition/graph.yaml: root must be a mapping")
+            return
+
         nodes = data.get("nodes")
         edges = data.get("edges")
         if not isinstance(nodes, list):

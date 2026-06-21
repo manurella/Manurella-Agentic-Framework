@@ -211,6 +211,8 @@ The graph must reduce context load, not become another giant always-on prompt.
 - no claim that the graph is sentient
 - no hidden memory mutation without review
 
+Reviewed Atlas application is not automatic self-modification. A typed proposal must pass the memory/Atlas promotion gate, and a separate explicit invocation may apply only the existing-target lifecycle and evidence operations defined in `specs/memory-and-atlas.md`. The candidate graph must validate before canonical replacement.
+
 ## Research Hooks
 
 - should graph confidence use simple scores first or Bayesian updates?

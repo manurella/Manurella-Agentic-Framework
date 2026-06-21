@@ -119,6 +119,7 @@ Artifacts:
 - `tools/evaluate_memory_proposal.py`
 - `tools/apply_memory_decision.py`
 - `tools/retrieve_memory.py`
+- `tools/apply_atlas_decision.py`
 - graph update notes inside eval records
 
 Acceptance:
@@ -129,6 +130,7 @@ Acceptance:
 - Failures from evals create or update failure-mode nodes.
 - Durable memory and Atlas mutations pass typed provenance, conflict, permission, review, and evidence gates before a separate canonical write step.
 - Runtime retrieval excludes stale, review-overdue, scope-mismatched, principal-mismatched, and contradictory records through a bounded typed packet.
+- Reviewed Atlas application is dry-run by default, limited to existing lifecycle/evidence fields, idempotent, path-contained, and validated before canonical replacement.
 
 ### W3. Domain Packs
 

@@ -240,6 +240,15 @@ python tools/retrieve_memory.py --repo . --fixtures
 
 Retrieval excludes inactive, expired, review-overdue, principal-mismatched, scope-mismatched, wrong-type, and contradictory records. The packet reports each omission and orders eligible records by explicit evidence class, recency, then stable ID; it does not claim learned relevance.
 
+Apply a reviewed Atlas decision through the guarded graph boundary:
+
+```powershell
+python tools/apply_atlas_decision.py --repo . --decision path/to/atlas-decision.yaml --applied-at 2026-06-21T10:00:00Z --apply
+python tools/apply_atlas_decision.py --repo . --fixtures
+```
+
+The writer is dry-run by default and can modify only `cognition/graph.yaml`. V0 supports lifecycle changes and repository-contained evidence additions for existing nodes or edges. It rejects broader predicates, invalid status vocabularies, missing/ambiguous targets, path escapes, and candidates that fail graph validation. It does not add, remove, merge, or rewire graph entities.
+
 ## Interpreter Contract Validator
 
 Validate the Task Frame and Acceptance Contract schemas, semantic invariants, Family A-E projections, project postures, and representative fixtures:

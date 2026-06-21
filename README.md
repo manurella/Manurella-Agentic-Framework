@@ -56,7 +56,7 @@ For fresh agent sessions, start from `AGENTS.md` and `MANURELLA.md`. The main ro
 - `tools/record_mentor_run.py`: captured Mentor output scorer and result-record wrapper.
 - `tools/compare_results.py`: baseline-vs-guided score comparator for promotion signals.
 - `tools/self_check.py`: one-command local smoke suite for framework contracts, Core/Brain runtime compilation, governed memory, Kilo export, and eval helpers.
-- `tools/`: validators, compilers, eval gates, governed memory application/retrieval, and runtime adapters.
+- `tools/`: validators, compilers, eval gates, governed memory and Atlas application/retrieval, and runtime adapters.
 
 ## Commit Style
 

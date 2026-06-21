@@ -1,0 +1,3 @@
+fixture_id: atlas-application.lifecycle-no-change
+promotion_fixture: evals/fixtures/memory-promotion/atlas-promote.yaml
+expected: {disposition: no_change, reason_code: already_applied, target_kind: node, resulting_value: active, validation_passed: true}

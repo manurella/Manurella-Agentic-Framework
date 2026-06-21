@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.dev/schemas/memory/atlas-application-result.v0.json",
+  "title": "Manurella Atlas Application Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "application_id", "decision_ref", "graph_ref", "disposition", "reason_code", "target_id", "target_kind", "predicate", "prior_value", "resulting_value", "validation_passed", "graph_nodes", "graph_edges"],
+  "properties": {
+    "schema_version": { "const": "atlas-application-result.v0" },
+    "application_id": { "type": "string", "minLength": 1 },
+    "decision_ref": { "type": "string", "minLength": 1 },
+    "graph_ref": { "type": "string", "minLength": 1 },
+    "disposition": { "enum": ["applied", "no_change", "rejected"] },
+    "reason_code": { "enum": ["mutation_applied", "already_applied", "decision_not_applicable", "target_missing", "target_ambiguous", "unsupported_predicate", "invalid_lifecycle", "evidence_path_invalid", "post_validation_failed"] },
+    "target_id": { "type": ["string", "null"] },
+    "target_kind": { "enum": ["node", "edge", null] },
+    "predicate": { "type": ["string", "null"] },
+    "prior_value": { "type": ["string", "null"] },
+    "resulting_value": { "type": ["string", "null"] },
+    "validation_passed": { "type": "boolean" },
+    "graph_nodes": { "type": "integer", "minimum": 0 },
+    "graph_edges": { "type": "integer", "minimum": 0 }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "disposition": { "const": "applied" } }, "required": ["disposition"] },
+      "then": { "properties": { "reason_code": { "const": "mutation_applied" }, "validation_passed": { "const": true } } }
+    },
+    {
+      "if": { "properties": { "disposition": { "const": "no_change" } }, "required": ["disposition"] },
+      "then": { "properties": { "reason_code": { "const": "already_applied" }, "validation_passed": { "const": true } } }
+    },
+    {
+      "if": { "properties": { "disposition": { "const": "rejected" } }, "required": ["disposition"] },
+      "then": { "properties": { "validation_passed": { "const": false } } }
+    }
+  ]
+}

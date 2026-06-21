@@ -4,7 +4,7 @@
 
 - Atlas ID: `sys.memory-atlas`
 - Parent: `manurella`
-- Lifecycle: implemented v0 promotion, store-application, and retrieval boundary
+- Lifecycle: Phase 4 v0 implemented
 - Research basis: `research/synthesis/brain-cognitive-kernel-synthesis.md`
 - Storage baseline: explicit versioned repository files
 - Vector or graph database selection: experiment-required
@@ -82,6 +82,17 @@ This prevents false numeric precision before historical calibration exists.
 
 Eligible records are ordered deterministically by evidence class, recency, and stable ID. This is an auditable baseline, not learned relevance. Every exclusion category and conflict reference is reported, and `atlas_mutation` records are never retrievable as runtime memory.
 
+## Atlas Mutation Boundary
+
+`tools/apply_atlas_decision.py` is the separate, dry-run-by-default writer for reviewed Atlas decisions. V0 supports only:
+
+- `lifecycle`: change an existing node or edge status within the concrete vocabulary defined by `specs/cognitive-graph.md`
+- `evidence_add`: append an existing repository-contained evidence reference to an existing node or edge
+
+The writer rejects missing or ambiguous targets, unsupported predicates, invalid node/edge lifecycle states, repository escapes, missing evidence paths, non-Atlas decisions, and any candidate that fails the canonical graph validator. Exact replay is idempotent. V0 cannot add, merge, delete, or rewire nodes or edges, and it never treats a promoted proposal as permission to perform arbitrary graph editing.
+
+Memory application and retrieval fixtures execute proposal evaluation through store application and bounded retrieval. Atlas fixtures execute proposal evaluation through candidate graph mutation and validation. Together these form the Phase 4 v0 end-to-end evidence flow without mutating canonical state during tests.
+
 ## Privacy And Control
 
 Every record has an owner, scope, provenance references, trust class, lifecycle, review date, optional expiry, supersession references, and a user-control flag. Personal preferences must be authenticated and explicitly authorized. Retrieved content cannot promote itself by repetition.
@@ -94,14 +105,17 @@ Every record has an owner, scope, provenance references, trust class, lifecycle,
 - `schemas/memory/memory-promotion-decision.schema.json`
 - `schemas/memory/memory-application-result.schema.json`
 - `schemas/memory/memory-retrieval-packet.schema.json`
+- `schemas/memory/atlas-application-result.schema.json`
 - `tools/evaluate_memory_proposal.py`
 - `tools/apply_memory_decision.py`
 - `tools/retrieve_memory.py`
+- `tools/apply_atlas_decision.py`
 - `evals/fixtures/memory-promotion/`
 - `evals/fixtures/memory-application/`
 - `evals/fixtures/memory-retrieval/`
+- `evals/fixtures/atlas-application/`
 
-Fixtures cover untrusted quarantine, episodic retention, permission and review failures, conflict and supersession behavior, reviewed durable application, idempotence, Atlas separation, expiry and review filtering, principal isolation, scope and type filtering, contradiction exclusion, and bounded retrieval.
+Fixtures cover untrusted quarantine, episodic retention, permission and review failures, conflict and supersession behavior, reviewed durable application, idempotence, expiry and review filtering, principal isolation, contradiction exclusion, bounded retrieval, Atlas lifecycle/evidence application, repository path containment, and rejected Atlas mutations.
 
 ## Next Depth-First Path
 
@@ -109,6 +123,7 @@ Fixtures cover untrusted quarantine, episodic retention, permission and review f
 memory proposal and promotion gate [implemented]
 -> reviewed store application and supersession [implemented]
 -> retrieval packet and stale/expiry filtering [implemented]
--> reviewed Atlas mutation application
--> Phase 4 end-to-end evidence flow
+-> reviewed Atlas mutation application [implemented]
+-> Phase 4 end-to-end evidence flow [implemented]
+-> Phase 5 Core runtime and adapter integration [next]
 ```

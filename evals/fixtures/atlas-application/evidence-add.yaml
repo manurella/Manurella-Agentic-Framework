@@ -1,0 +1,5 @@
+fixture_id: atlas-application.evidence-add
+promotion_fixture: evals/fixtures/memory-promotion/atlas-promote.yaml
+proposal_id: atlas-brain-cycle-evidence
+claim: {subject: tool.brain-cycle-controller, predicate: evidence_add, object: specs/brain-runtime-state.md, statement: Add the Brain runtime specification as evidence.}
+expected: {disposition: applied, reason_code: mutation_applied, target_kind: node, resulting_value: specs/brain-runtime-state.md, validation_passed: true}

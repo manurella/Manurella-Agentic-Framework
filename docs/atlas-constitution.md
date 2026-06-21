@@ -110,6 +110,8 @@ The first interactive Atlas is read-only and generated from validated repository
 
 Direct editing may be added only after the schema, validation, conflict handling, and change-review workflow are stable. The interface must never mutate canonical data without validation and a reviewable repository change.
 
+The v0 reviewed application boundary is `tools/apply_atlas_decision.py`. It is not a general editor: it applies only promoted lifecycle or repository-evidence changes to existing targets, defaults to dry-run, validates the complete candidate graph before replacement, and leaves a reviewable git diff. Adding, deleting, merging, or rewiring graph entities remains outside this boundary.
+
 ## Governance
 
 Each checkpoint identifies:

@@ -1,0 +1,3 @@
+fixture_id: atlas-application.reject-non-atlas
+promotion_fixture: evals/fixtures/memory-promotion/user-preference-promote.yaml
+expected: {disposition: rejected, reason_code: decision_not_applicable, target_kind: null, resulting_value: null, validation_passed: false}
