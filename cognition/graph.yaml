@@ -1190,7 +1190,129 @@ nodes:
       - evals/fixtures/interpreter/conversation.yaml
       - tools/README.md
     updated_at: 2026-06-18
+  - id: spec.brain-state-schema
+    type: spec
+    label: Brain State Schema
+    status: active
+    summary: Typed task, world, user, self, uncertainty, and capability state compiled after validated Interpreter and Core routing.
+    owners:
+      - dom.core
+    evidence:
+      - schemas/brain/brain-state.schema.json
+      - specs/brain-runtime-state.md
+    updated_at: 2026-06-21
+  - id: spec.active-workspace-schema
+    type: spec
+    label: Active Workspace Schema
+    status: active
+    summary: Volatile trusted working set for claims, observations, contradictions, unresolved questions, dependencies, and bounded budgets.
+    owners:
+      - dom.core
+    evidence:
+      - schemas/brain/active-workspace.schema.json
+      - specs/brain-runtime-state.md
+    updated_at: 2026-06-21
+  - id: spec.context-packet-schema
+    type: spec
+    label: Brain Context Packet Schema
+    status: active
+    summary: Bounded privileged packet containing trusted semantic state, constraints, acceptance criteria, routing, and explicit untrusted-data omissions.
+    owners:
+      - dom.core
+    evidence:
+      - schemas/brain/context-packet.schema.json
+      - specs/brain-runtime-state.md
+    updated_at: 2026-06-21
+  - id: tool.brain-workspace-compiler
+    type: tool
+    label: Brain Workspace Compiler
+    status: active
+    summary: Deterministically compiles validated Interpreter and Core artifacts into Brain State, Active Workspace, and Context Packet contracts.
+    owners:
+      - dom.core
+    evidence:
+      - tools/compile_brain_workspace.py
+      - evals/fixtures/brain-workspace/project.yaml
+      - tools/README.md
+    updated_at: 2026-06-21
+  - id: eval.brain-workspace-v0
+    type: eval
+    label: Brain Workspace V0 Fixtures
+    status: active
+    summary: Covers direct, delegated, ambiguous, consequential, and project state compilation with schema and privileged-context leakage checks.
+    owners:
+      - dom.core
+    evidence:
+      - evals/fixtures/brain-workspace/
+      - tools/compile_brain_workspace.py
+    updated_at: 2026-06-21
 edges:
+  - id: edge.core.owns.brain-workspace-compiler
+    type: owns
+    source: dom.core
+    target: tool.brain-workspace-compiler
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/compile_brain_workspace.py
+      - specs/brain-runtime-state.md
+    updated_at: 2026-06-21
+  - id: edge.brain-workspace-compiler.uses.brain-state-schema
+    type: uses
+    source: tool.brain-workspace-compiler
+    target: spec.brain-state-schema
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/compile_brain_workspace.py
+      - schemas/brain/brain-state.schema.json
+    updated_at: 2026-06-21
+  - id: edge.brain-workspace-compiler.uses.active-workspace-schema
+    type: uses
+    source: tool.brain-workspace-compiler
+    target: spec.active-workspace-schema
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/compile_brain_workspace.py
+      - schemas/brain/active-workspace.schema.json
+    updated_at: 2026-06-21
+  - id: edge.brain-workspace-compiler.uses.context-packet-schema
+    type: uses
+    source: tool.brain-workspace-compiler
+    target: spec.context-packet-schema
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/compile_brain_workspace.py
+      - schemas/brain/context-packet.schema.json
+    updated_at: 2026-06-21
+  - id: edge.brain-workspace-v0.evaluates.compiler
+    type: evaluates
+    source: eval.brain-workspace-v0
+    target: tool.brain-workspace-compiler
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - evals/fixtures/brain-workspace/
+      - tools/compile_brain_workspace.py
+    updated_at: 2026-06-21
+  - id: edge.self-check.uses.brain-workspace-compiler
+    type: uses
+    source: tool.self-check
+    target: tool.brain-workspace-compiler
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - tools/self_check.py
+      - tools/compile_brain_workspace.py
+    updated_at: 2026-06-21
   - id: edge.core.owns.interpreter-trust-partitioner
     type: owns
     source: dom.core

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.dev/schemas/brain/workspace-bundle.v0.json",
+  "title": "Manurella Brain Workspace Bundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "brain_state", "active_workspace", "context_packet"],
+  "properties": {
+    "schema_version": { "const": "workspace-bundle.v0" },
+    "brain_state": { "$ref": "brain-state.v0.json" },
+    "active_workspace": { "$ref": "active-workspace.v0.json" },
+    "context_packet": { "$ref": "context-packet.v0.json" }
+  }
+}

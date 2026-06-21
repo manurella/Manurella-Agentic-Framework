@@ -1,0 +1,10 @@
+fixture_id: brain-workspace.consequential
+interpreter_fixture: evals/fixtures/interpreter/consequential.yaml
+expected:
+  task_status: blocked
+  operation: confirm
+  domain: core
+  mode: standard
+  effort: medium
+  blocking_uncertainty: true
+  blocker_count: 2

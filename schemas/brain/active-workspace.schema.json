@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.dev/schemas/brain/active-workspace.v0.json",
+  "title": "Manurella Active Workspace",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "workspace_id", "state_ref", "volatile", "claims", "evidence_refs", "plan_steps", "observations", "contradictions", "unresolved_questions", "dependencies", "budgets"],
+  "properties": {
+    "schema_version": { "const": "active-workspace.v0" },
+    "workspace_id": { "type": "string", "minLength": 1 },
+    "state_ref": { "type": "string", "minLength": 1 },
+    "volatile": { "const": true },
+    "claims": { "type": "array", "items": { "$ref": "#/$defs/workItem" } },
+    "evidence_refs": { "$ref": "#/$defs/stringArray" },
+    "plan_steps": { "type": "array", "items": { "$ref": "#/$defs/planStep" } },
+    "observations": { "type": "array", "items": { "$ref": "#/$defs/workItem" } },
+    "contradictions": { "type": "array", "items": { "$ref": "#/$defs/workItem" } },
+    "unresolved_questions": { "type": "array", "items": { "$ref": "#/$defs/workItem" } },
+    "dependencies": { "$ref": "#/$defs/stringArray" },
+    "budgets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cycles_remaining", "repairs_remaining", "context_items_max"],
+      "properties": {
+        "cycles_remaining": { "type": "integer", "minimum": 0 },
+        "repairs_remaining": { "type": "integer", "minimum": 0 },
+        "context_items_max": { "type": "integer", "minimum": 1 }
+      }
+    }
+  },
+  "$defs": {
+    "stringArray": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "workItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "statement", "source_refs"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "statement": { "type": "string", "minLength": 1 },
+        "source_refs": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "planStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["step_id", "operation", "status", "blocked_by"],
+      "properties": {
+        "step_id": { "type": "string", "minLength": 1 },
+        "operation": { "enum": ["clarify", "confirm", "refuse", "respond", "delegate"] },
+        "status": { "enum": ["pending", "blocked", "ready", "complete", "failed"] },
+        "blocked_by": { "$ref": "#/$defs/stringArray" }
+      }
+    }
+  }
+}

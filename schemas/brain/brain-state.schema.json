@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.dev/schemas/brain/brain-state.v0.json",
+  "title": "Manurella Brain State",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "state_id", "revision", "updated_at", "task", "world", "user", "self", "uncertainty", "capabilities"],
+  "properties": {
+    "schema_version": { "const": "brain-state.v0" },
+    "state_id": { "type": "string", "minLength": 1 },
+    "revision": { "type": "integer", "minimum": 1 },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["task_frame_ref", "acceptance_contract_ref", "goal", "status", "project_id", "project_posture", "dependencies", "blockers"],
+      "properties": {
+        "task_frame_ref": { "type": "string", "minLength": 1 },
+        "acceptance_contract_ref": { "type": "string", "minLength": 1 },
+        "goal": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["blocked", "framed", "active", "verifying", "complete", "failed"] },
+        "project_id": { "type": ["string", "null"] },
+        "project_posture": { "type": ["string", "null"] },
+        "dependencies": { "$ref": "#/$defs/stringArray" },
+        "blockers": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "world": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["observations", "assumptions"],
+      "properties": {
+        "observations": { "type": "array", "items": { "$ref": "#/$defs/statement" } },
+        "assumptions": { "type": "array", "items": { "$ref": "#/$defs/statement" } }
+      }
+    },
+    "user": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["preferences", "permissions_required", "confirmations_required"],
+      "properties": {
+        "preferences": { "$ref": "#/$defs/stringArray" },
+        "permissions_required": { "$ref": "#/$defs/stringArray" },
+        "confirmations_required": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "self": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "effort", "selected_domain", "selected_agent", "cycle_budget", "repair_budget"],
+      "properties": {
+        "mode": { "enum": ["fast", "standard"] },
+        "effort": { "enum": ["low", "medium", "high", "max", "ultra", "sentient"] },
+        "selected_domain": { "type": "string", "minLength": 1 },
+        "selected_agent": { "type": "string", "minLength": 1 },
+        "cycle_budget": { "type": "integer", "minimum": 1 },
+        "repair_budget": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "uncertainty": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["epistemic", "environmental", "execution", "policy", "contradictions", "blocking"],
+      "properties": {
+        "epistemic": { "type": "array", "items": { "$ref": "#/$defs/statement" } },
+        "environmental": { "type": "array", "items": { "$ref": "#/$defs/statement" } },
+        "execution": { "type": "array", "items": { "$ref": "#/$defs/statement" } },
+        "policy": { "type": "array", "items": { "$ref": "#/$defs/statement" } },
+        "contradictions": { "type": "array", "items": { "$ref": "#/$defs/statement" } },
+        "blocking": { "type": "boolean" }
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "likely_tools"],
+      "properties": {
+        "required": { "$ref": "#/$defs/stringArray" },
+        "likely_tools": { "$ref": "#/$defs/stringArray" }
+      }
+    }
+  },
+  "$defs": {
+    "stringArray": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "statement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "statement", "source_refs"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "statement": { "type": "string", "minLength": 1 },
+        "source_refs": { "$ref": "#/$defs/stringArray" }
+      }
+    }
+  }
+}

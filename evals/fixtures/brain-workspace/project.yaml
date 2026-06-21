@@ -1,0 +1,10 @@
+fixture_id: brain-workspace.project
+interpreter_fixture: evals/fixtures/interpreter/project.yaml
+expected:
+  task_status: active
+  operation: delegate
+  domain: build
+  mode: standard
+  effort: high
+  blocking_uncertainty: false
+  blocker_count: 0

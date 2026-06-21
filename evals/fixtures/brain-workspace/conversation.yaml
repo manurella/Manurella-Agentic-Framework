@@ -1,0 +1,10 @@
+fixture_id: brain-workspace.conversation
+interpreter_fixture: evals/fixtures/interpreter/conversation.yaml
+expected:
+  task_status: active
+  operation: respond
+  domain: core
+  mode: fast
+  effort: low
+  blocking_uncertainty: false
+  blocker_count: 0

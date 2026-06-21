@@ -184,6 +184,17 @@ The first blinded StepFun v0 result is `evals/results/stepfun-inference-v0.parse
 
 The first blinded StepFun v1 result is `evals/results/stepfun-inference-v1.parser-eval.yaml`: 26/37 critical fields with 100% schema, semantic, routing, and safety validity. It passes the individual evaluator but remains unpromoted until an unchanged independent v1 repeat passes the repeated-run gate.
 
+## Brain Workspace Compiler
+
+Compile a validated Interpreter fixture through Core routing into Brain State, a volatile Active Workspace, and a bounded Context Packet:
+
+```powershell
+python tools/compile_brain_workspace.py --repo . --input evals/fixtures/interpreter/project.yaml
+python tools/compile_brain_workspace.py --repo . --fixtures
+```
+
+The compiler carries only provenance-approved trusted references into the privileged context packet. Raw requests, transcript references, untrusted-data references, tool payloads, and reasoning traces are excluded. The v0 cycle and context budgets are transparent regression baselines, not learned confidence or optimality claims.
+
 ## Interpreter Contract Validator
 
 Validate the Task Frame and Acceptance Contract schemas, semantic invariants, Family A-E projections, project postures, and representative fixtures:

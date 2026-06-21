@@ -108,6 +108,8 @@ Interpreter
 
 The deterministic input-to-Core path, parser evaluation harness, repeated-run promotion gate, shadow adapter, inference-only compiler, blinded benchmark, guarded inference mode, representative replay evaluator, and privacy-bounded live observation recorder are implemented. Blinded StepFun v1 passed two independent runs: 26/37 and 29/37 critical fields, both with 100% schema, semantic, routing, and safety validity. Guarded representative replay selected 12/12 candidates across both promoted captures with no fallback, proving the mechanism but not live-runtime readiness. Shadow remains the default. The next connected checkpoint is collecting independently captured guarded live observations and completing human residual-risk review before researching any default-activation threshold.
 
+The Phase 3 Brain runtime-state slice now compiles validated Interpreter/Core artifacts into separate task, world, user, self, uncertainty, and capability state; a volatile active workspace; and a bounded context packet. The compiler excludes transcript and untrusted payload fields and treats v0 budgets as transparent regression baselines. The next depth-first Brain slice is observation-driven revision, strategy selection, verification, bounded repair, and stopping.
+
 ## Experimental Frontend Slice
 
 The frontend nodes are draft graph candidates only. They are not accepted agents, not exported runtime agents, and not official routing targets until benchmark evidence supports promotion.

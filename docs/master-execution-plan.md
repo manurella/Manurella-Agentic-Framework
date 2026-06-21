@@ -62,6 +62,11 @@ Artifacts:
 - `tools/evaluate_shadow_parser.py`
 - `tools/validate_interpreter.py`
 - `tools/compile_core_packet.py`
+- `specs/brain-runtime-state.md`
+- `schemas/brain/brain-state.schema.json`
+- `schemas/brain/active-workspace.schema.json`
+- `schemas/brain/context-packet.schema.json`
+- `tools/compile_brain_workspace.py`
 - `specs/core-operating-protocol.md`
 - `specs/agent-schema.md`
 - `specs/runtime-control.md`
@@ -89,6 +94,7 @@ Acceptance:
 - Guarded representative replay selected 12/12 promoted candidates across both captures with no fallback; replay evidence is not live evidence, so activation remains blocked and shadow remains default.
 - Privacy-bounded live observation capture is implemented; fresh authorized requests can now be fingerprinted, guarded, and queued for human review without copying request text into result records.
 - Core compiles validated bundles into direct, blocked, or delegated routing decisions without transcript leakage.
+- Brain compiles validated Interpreter/Core artifacts into typed task/world/user/self/uncertainty state, a volatile active workspace, and a bounded privileged context packet.
 
 ### W2. Cognitive Graph
 

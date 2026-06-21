@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.dev/schemas/brain/context-packet.v0.json",
+  "title": "Manurella Brain Context Packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "packet_id", "state_ref", "operation", "mission", "trusted_claims", "evidence_refs", "constraints", "acceptance_criteria", "routing", "budgets", "omissions"],
+  "properties": {
+    "schema_version": { "const": "context-packet.v0" },
+    "packet_id": { "type": "string", "minLength": 1 },
+    "state_ref": { "type": "string", "minLength": 1 },
+    "operation": { "enum": ["clarify", "confirm", "refuse", "respond", "delegate"] },
+    "mission": { "type": "string", "minLength": 1 },
+    "trusted_claims": { "type": "array", "items": { "$ref": "#/$defs/claim" } },
+    "evidence_refs": { "$ref": "#/$defs/stringArray" },
+    "constraints": { "$ref": "#/$defs/stringArray" },
+    "acceptance_criteria": { "$ref": "#/$defs/stringArray" },
+    "routing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["domain", "agent", "secondary_domains", "mode", "effort"],
+      "properties": {
+        "domain": { "type": "string", "minLength": 1 },
+        "agent": { "type": "string", "minLength": 1 },
+        "secondary_domains": { "$ref": "#/$defs/stringArray" },
+        "mode": { "enum": ["fast", "standard"] },
+        "effort": { "enum": ["low", "medium", "high", "max", "ultra", "sentient"] }
+      }
+    },
+    "budgets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cycles", "repairs", "context_items"],
+      "properties": {
+        "cycles": { "type": "integer", "minimum": 1 },
+        "repairs": { "type": "integer", "minimum": 0 },
+        "context_items": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "omissions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["untrusted_data_count", "reason"],
+      "properties": {
+        "untrusted_data_count": { "type": "integer", "minimum": 0 },
+        "reason": { "type": "string", "minLength": 1 }
+      }
+    }
+  },
+  "$defs": {
+    "stringArray": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "statement", "source_refs"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "statement": { "type": "string", "minLength": 1 },
+        "source_refs": { "$ref": "#/$defs/stringArray" }
+      }
+    }
+  }
+}

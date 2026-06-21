@@ -1,0 +1,10 @@
+fixture_id: brain-workspace.ambiguous
+interpreter_fixture: evals/fixtures/interpreter/ambiguous.yaml
+expected:
+  task_status: blocked
+  operation: clarify
+  domain: core
+  mode: fast
+  effort: medium
+  blocking_uncertainty: true
+  blocker_count: 1

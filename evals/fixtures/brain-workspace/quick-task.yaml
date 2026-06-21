@@ -1,0 +1,10 @@
+fixture_id: brain-workspace.quick-task
+interpreter_fixture: evals/fixtures/interpreter/quick-task.yaml
+expected:
+  task_status: active
+  operation: delegate
+  domain: build
+  mode: fast
+  effort: low
+  blocking_uncertainty: false
+  blocker_count: 0
