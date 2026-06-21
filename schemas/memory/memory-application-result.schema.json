@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.dev/schemas/memory/memory-application-result.v0.json",
+  "title": "Manurella Memory Application Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "application_id", "decision_ref", "store_ref", "disposition", "reason_code", "record_id", "superseded_refs", "records_before", "records_after"],
+  "properties": {
+    "schema_version": { "const": "memory-application-result.v0" },
+    "application_id": { "type": "string", "minLength": 1 },
+    "decision_ref": { "type": "string", "minLength": 1 },
+    "store_ref": { "type": "string", "minLength": 1 },
+    "disposition": { "enum": ["applied", "no_change", "rejected"] },
+    "reason_code": { "enum": ["record_applied", "already_applied", "decision_not_applicable", "atlas_requires_separate_apply", "duplicate_record_conflict", "active_claim_conflict", "supersession_target_missing"] },
+    "record_id": { "type": ["string", "null"] },
+    "superseded_refs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "records_before": { "type": "integer", "minimum": 0 },
+    "records_after": { "type": "integer", "minimum": 0 }
+  }
+}

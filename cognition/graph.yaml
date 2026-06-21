@@ -1,5 +1,5 @@
 version: 0
-updated_at: 2026-06-18
+updated_at: 2026-06-21
 status: draft
 nodes:
   - id: dom.core
@@ -1330,7 +1330,7 @@ nodes:
     type: spec
     label: Memory Promotion Contracts
     status: active
-    summary: Structured claim, provenance, retention, permission, evidence, conflict, review, lifecycle, and promotion contracts for file-based durable memory.
+    summary: Structured claim, provenance, retention, permission, evidence, conflict, review, lifecycle, promotion, application, and bounded retrieval contracts for file-based durable memory.
     owners:
       - dom.core
     evidence:
@@ -1338,12 +1338,14 @@ nodes:
       - schemas/memory/memory-proposal.schema.json
       - schemas/memory/memory-record.schema.json
       - schemas/memory/memory-promotion-decision.schema.json
+      - schemas/memory/memory-application-result.schema.json
+      - schemas/memory/memory-retrieval-packet.schema.json
     updated_at: 2026-06-21
   - id: ctx.canonical-memory-store
     type: context
     label: Canonical File Memory Store
     status: active
-    summary: Explicit versioned v0 durable-memory store; empty until reviewed promotion decisions are separately applied.
+    summary: Explicit versioned v0 durable-memory store; currently empty and writable only through the separate reviewed decision application boundary.
     owners:
       - dom.core
     evidence:
@@ -1373,6 +1375,52 @@ nodes:
     evidence:
       - evals/fixtures/memory-promotion/
       - tools/evaluate_memory_proposal.py
+    updated_at: 2026-06-21
+  - id: tool.memory-decision-applier
+    type: tool
+    label: Memory Decision Applier
+    status: active
+    summary: Dry-run-by-default canonical store writer with decision validation, exact idempotence, active-claim conflict rejection, and explicit supersession.
+    owners:
+      - dom.core
+    evidence:
+      - tools/apply_memory_decision.py
+      - schemas/memory/memory-application-result.schema.json
+      - evals/fixtures/memory-application/
+    updated_at: 2026-06-21
+  - id: tool.memory-retriever
+    type: tool
+    label: Memory Retriever
+    status: active
+    summary: Compiles principal-aware bounded retrieval packets after lifecycle, expiry, review, scope, type, contradiction, and limit filtering.
+    owners:
+      - dom.core
+    evidence:
+      - tools/retrieve_memory.py
+      - schemas/memory/memory-retrieval-packet.schema.json
+      - evals/fixtures/memory-retrieval/
+    updated_at: 2026-06-21
+  - id: eval.memory-application-v0
+    type: eval
+    label: Memory Application V0 Fixtures
+    status: active
+    summary: Covers durable and episodic application, rejected and Atlas decisions, idempotent replay, and explicit supersession.
+    owners:
+      - dom.core
+    evidence:
+      - evals/fixtures/memory-application/
+      - tools/apply_memory_decision.py
+    updated_at: 2026-06-21
+  - id: eval.memory-retrieval-v0
+    type: eval
+    label: Memory Retrieval V0 Fixtures
+    status: active
+    summary: Covers current selection, expiry, overdue review, principal isolation, scope, type, contradiction, and bounded result ordering.
+    owners:
+      - dom.core
+    evidence:
+      - evals/fixtures/memory-retrieval/
+      - tools/retrieve_memory.py
     updated_at: 2026-06-21
 edges:
   - id: edge.core.owns.memory-proposal-evaluator
@@ -1429,6 +1477,94 @@ edges:
     evidence:
       - tools/self_check.py
       - tools/evaluate_memory_proposal.py
+    updated_at: 2026-06-21
+  - id: edge.core.owns.memory-decision-applier
+    type: owns
+    source: dom.core
+    target: tool.memory-decision-applier
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/apply_memory_decision.py
+      - specs/memory-and-atlas.md
+    updated_at: 2026-06-21
+  - id: edge.core.owns.memory-retriever
+    type: owns
+    source: dom.core
+    target: tool.memory-retriever
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/retrieve_memory.py
+      - specs/memory-and-atlas.md
+    updated_at: 2026-06-21
+  - id: edge.memory-decision-applier.uses.memory-store
+    type: uses
+    source: tool.memory-decision-applier
+    target: ctx.canonical-memory-store
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/apply_memory_decision.py
+      - cognition/memory.yaml
+    updated_at: 2026-06-21
+  - id: edge.memory-retriever.uses.memory-store
+    type: uses
+    source: tool.memory-retriever
+    target: ctx.canonical-memory-store
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/retrieve_memory.py
+      - cognition/memory.yaml
+    updated_at: 2026-06-21
+  - id: edge.memory-application-v0.evaluates.applier
+    type: evaluates
+    source: eval.memory-application-v0
+    target: tool.memory-decision-applier
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - evals/fixtures/memory-application/
+      - tools/apply_memory_decision.py
+    updated_at: 2026-06-21
+  - id: edge.memory-retrieval-v0.evaluates.retriever
+    type: evaluates
+    source: eval.memory-retrieval-v0
+    target: tool.memory-retriever
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - evals/fixtures/memory-retrieval/
+      - tools/retrieve_memory.py
+    updated_at: 2026-06-21
+  - id: edge.self-check.uses.memory-decision-applier
+    type: uses
+    source: tool.self-check
+    target: tool.memory-decision-applier
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - tools/self_check.py
+      - tools/apply_memory_decision.py
+    updated_at: 2026-06-21
+  - id: edge.self-check.uses.memory-retriever
+    type: uses
+    source: tool.self-check
+    target: tool.memory-retriever
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - tools/self_check.py
+      - tools/retrieve_memory.py
     updated_at: 2026-06-21
   - id: edge.core.owns.runtime-operation-compiler
     type: owns

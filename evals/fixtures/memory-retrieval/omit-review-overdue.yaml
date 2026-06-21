@@ -1,0 +1,12 @@
+fixture_id: memory-retrieval.omit-review-overdue
+promotion_fixtures: [evals/fixtures/memory-promotion/user-preference-promote.yaml]
+request:
+  as_of: "2026-12-21T09:04:00Z"
+  principal_ref: user.local
+  scope: {kind: global, ref: user.local}
+  requested_types: [user_preference]
+  max_items: 8
+expected:
+  selected_refs: []
+  omitted: {expired: 0, review_overdue: 1, lifecycle: 0, scope: 0, type: 0, conflict: 0, limit: 0}
+  conflict_refs: []

@@ -117,6 +117,8 @@ Artifacts:
 - `specs/memory-and-atlas.md`
 - `schemas/memory/`
 - `tools/evaluate_memory_proposal.py`
+- `tools/apply_memory_decision.py`
+- `tools/retrieve_memory.py`
 - graph update notes inside eval records
 
 Acceptance:
@@ -126,6 +128,7 @@ Acceptance:
 - Promotion from draft to accepted requires graph evidence.
 - Failures from evals create or update failure-mode nodes.
 - Durable memory and Atlas mutations pass typed provenance, conflict, permission, review, and evidence gates before a separate canonical write step.
+- Runtime retrieval excludes stale, review-overdue, scope-mismatched, principal-mismatched, and contradictory records through a bounded typed packet.
 
 ### W3. Domain Packs
 

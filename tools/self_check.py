@@ -124,6 +124,8 @@ def main(argv: list[str]) -> int:
         [python, "tools/advance_brain_cycle.py", "--repo", ".", "--fixtures"],
         [python, "tools/compile_runtime_operation.py", "--repo", ".", "--fixtures"],
         [python, "tools/evaluate_memory_proposal.py", "--repo", ".", "--fixtures"],
+        [python, "tools/apply_memory_decision.py", "--repo", ".", "--fixtures"],
+        [python, "tools/retrieve_memory.py", "--repo", ".", "--fixtures"],
         [
             python,
             "adapters/kilo/export_agents.py",

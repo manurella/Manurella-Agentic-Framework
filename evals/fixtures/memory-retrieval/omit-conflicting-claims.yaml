@@ -1,0 +1,41 @@
+fixture_id: memory-retrieval.omit-conflicting-claims
+existing_records:
+  - schema_version: memory-record.v0
+    memory_id: memory.runtime-mode.safe
+    memory_type: semantic
+    scope: {kind: global, ref: null}
+    claim: {subject: runtime, predicate: mode, object: safe, statement: Runtime mode is safe.}
+    provenance: {source_refs: [eval://runtime/safe], evidence_refs: [eval://runtime/safe], observation_refs: []}
+    trust: validated_eval
+    evidence_status: corroborated
+    lifecycle: active
+    owner: framework
+    created_at: "2026-06-20T09:00:00Z"
+    review_after: "2026-09-20T09:00:00Z"
+    expires_at: null
+    user_controllable: false
+    supersedes_refs: []
+  - schema_version: memory-record.v0
+    memory_id: memory.runtime-mode.fast
+    memory_type: semantic
+    scope: {kind: global, ref: null}
+    claim: {subject: runtime, predicate: mode, object: fast, statement: Runtime mode is fast.}
+    provenance: {source_refs: [eval://runtime/fast], evidence_refs: [eval://runtime/fast], observation_refs: []}
+    trust: validated_eval
+    evidence_status: corroborated
+    lifecycle: active
+    owner: framework
+    created_at: "2026-06-20T10:00:00Z"
+    review_after: "2026-09-20T10:00:00Z"
+    expires_at: null
+    user_controllable: false
+    supersedes_refs: []
+request:
+  as_of: "2026-06-21T10:00:00Z"
+  scope: {kind: global, ref: null}
+  requested_types: [semantic]
+  max_items: 8
+expected:
+  selected_refs: []
+  omitted: {expired: 0, review_overdue: 0, lifecycle: 0, scope: 0, type: 0, conflict: 2, limit: 0}
+  conflict_refs: [memory.runtime-mode.fast, memory.runtime-mode.safe]

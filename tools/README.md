@@ -10,7 +10,7 @@ Run the full local framework smoke suite:
 python tools/self_check.py --repo .
 ```
 
-It runs the framework validator, trust-partition fixtures, Interpreter contract fixtures, Core routing projection fixtures, Kilo exporter dry-run, result-record helper smoke, Mentor packet helper smoke, Mentor output scorer smoke, Mentor run recorder smoke, comparator smoke, and removes its temporary smoke records.
+It runs the framework validator, trust-partition and Interpreter fixtures, Core/Brain/runtime packet fixtures, memory promotion/application/retrieval fixtures, Kilo exporter dry-run, result-record and Mentor helper smokes, comparator smokes, and removes its temporary records.
 
 ## Trusted Input Partitioner
 
@@ -221,6 +221,24 @@ python tools/evaluate_memory_proposal.py --repo . --fixtures
 ```
 
 The evaluator checks provenance, source trust, exact structured-claim conflicts, supersession references, write authorization, human review, repeated support, and benchmark evidence. Untrusted content is quarantined; session material can remain episodic; durable and Atlas records are emitted only after their v0 promotion requirements pass. Evaluation never writes `cognition/memory.yaml` or `cognition/graph.yaml`.
+
+Apply a reviewed non-Atlas decision to the canonical file store:
+
+```powershell
+python tools/apply_memory_decision.py --repo . --decision path/to/memory-decision.yaml --applied-at 2026-06-21T10:00:00Z --apply
+python tools/apply_memory_decision.py --repo . --fixtures
+```
+
+The writer is dry-run by default and atomically replaces the store only with `--apply`. It validates decision/store contracts, rejects unresolved conflicts and invalid supersession, and treats exact replay as an idempotent no-op. Atlas decisions require their separate graph mutation boundary.
+
+Retrieve bounded, current memory for one principal and scope:
+
+```powershell
+python tools/retrieve_memory.py --repo . --as-of 2026-06-21T10:00:00Z --principal-ref user.local --scope-kind project --scope-ref project.manurella --type user_preference --type project_state
+python tools/retrieve_memory.py --repo . --fixtures
+```
+
+Retrieval excludes inactive, expired, review-overdue, principal-mismatched, scope-mismatched, wrong-type, and contradictory records. The packet reports each omission and orders eligible records by explicit evidence class, recency, then stable ID; it does not claim learned relevance.
 
 ## Interpreter Contract Validator
 

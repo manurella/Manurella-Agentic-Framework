@@ -4,7 +4,7 @@
 
 - Atlas ID: `sys.memory-atlas`
 - Parent: `manurella`
-- Lifecycle: implemented v0 promotion boundary
+- Lifecycle: implemented v0 promotion, store-application, and retrieval boundary
 - Research basis: `research/synthesis/brain-cognitive-kernel-synthesis.md`
 - Storage baseline: explicit versioned repository files
 - Vector or graph database selection: experiment-required
@@ -74,7 +74,13 @@ This prevents false numeric precision before historical calibration exists.
 
 ## File Store
 
-`cognition/memory.yaml` is the initial explicit store and validates against `schemas/memory/memory-store.schema.json`. It starts empty. Applying reviewed decisions, updating superseded records, retention expiry, and Atlas mutation remain separate write operations so evaluation cannot mutate canonical memory as a side effect.
+`cognition/memory.yaml` is the initial explicit store and validates against `schemas/memory/memory-store.schema.json`. It starts empty. `tools/apply_memory_decision.py` is the separate, dry-run-by-default writer for reviewed non-Atlas decisions. It rejects inapplicable decisions, duplicate IDs, unresolved active-claim conflicts, and missing supersession targets; exact reapplication is idempotent. A successful supersession marks named records `superseded` before adding the replacement. Atlas mutation remains a separate write operation.
+
+## Retrieval Boundary
+
+`tools/retrieve_memory.py` emits a schema-valid bounded packet rather than raw store state. It admits only active records and unexpired episodic candidates, then excludes expired, review-overdue, out-of-scope, wrong-type, and same-key contradictory records. User-bound global records require an exact `principal_ref`; anonymous global records may apply across scopes.
+
+Eligible records are ordered deterministically by evidence class, recency, and stable ID. This is an auditable baseline, not learned relevance. Every exclusion category and conflict reference is reported, and `atlas_mutation` records are never retrievable as runtime memory.
 
 ## Privacy And Control
 
@@ -86,17 +92,23 @@ Every record has an owner, scope, provenance references, trust class, lifecycle,
 - `schemas/memory/memory-record.schema.json`
 - `schemas/memory/memory-store.schema.json`
 - `schemas/memory/memory-promotion-decision.schema.json`
+- `schemas/memory/memory-application-result.schema.json`
+- `schemas/memory/memory-retrieval-packet.schema.json`
 - `tools/evaluate_memory_proposal.py`
+- `tools/apply_memory_decision.py`
+- `tools/retrieve_memory.py`
 - `evals/fixtures/memory-promotion/`
+- `evals/fixtures/memory-application/`
+- `evals/fixtures/memory-retrieval/`
 
-Fixtures cover untrusted quarantine, episodic retention, missing permission, unresolved conflict, explicit user preference, insufficient semantic support, missing procedure benchmarks, reviewed procedural promotion, reviewed Atlas promotion, and failed review.
+Fixtures cover untrusted quarantine, episodic retention, permission and review failures, conflict and supersession behavior, reviewed durable application, idempotence, Atlas separation, expiry and review filtering, principal isolation, scope and type filtering, contradiction exclusion, and bounded retrieval.
 
 ## Next Depth-First Path
 
 ```text
 memory proposal and promotion gate [implemented]
--> reviewed store application and supersession [next]
+-> reviewed store application and supersession [implemented]
+-> retrieval packet and stale/expiry filtering [implemented]
 -> reviewed Atlas mutation application
--> retrieval packet and stale/expiry filtering
 -> Phase 4 end-to-end evidence flow
 ```

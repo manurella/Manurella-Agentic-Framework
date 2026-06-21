@@ -1,0 +1,4 @@
+fixture_id: memory-application.idempotent
+promotion_fixture: evals/fixtures/memory-promotion/user-preference-promote.yaml
+apply_times: 2
+expected: {disposition: no_change, reason_code: already_applied, records_after: 1, active_records: 1, candidate_records: 0, superseded_records: 0}

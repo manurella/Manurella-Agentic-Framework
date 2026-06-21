@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.dev/schemas/memory/memory-retrieval-packet.v0.json",
+  "title": "Manurella Memory Retrieval Packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "packet_id", "as_of", "principal_ref", "scope", "requested_types", "selected", "omitted", "conflict_refs"],
+  "properties": {
+    "schema_version": { "const": "memory-retrieval-packet.v0" },
+    "packet_id": { "type": "string", "minLength": 1 },
+    "as_of": { "type": "string", "format": "date-time" },
+    "principal_ref": { "type": ["string", "null"], "minLength": 1 },
+    "scope": { "$ref": "memory-record.v0.json#/$defs/scope" },
+    "requested_types": { "type": "array", "items": { "enum": ["episodic", "semantic", "procedural", "project_state", "user_preference", "failure_lesson"] }, "uniqueItems": true },
+    "selected": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["memory_ref", "memory_type", "scope", "claim", "trust", "evidence_status", "source_refs"],
+        "properties": {
+          "memory_ref": { "type": "string", "minLength": 1 },
+          "memory_type": { "enum": ["episodic", "semantic", "procedural", "project_state", "user_preference", "failure_lesson"] },
+          "scope": { "$ref": "memory-record.v0.json#/$defs/scope" },
+          "claim": { "$ref": "memory-record.v0.json#/$defs/claim" },
+          "trust": { "enum": ["authenticated_user", "trusted_runtime", "validated_eval", "reviewed_research"] },
+          "evidence_status": { "enum": ["unverified", "single_source", "corroborated", "benchmark_supported", "human_confirmed"] },
+          "source_refs": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+        }
+      }
+    },
+    "omitted": {
+      "type": "object", "additionalProperties": false,
+      "required": ["expired", "review_overdue", "lifecycle", "scope", "type", "conflict", "limit"],
+      "properties": {
+        "expired": { "type": "integer", "minimum": 0 },
+        "review_overdue": { "type": "integer", "minimum": 0 },
+        "lifecycle": { "type": "integer", "minimum": 0 },
+        "scope": { "type": "integer", "minimum": 0 },
+        "type": { "type": "integer", "minimum": 0 },
+        "conflict": { "type": "integer", "minimum": 0 },
+        "limit": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "conflict_refs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+  }
+}

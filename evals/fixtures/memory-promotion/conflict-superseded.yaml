@@ -1,0 +1,32 @@
+fixture_id: memory-promotion.conflict-superseded
+existing_records:
+  - schema_version: memory-record.v0
+    memory_id: memory.user-style.concise
+    memory_type: user_preference
+    scope: {kind: global, ref: user.local}
+    claim: {subject: user.local, predicate: response_style, object: concise, statement: Prefer concise responses.}
+    provenance: {source_refs: [turn://preference/1], evidence_refs: [], observation_refs: []}
+    trust: authenticated_user
+    evidence_status: human_confirmed
+    lifecycle: active
+    owner: user.local
+    created_at: "2026-06-20T09:00:00Z"
+    review_after: "2026-12-20T09:00:00Z"
+    expires_at: null
+    user_controllable: true
+    supersedes_refs: []
+proposal:
+  schema_version: memory-proposal.v0
+  proposal_id: superseding-user-style
+  proposed_at: "2026-06-21T09:10:00Z"
+  proposed_by: human
+  memory_type: user_preference
+  scope: {kind: global, ref: user.local}
+  claim: {subject: user.local, predicate: response_style, object: exhaustive, statement: Prefer exhaustive responses.}
+  provenance: {source_refs: [turn://preference/4], evidence_refs: [], observation_refs: []}
+  trust: authenticated_user
+  retention: {class: durable, review_after: "2026-12-21T09:10:00Z", expires_at: null, user_controllable: true}
+  permissions: {write_authorized: true, authorization_ref: turn://preference/4}
+  evidence: {support_count: 1, benchmark_refs: [], human_review: {status: pass, reviewer: user.local, notes: [Explicit replacement preference.]}}
+  supersedes_refs: [memory.user-style.concise]
+expected: {disposition: promote_durable, target_store: semantic, reason_codes: [promotion_requirements_met], conflict_count: 1, record_emitted: true}

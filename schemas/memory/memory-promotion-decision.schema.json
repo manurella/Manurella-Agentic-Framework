@@ -17,5 +17,58 @@
     },
     "detected_conflict_refs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
     "record": { "oneOf": [{ "$ref": "memory-record.v0.json" }, { "type": "null" }] }
-  }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "disposition": { "const": "retain_episodic" } }, "required": ["disposition"] },
+      "then": {
+        "properties": {
+          "target_store": { "const": "episodic" },
+          "record": {
+            "allOf": [
+              { "$ref": "memory-record.v0.json" },
+              { "properties": { "memory_type": { "const": "episodic" }, "lifecycle": { "const": "candidate" } } }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "disposition": { "const": "promote_durable" } }, "required": ["disposition"] },
+      "then": {
+        "properties": {
+          "target_store": { "enum": ["semantic", "procedural", "project", "atlas"] },
+          "record": { "allOf": [{ "$ref": "memory-record.v0.json" }, { "properties": { "lifecycle": { "const": "active" } } }] }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "target_store": { "const": "semantic" } }, "required": ["target_store"] },
+      "then": { "properties": { "record": { "properties": { "memory_type": { "enum": ["semantic", "user_preference"] } } } } }
+    },
+    {
+      "if": { "properties": { "target_store": { "const": "procedural" } }, "required": ["target_store"] },
+      "then": { "properties": { "record": { "properties": { "memory_type": { "enum": ["procedural", "failure_lesson"] } } } } }
+    },
+    {
+      "if": { "properties": { "target_store": { "const": "project" } }, "required": ["target_store"] },
+      "then": {
+        "properties": {
+          "record": { "properties": { "memory_type": { "const": "project_state" } } }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "target_store": { "const": "atlas" } }, "required": ["target_store"] },
+      "then": {
+        "properties": {
+          "record": { "properties": { "memory_type": { "const": "atlas_mutation" } } }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "disposition": { "enum": ["quarantine", "pending_review", "reject"] } }, "required": ["disposition"] },
+      "then": { "properties": { "target_store": { "const": "none" }, "record": { "type": "null" } } }
+    }
+  ]
 }
