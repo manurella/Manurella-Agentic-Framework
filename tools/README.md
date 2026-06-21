@@ -195,6 +195,15 @@ python tools/compile_brain_workspace.py --repo . --fixtures
 
 The compiler carries only provenance-approved trusted references into the privileged context packet. Raw requests, transcript references, untrusted-data references, tool payloads, and reasoning traces are excluded. The v0 cycle and context budgets are transparent regression baselines, not learned confidence or optimality claims.
 
+Advance compiled state through typed observations and exercise the control-loop fixtures:
+
+```powershell
+python tools/advance_brain_cycle.py --repo . --workspace path/to/workspace-bundle.yaml --observations path/to/observation-events.yaml
+python tools/advance_brain_cycle.py --repo . --fixtures
+```
+
+Only trusted runtime and authenticated user observations revise privileged state. External and model-inferred observations are quarantined without copying their statement text. The governor selects direct, reactive, hierarchical, repair, replan, stop, or escalation behavior from explicit verification, progress, safety, and budget state; it does not emit an unsupported confidence score.
+
 ## Interpreter Contract Validator
 
 Validate the Task Frame and Acceptance Contract schemas, semantic invariants, Family A-E projections, project postures, and representative fixtures:

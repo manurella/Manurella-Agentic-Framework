@@ -110,6 +110,8 @@ The deterministic input-to-Core path, parser evaluation harness, repeated-run pr
 
 The Phase 3 Brain runtime-state slice now compiles validated Interpreter/Core artifacts into separate task, world, user, self, uncertainty, and capability state; a volatile active workspace; and a bounded context packet. The compiler excludes transcript and untrusted payload fields and treats v0 budgets as transparent regression baselines. The next depth-first Brain slice is observation-driven revision, strategy selection, verification, bounded repair, and stopping.
 
+Observation-driven revision, v0 strategy selection, external-verification handling, bounded repair, repeated-failure/stall replanning, unsafe/budget stops, and untrusted-observation quarantine are now executable. Governed stops remain resumable `blocked` state. The remaining Phase 3 slice is the execution/recovery packet boundary that carries these decisions into Phase 5 Core runtime work.
+
 ## Experimental Frontend Slice
 
 The frontend nodes are draft graph candidates only. They are not accepted agents, not exported runtime agents, and not official routing targets until benchmark evidence supports promotion.

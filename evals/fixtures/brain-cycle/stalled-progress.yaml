@@ -1,0 +1,26 @@
+fixture_id: brain-cycle.stalled-progress
+interpreter_fixture: evals/fixtures/interpreter/project.yaml
+events:
+  - schema_version: observation-event.v0
+    observation_id: observation.no-change
+    repeat: 2
+    observed_at: "2026-06-21T08:03:00Z"
+    kind: runtime_event
+    source_ref: runtime://project-loop
+    trust: trusted_runtime
+    effect: no_change
+    statement: The cycle produced no state change or evidence gain.
+    evidence_refs: []
+    repeat_key: no-change.project-loop
+    verification:
+      status: not_run
+      acceptance_status: not_evaluated
+      check_ids: []
+expected:
+  strategy: model_predictive_replan
+  disposition: replan
+  next_operation: replan
+  task_status: active
+  cycles_remaining: 6
+  repairs_remaining: 1
+  events_quarantined: 0

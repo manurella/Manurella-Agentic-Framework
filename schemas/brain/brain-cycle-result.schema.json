@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.dev/schemas/brain/brain-cycle-result.v0.json",
+  "title": "Manurella Brain Cycle Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "events_consumed", "events_quarantined", "revised_workspace_bundle", "control_decision"],
+  "properties": {
+    "schema_version": { "const": "brain-cycle-result.v0" },
+    "events_consumed": { "type": "integer", "minimum": 0 },
+    "events_quarantined": { "type": "integer", "minimum": 0 },
+    "revised_workspace_bundle": { "$ref": "workspace-bundle.v0.json" },
+    "control_decision": { "$ref": "brain-control-decision.v0.json" }
+  }
+}

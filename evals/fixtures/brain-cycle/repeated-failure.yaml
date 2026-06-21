@@ -1,0 +1,26 @@
+fixture_id: brain-cycle.repeated-failure
+interpreter_fixture: evals/fixtures/interpreter/project.yaml
+events:
+  - schema_version: observation-event.v0
+    observation_id: observation.repeated-failure
+    repeat: 2
+    observed_at: "2026-06-21T08:02:00Z"
+    kind: verification_result
+    source_ref: verifier://project-suite
+    trust: trusted_runtime
+    effect: failure
+    statement: The same deterministic project check failed again.
+    evidence_refs: [eval://project-suite/repeated-failure]
+    repeat_key: failure.project-suite
+    verification:
+      status: fail
+      acceptance_status: failed
+      check_ids: [check.project-suite]
+expected:
+  strategy: model_predictive_replan
+  disposition: replan
+  next_operation: replan
+  task_status: active
+  cycles_remaining: 6
+  repairs_remaining: 1
+  events_quarantined: 0

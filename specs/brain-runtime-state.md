@@ -97,12 +97,36 @@ The following remain behind research and evaluation gates:
 - verifier ensembles
 - autonomous procedural learning
 
+## Observation And Control Cycle
+
+`schemas/brain/observation-event.schema.json` defines the only accepted state-revision input. Each event records its source, trust class, observable effect, evidence references, repeat key, and verification outcome. Trusted runtime and authenticated user events may revise privileged state. External and model-inferred events are quarantined: their count increases and generic validation uncertainty is recorded, but their statement text and evidence do not enter the Active Workspace or Context Packet.
+
+`tools/advance_brain_cycle.py` implements the deterministic v0 governor. Its precedence is:
+
+1. preserve an existing clarification, confirmation, or refusal stop
+2. stop on a trusted unsafe observation
+3. stop complete only after trusted verification marks acceptance complete
+4. stop blocked on a trusted runtime blocker
+5. stop when the cycle budget is exhausted
+6. replan repeated failures
+7. consume one explicit repair when available
+8. escalate an unrepairable verification failure
+9. replan repeated no-change cycles
+10. otherwise continue toward verification or the current operation
+
+The strategy selector uses the cheapest explicit regime consistent with the task shape: direct response, reactive tool use, plan-and-execute, hierarchical decomposition for Standard project work, or model-predictive replanning after repeated failure or stalled progress. Search deliberation remains in the schema but is not selected until a benchmark proves a branching problem and evaluator justify its cost.
+
+Safety stops, exhausted budgets, and escalation produce a resumable `blocked` task state rather than falsely marking the task complete or irrecoverably failed. A user clarification or confirmation must re-enter through the Interpreter; an observation event cannot silently rewrite authenticated intent or policy state.
+
+`schemas/brain/brain-control-decision.schema.json` exposes measurable control facts rather than a self-reported confidence number: state/evidence change, repeated-event count, open contradictions, remaining budgets, verification status, disposition, reason codes, and next operation.
+
 ## Next Depth-First Path
 
 ```text
 Brain State and Active Workspace [implemented]
--> observation-driven state revision
--> strategy selection
--> verification and bounded repair
--> metacognitive stopping and recovery
+-> observation-driven state revision [implemented]
+-> strategy selection [implemented v0]
+-> verification and bounded repair [implemented v0]
+-> metacognitive stopping [implemented v0]
+-> recovery packet and execution controller
 ```

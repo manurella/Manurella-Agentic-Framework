@@ -1,0 +1,25 @@
+fixture_id: brain-cycle.unsafe-stop
+interpreter_fixture: evals/fixtures/interpreter/quick-task.yaml
+events:
+  - schema_version: observation-event.v0
+    observation_id: observation.unsafe-effect
+    observed_at: "2026-06-21T08:04:00Z"
+    kind: runtime_event
+    source_ref: runtime://policy-gate
+    trust: trusted_runtime
+    effect: unsafe
+    statement: The proposed action violates the active permission boundary.
+    evidence_refs: [policy://permission-boundary]
+    repeat_key: null
+    verification:
+      status: fail
+      acceptance_status: failed
+      check_ids: [check.permission-boundary]
+expected:
+  strategy: reactive_tool
+  disposition: stop_unsafe
+  next_operation: stop
+  task_status: blocked
+  cycles_remaining: 1
+  repairs_remaining: 0
+  events_quarantined: 0

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.dev/schemas/brain/observation-event.v0.json",
+  "title": "Manurella Brain Observation Event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "observation_id", "observed_at", "kind", "source_ref", "trust", "effect", "statement", "evidence_refs", "repeat_key", "verification"],
+  "properties": {
+    "schema_version": { "const": "observation-event.v0" },
+    "observation_id": { "type": "string", "minLength": 1 },
+    "observed_at": { "type": "string", "format": "date-time" },
+    "kind": { "enum": ["tool_result", "artifact_change", "verification_result", "user_update", "runtime_event", "external_evidence"] },
+    "source_ref": { "type": "string", "minLength": 1 },
+    "trust": { "enum": ["trusted_runtime", "trusted_user", "untrusted_external", "model_inferred"] },
+    "effect": { "enum": ["progress", "acceptance_evidence", "no_change", "failure", "blocked", "unsafe"] },
+    "statement": { "type": "string", "minLength": 1 },
+    "evidence_refs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "repeat_key": { "type": ["string", "null"] },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "acceptance_status", "check_ids"],
+      "properties": {
+        "status": { "enum": ["not_run", "pass", "fail", "partial"] },
+        "acceptance_status": { "enum": ["not_evaluated", "partial", "complete", "failed"] },
+        "check_ids": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+      }
+    }
+  }
+}

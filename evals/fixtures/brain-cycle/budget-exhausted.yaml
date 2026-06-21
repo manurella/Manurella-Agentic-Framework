@@ -1,0 +1,26 @@
+fixture_id: brain-cycle.budget-exhausted
+interpreter_fixture: evals/fixtures/interpreter/project.yaml
+events:
+  - schema_version: observation-event.v0
+    observation_id: observation.budget-no-change
+    repeat: 8
+    observed_at: "2026-06-21T08:06:00Z"
+    kind: runtime_event
+    source_ref: runtime://project-loop
+    trust: trusted_runtime
+    effect: no_change
+    statement: The cycle produced no state change.
+    evidence_refs: []
+    repeat_key: no-change.project-loop
+    verification:
+      status: not_run
+      acceptance_status: not_evaluated
+      check_ids: []
+expected:
+  strategy: hierarchical_decomposition
+  disposition: stop_budget
+  next_operation: stop
+  task_status: blocked
+  cycles_remaining: 0
+  repairs_remaining: 1
+  events_quarantined: 0

@@ -67,6 +67,9 @@ Artifacts:
 - `schemas/brain/active-workspace.schema.json`
 - `schemas/brain/context-packet.schema.json`
 - `tools/compile_brain_workspace.py`
+- `schemas/brain/observation-event.schema.json`
+- `schemas/brain/brain-control-decision.schema.json`
+- `tools/advance_brain_cycle.py`
 - `specs/core-operating-protocol.md`
 - `specs/agent-schema.md`
 - `specs/runtime-control.md`
@@ -95,6 +98,7 @@ Acceptance:
 - Privacy-bounded live observation capture is implemented; fresh authorized requests can now be fingerprinted, guarded, and queued for human review without copying request text into result records.
 - Core compiles validated bundles into direct, blocked, or delegated routing decisions without transcript leakage.
 - Brain compiles validated Interpreter/Core artifacts into typed task/world/user/self/uncertainty state, a volatile active workspace, and a bounded privileged context packet.
+- Brain revises state only through typed trust-classified observations, quarantines untrusted content, selects a bounded cognitive strategy, and stops, repairs, replans, or escalates from measurable verification and budget state.
 
 ### W2. Cognitive Graph
 

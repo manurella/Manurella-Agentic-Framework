@@ -1,0 +1,11 @@
+fixture_id: brain-cycle.direct-initial
+interpreter_fixture: evals/fixtures/interpreter/conversation.yaml
+events: []
+expected:
+  strategy: direct_response
+  disposition: continue
+  next_operation: respond
+  task_status: active
+  cycles_remaining: 2
+  repairs_remaining: 0
+  events_quarantined: 0

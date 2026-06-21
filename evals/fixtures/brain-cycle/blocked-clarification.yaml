@@ -1,0 +1,11 @@
+fixture_id: brain-cycle.blocked-clarification
+interpreter_fixture: evals/fixtures/interpreter/ambiguous.yaml
+events: []
+expected:
+  strategy: clarify
+  disposition: stop_blocked
+  next_operation: clarify
+  task_status: blocked
+  cycles_remaining: 2
+  repairs_remaining: 0
+  events_quarantined: 0

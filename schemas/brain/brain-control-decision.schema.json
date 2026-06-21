@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.dev/schemas/brain/brain-control-decision.v0.json",
+  "title": "Manurella Brain Control Decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "decision_id", "state_ref", "strategy", "disposition", "reason_codes", "progress", "verification", "next_operation"],
+  "properties": {
+    "schema_version": { "const": "brain-control-decision.v0" },
+    "decision_id": { "type": "string", "minLength": 1 },
+    "state_ref": { "type": "string", "minLength": 1 },
+    "strategy": { "enum": ["clarify", "confirm", "refuse", "direct_response", "reactive_tool", "plan_and_execute", "hierarchical_decomposition", "search_deliberation", "model_predictive_replan"] },
+    "disposition": { "enum": ["continue", "repair", "replan", "stop_complete", "stop_blocked", "stop_unsafe", "stop_budget", "escalate"] },
+    "reason_codes": { "type": "array", "minItems": 1, "items": { "enum": ["acceptance_complete", "awaiting_clarification", "awaiting_confirmation", "policy_refusal", "unsafe_observation", "runtime_blocked", "cycle_budget_exhausted", "verification_failed", "repair_available", "repeated_failure", "stalled_progress", "trusted_progress", "verification_pending"] }, "uniqueItems": true },
+    "progress": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state_changed", "evidence_gain", "repeated_event_count", "contradictions_open", "cycles_remaining", "repairs_remaining"],
+      "properties": {
+        "state_changed": { "type": "boolean" },
+        "evidence_gain": { "type": "boolean" },
+        "repeated_event_count": { "type": "integer", "minimum": 0 },
+        "contradictions_open": { "type": "integer", "minimum": 0 },
+        "cycles_remaining": { "type": "integer", "minimum": 0 },
+        "repairs_remaining": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "acceptance_status", "check_ids"],
+      "properties": {
+        "status": { "enum": ["not_run", "pass", "fail", "partial"] },
+        "acceptance_status": { "enum": ["not_evaluated", "partial", "complete", "failed"] },
+        "check_ids": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+      }
+    },
+    "next_operation": { "enum": ["clarify", "confirm", "refuse", "respond", "delegate", "verify", "repair", "replan", "stop", "escalate"] }
+  }
+}

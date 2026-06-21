@@ -1,0 +1,25 @@
+fixture_id: brain-cycle.acceptance-complete
+interpreter_fixture: evals/fixtures/interpreter/project.yaml
+events:
+  - schema_version: observation-event.v0
+    observation_id: observation.project-verified
+    observed_at: "2026-06-21T08:00:00Z"
+    kind: verification_result
+    source_ref: verifier://project-suite
+    trust: trusted_runtime
+    effect: acceptance_evidence
+    statement: All required project acceptance checks passed.
+    evidence_refs: [eval://project-suite/pass]
+    repeat_key: null
+    verification:
+      status: pass
+      acceptance_status: complete
+      check_ids: [check.project-suite]
+expected:
+  strategy: hierarchical_decomposition
+  disposition: stop_complete
+  next_operation: stop
+  task_status: complete
+  cycles_remaining: 7
+  repairs_remaining: 1
+  events_quarantined: 0

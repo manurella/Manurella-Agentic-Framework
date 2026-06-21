@@ -1246,7 +1246,108 @@ nodes:
       - evals/fixtures/brain-workspace/
       - tools/compile_brain_workspace.py
     updated_at: 2026-06-21
+  - id: spec.brain-observation-event-schema
+    type: spec
+    label: Brain Observation Event Schema
+    status: active
+    summary: Typed trust-classified observation boundary for state revision, verification effects, repeat detection, and quarantine.
+    owners:
+      - dom.core
+    evidence:
+      - schemas/brain/observation-event.schema.json
+      - specs/brain-runtime-state.md
+    updated_at: 2026-06-21
+  - id: spec.brain-control-decision-schema
+    type: spec
+    label: Brain Control Decision Schema
+    status: active
+    summary: Measurable strategy, verification, progress, budget, repair, replan, stop, and escalation decision contract.
+    owners:
+      - dom.core
+    evidence:
+      - schemas/brain/brain-control-decision.schema.json
+      - schemas/brain/brain-cycle-result.schema.json
+      - specs/brain-runtime-state.md
+    updated_at: 2026-06-21
+  - id: tool.brain-cycle-controller
+    type: tool
+    label: Brain Cycle Controller
+    status: active
+    summary: Revises privileged Brain state from trusted observations, quarantines untrusted content, and applies bounded strategy, verification, repair, replan, and stop rules.
+    owners:
+      - dom.core
+    evidence:
+      - tools/advance_brain_cycle.py
+      - evals/fixtures/brain-cycle/
+      - tools/README.md
+    updated_at: 2026-06-21
+  - id: eval.brain-cycle-v0
+    type: eval
+    label: Brain Cycle V0 Fixtures
+    status: active
+    summary: Covers direct continuation, clarification blocking, acceptance completion, one repair, repeated-failure replanning, stalled progress, unsafe stop, quarantine, and budget exhaustion.
+    owners:
+      - dom.core
+    evidence:
+      - evals/fixtures/brain-cycle/
+      - tools/advance_brain_cycle.py
+    updated_at: 2026-06-21
 edges:
+  - id: edge.core.owns.brain-cycle-controller
+    type: owns
+    source: dom.core
+    target: tool.brain-cycle-controller
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/advance_brain_cycle.py
+      - specs/brain-runtime-state.md
+    updated_at: 2026-06-21
+  - id: edge.brain-cycle-controller.uses.observation-schema
+    type: uses
+    source: tool.brain-cycle-controller
+    target: spec.brain-observation-event-schema
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/advance_brain_cycle.py
+      - schemas/brain/observation-event.schema.json
+    updated_at: 2026-06-21
+  - id: edge.brain-cycle-controller.uses.control-schema
+    type: uses
+    source: tool.brain-cycle-controller
+    target: spec.brain-control-decision-schema
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/advance_brain_cycle.py
+      - schemas/brain/brain-control-decision.schema.json
+    updated_at: 2026-06-21
+  - id: edge.brain-cycle-v0.evaluates.controller
+    type: evaluates
+    source: eval.brain-cycle-v0
+    target: tool.brain-cycle-controller
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - evals/fixtures/brain-cycle/
+      - tools/advance_brain_cycle.py
+    updated_at: 2026-06-21
+  - id: edge.self-check.uses.brain-cycle-controller
+    type: uses
+    source: tool.self-check
+    target: tool.brain-cycle-controller
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - tools/self_check.py
+      - tools/advance_brain_cycle.py
+    updated_at: 2026-06-21
   - id: edge.core.owns.brain-workspace-compiler
     type: owns
     source: dom.core
