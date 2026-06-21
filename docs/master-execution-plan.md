@@ -113,6 +113,10 @@ Artifacts:
 - `docs/manurella-root-ontology.md`
 - `cognition/graph.yaml`
 - `cognition/mindmap.md`
+- `cognition/memory.yaml`
+- `specs/memory-and-atlas.md`
+- `schemas/memory/`
+- `tools/evaluate_memory_proposal.py`
 - graph update notes inside eval records
 
 Acceptance:
@@ -121,6 +125,7 @@ Acceptance:
 - Every active agent, mode, effort, eval, and recurring failure has a graph node.
 - Promotion from draft to accepted requires graph evidence.
 - Failures from evals create or update failure-mode nodes.
+- Durable memory and Atlas mutations pass typed provenance, conflict, permission, review, and evidence gates before a separate canonical write step.
 
 ### W3. Domain Packs
 

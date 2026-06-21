@@ -1,0 +1,16 @@
+fixture_id: memory-promotion.user-preference-promote
+proposal:
+  schema_version: memory-proposal.v0
+  proposal_id: user-style-concise
+  proposed_at: "2026-06-21T09:04:00Z"
+  proposed_by: human
+  memory_type: user_preference
+  scope: {kind: global, ref: user.local}
+  claim: {subject: user.local, predicate: response_style, object: concise, statement: Prefer concise responses.}
+  provenance: {source_refs: [turn://preference/3], evidence_refs: [], observation_refs: []}
+  trust: authenticated_user
+  retention: {class: durable, review_after: "2026-12-21T09:04:00Z", expires_at: null, user_controllable: true}
+  permissions: {write_authorized: true, authorization_ref: turn://preference/3}
+  evidence: {support_count: 1, benchmark_refs: [], human_review: {status: pass, reviewer: user.local, notes: [Explicit preference.]}}
+  supersedes_refs: []
+expected: {disposition: promote_durable, target_store: semantic, reason_codes: [promotion_requirements_met], conflict_count: 0, record_emitted: true}

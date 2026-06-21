@@ -76,13 +76,16 @@ Permission levels:
 Memory is never automatically trusted. A memory record must include:
 
 - `id`
-- `type`: `project_state`, `user_preference`, `domain_knowledge`, `procedure`, `failure_lesson`
-- `scope`: global, project, domain, or task
-- `source`
+- `type`: episodic, semantic, procedural, project state, user preference, failure lesson, or Atlas mutation
+- `scope`: global, project, domain, or task with a scoped owner/reference
+- structured claim: subject, predicate, object, and statement
+- provenance: source, evidence, and observation references
 - `created_at`
-- `confidence`
+- `evidence_status`: unverified, single-source, corroborated, benchmark-supported, or human-confirmed
 - `expires_at` or `review_after`
-- `content`
+- lifecycle, supersession references, and user-control policy
+
+The executable contract and promotion rules live in `specs/memory-and-atlas.md` and `schemas/memory/`. Scalar confidence is intentionally deferred until comparable historical calibration exists.
 
 ### Evaluation Record
 

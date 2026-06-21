@@ -213,6 +213,15 @@ python tools/compile_runtime_operation.py --repo . --fixtures
 
 The compiler reads the selected agent's checked-in permissions and intersects them with packet class and mode. It never promotes model-inferred tool hints into authority. Denied actions are retained as explicit `blocked_actions`; recovery packets resume from checkpoint and artifact references rather than restarting.
 
+Evaluate a typed durable-memory or Atlas proposal without mutating canonical state:
+
+```powershell
+python tools/evaluate_memory_proposal.py --repo . --proposal path/to/memory-proposal.yaml
+python tools/evaluate_memory_proposal.py --repo . --fixtures
+```
+
+The evaluator checks provenance, source trust, exact structured-claim conflicts, supersession references, write authorization, human review, repeated support, and benchmark evidence. Untrusted content is quarantined; session material can remain episodic; durable and Atlas records are emitted only after their v0 promotion requirements pass. Evaluation never writes `cognition/memory.yaml` or `cognition/graph.yaml`.
+
 ## Interpreter Contract Validator
 
 Validate the Task Frame and Acceptance Contract schemas, semantic invariants, Family A-E projections, project postures, and representative fixtures:

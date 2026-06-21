@@ -1,0 +1,16 @@
+fixture_id: memory-promotion.procedural-promote
+proposal:
+  schema_version: memory-proposal.v0
+  proposal_id: verified-repair-procedure
+  proposed_at: "2026-06-21T09:07:00Z"
+  proposed_by: eval_pipeline
+  memory_type: procedural
+  scope: {kind: domain, ref: dom.build}
+  claim: {subject: procedure.build, predicate: repair_rule, object: one-bounded-repair, statement: Use one bounded repair before replanning.}
+  provenance: {source_refs: [eval://brain-cycle/repair], evidence_refs: [eval://brain-cycle/repair, eval://brain-cycle/replan], observation_refs: []}
+  trust: validated_eval
+  retention: {class: durable, review_after: "2026-09-21T09:07:00Z", expires_at: null, user_controllable: false}
+  permissions: {write_authorized: true, authorization_ref: review://procedure}
+  evidence: {support_count: 2, benchmark_refs: [evals/fixtures/brain-cycle/repair-once.yaml, evals/fixtures/brain-cycle/repeated-failure.yaml], human_review: {status: pass, reviewer: maintainer, notes: [Fixtures and behavior reviewed.]}}
+  supersedes_refs: []
+expected: {disposition: promote_durable, target_store: procedural, reason_codes: [promotion_requirements_met], conflict_count: 0, record_emitted: true}

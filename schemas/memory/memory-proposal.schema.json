@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.dev/schemas/memory/memory-proposal.v0.json",
+  "title": "Manurella Memory Proposal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "proposal_id", "proposed_at", "proposed_by", "memory_type", "scope", "claim", "provenance", "trust", "retention", "permissions", "evidence", "supersedes_refs"],
+  "properties": {
+    "schema_version": { "const": "memory-proposal.v0" },
+    "proposal_id": { "type": "string", "minLength": 1 },
+    "proposed_at": { "type": "string", "format": "date-time" },
+    "proposed_by": { "enum": ["brain_learning_controller", "human", "eval_pipeline", "runtime"] },
+    "memory_type": { "enum": ["episodic", "semantic", "procedural", "project_state", "user_preference", "failure_lesson", "atlas_mutation"] },
+    "scope": { "$ref": "memory-record.v0.json#/$defs/scope" },
+    "claim": { "$ref": "memory-record.v0.json#/$defs/claim" },
+    "provenance": { "$ref": "memory-record.v0.json#/$defs/provenance" },
+    "trust": { "enum": ["authenticated_user", "trusted_runtime", "validated_eval", "reviewed_research", "model_inferred", "untrusted_external"] },
+    "retention": {
+      "type": "object", "additionalProperties": false, "required": ["class", "review_after", "expires_at", "user_controllable"],
+      "properties": {
+        "class": { "enum": ["transient", "session", "durable"] },
+        "review_after": { "type": "string", "format": "date-time" },
+        "expires_at": { "type": ["string", "null"], "format": "date-time" },
+        "user_controllable": { "type": "boolean" }
+      }
+    },
+    "permissions": {
+      "type": "object", "additionalProperties": false, "required": ["write_authorized", "authorization_ref"],
+      "properties": {
+        "write_authorized": { "type": "boolean" },
+        "authorization_ref": { "type": ["string", "null"] }
+      }
+    },
+    "evidence": {
+      "type": "object", "additionalProperties": false, "required": ["support_count", "benchmark_refs", "human_review"],
+      "properties": {
+        "support_count": { "type": "integer", "minimum": 0 },
+        "benchmark_refs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "human_review": {
+          "type": "object", "additionalProperties": false, "required": ["status", "reviewer", "notes"],
+          "properties": {
+            "status": { "enum": ["pending", "pass", "fail"] },
+            "reviewer": { "type": ["string", "null"] },
+            "notes": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+          }
+        }
+      }
+    },
+    "supersedes_refs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+  }
+}

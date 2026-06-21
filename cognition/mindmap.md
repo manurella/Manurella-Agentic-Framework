@@ -114,6 +114,8 @@ Observation-driven revision, v0 strategy selection, external-verification handli
 
 Phase 3's execution/recovery boundary is now implemented. Brain control decisions compile into runtime-neutral packets whose action ceiling comes from checked-in agent permissions rather than inferred tools; blocked capabilities are explicit, and recovery resumes from workspace/artifact checkpoints. Phase 3 is complete at v0. The next depth-first branch is Phase 4 durable memory and Framework Atlas evidence flow.
 
+Phase 4's first slice is implemented: claim-structured memory proposals pass deterministic provenance, source-trust, same-key conflict, supersession, permission, human-review, repeated-support, and benchmark gates. Untrusted content is quarantined, session material remains episodic, and reviewed Atlas proposals do not directly mutate the graph. The next slice applies reviewed decisions to the file store and Atlas through separate auditable write operations.
+
 ## Experimental Frontend Slice
 
 The frontend nodes are draft graph candidates only. They are not accepted agents, not exported runtime agents, and not official routing targets until benchmark evidence supports promotion.

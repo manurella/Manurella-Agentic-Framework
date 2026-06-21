@@ -1,0 +1,16 @@
+fixture_id: memory-promotion.atlas-promote
+proposal:
+  schema_version: memory-proposal.v0
+  proposal_id: atlas-brain-cycle-node
+  proposed_at: "2026-06-21T09:08:00Z"
+  proposed_by: eval_pipeline
+  memory_type: atlas_mutation
+  scope: {kind: global, ref: manurella}
+  claim: {subject: tool.brain-cycle-controller, predicate: lifecycle, object: active, statement: Brain cycle controller is implemented and validated.}
+  provenance: {source_refs: [tools/advance_brain_cycle.py], evidence_refs: [evals/fixtures/brain-cycle/, cognition/graph.yaml], observation_refs: []}
+  trust: validated_eval
+  retention: {class: durable, review_after: "2026-09-21T09:08:00Z", expires_at: null, user_controllable: false}
+  permissions: {write_authorized: true, authorization_ref: review://atlas}
+  evidence: {support_count: 2, benchmark_refs: [evals/fixtures/brain-cycle/, tools/self_check.py], human_review: {status: pass, reviewer: maintainer, notes: [Implementation and fixtures pass.]}}
+  supersedes_refs: []
+expected: {disposition: promote_durable, target_store: atlas, reason_codes: [promotion_requirements_met], conflict_count: 0, record_emitted: true}

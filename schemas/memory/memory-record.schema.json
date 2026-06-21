@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.dev/schemas/memory/memory-record.v0.json",
+  "title": "Manurella Memory Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "memory_id", "memory_type", "scope", "claim", "provenance", "trust", "evidence_status", "lifecycle", "owner", "created_at", "review_after", "expires_at", "user_controllable", "supersedes_refs"],
+  "properties": {
+    "schema_version": { "const": "memory-record.v0" },
+    "memory_id": { "type": "string", "minLength": 1 },
+    "memory_type": { "enum": ["episodic", "semantic", "procedural", "project_state", "user_preference", "failure_lesson", "atlas_mutation"] },
+    "scope": { "$ref": "#/$defs/scope" },
+    "claim": { "$ref": "#/$defs/claim" },
+    "provenance": { "$ref": "#/$defs/provenance" },
+    "trust": { "enum": ["authenticated_user", "trusted_runtime", "validated_eval", "reviewed_research"] },
+    "evidence_status": { "enum": ["unverified", "single_source", "corroborated", "benchmark_supported", "human_confirmed"] },
+    "lifecycle": { "enum": ["candidate", "active", "deprecated", "superseded"] },
+    "owner": { "type": "string", "minLength": 1 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "review_after": { "type": "string", "format": "date-time" },
+    "expires_at": { "type": ["string", "null"], "format": "date-time" },
+    "user_controllable": { "type": "boolean" },
+    "supersedes_refs": { "$ref": "#/$defs/stringArray" }
+  },
+  "$defs": {
+    "stringArray": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "scope": {
+      "type": "object", "additionalProperties": false, "required": ["kind", "ref"],
+      "properties": { "kind": { "enum": ["global", "project", "domain", "task"] }, "ref": { "type": ["string", "null"] } },
+      "allOf": [
+        {
+          "if": { "properties": { "kind": { "enum": ["project", "domain", "task"] } } },
+          "then": { "properties": { "ref": { "type": "string", "minLength": 1 } } }
+        }
+      ]
+    },
+    "claim": {
+      "type": "object", "additionalProperties": false, "required": ["subject", "predicate", "object", "statement"],
+      "properties": {
+        "subject": { "type": "string", "minLength": 1 },
+        "predicate": { "type": "string", "minLength": 1 },
+        "object": { "type": "string", "minLength": 1 },
+        "statement": { "type": "string", "minLength": 1 }
+      }
+    },
+    "provenance": {
+      "type": "object", "additionalProperties": false, "required": ["source_refs", "evidence_refs", "observation_refs"],
+      "properties": {
+        "source_refs": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "evidence_refs": { "$ref": "#/$defs/stringArray" },
+        "observation_refs": { "$ref": "#/$defs/stringArray" }
+      }
+    }
+  }
+}

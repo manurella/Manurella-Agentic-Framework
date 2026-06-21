@@ -1,0 +1,16 @@
+fixture_id: memory-promotion.permission-missing
+proposal:
+  schema_version: memory-proposal.v0
+  proposal_id: project-state-without-permission
+  proposed_at: "2026-06-21T09:02:00Z"
+  proposed_by: runtime
+  memory_type: project_state
+  scope: {kind: project, ref: project.manurella}
+  claim: {subject: project.manurella, predicate: phase, object: phase-4, statement: Manurella entered Phase 4.}
+  provenance: {source_refs: [cognition/mindmap.md], evidence_refs: [commit://phase-3], observation_refs: []}
+  trust: trusted_runtime
+  retention: {class: durable, review_after: "2026-07-21T09:02:00Z", expires_at: null, user_controllable: true}
+  permissions: {write_authorized: false, authorization_ref: null}
+  evidence: {support_count: 1, benchmark_refs: [], human_review: {status: pass, reviewer: human, notes: [Claim is accurate.]}}
+  supersedes_refs: []
+expected: {disposition: pending_review, target_store: none, reason_codes: [write_permission_missing], conflict_count: 0, record_emitted: false}

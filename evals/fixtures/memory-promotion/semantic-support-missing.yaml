@@ -1,0 +1,16 @@
+fixture_id: memory-promotion.semantic-support-missing
+proposal:
+  schema_version: memory-proposal.v0
+  proposal_id: single-source-domain-claim
+  proposed_at: "2026-06-21T09:05:00Z"
+  proposed_by: brain_learning_controller
+  memory_type: semantic
+  scope: {kind: domain, ref: dom.build}
+  claim: {subject: dom.build, predicate: preferred_strategy, object: search-deliberation, statement: Build should always use search deliberation.}
+  provenance: {source_refs: [research://single-report], evidence_refs: [], observation_refs: []}
+  trust: reviewed_research
+  retention: {class: durable, review_after: "2026-07-21T09:05:00Z", expires_at: null, user_controllable: false}
+  permissions: {write_authorized: true, authorization_ref: review://architecture}
+  evidence: {support_count: 1, benchmark_refs: [], human_review: {status: pass, reviewer: architect, notes: [Source inspected.]}}
+  supersedes_refs: []
+expected: {disposition: pending_review, target_store: none, reason_codes: [repeated_support_missing], conflict_count: 0, record_emitted: false}

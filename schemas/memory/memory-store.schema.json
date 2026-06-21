@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.dev/schemas/memory/memory-store.v0.json",
+  "title": "Manurella File Memory Store",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "updated_at", "records"],
+  "properties": {
+    "schema_version": { "const": "memory-store.v0" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "records": { "type": "array", "items": { "$ref": "memory-record.v0.json" } }
+  }
+}

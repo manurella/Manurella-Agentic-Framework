@@ -1326,7 +1326,110 @@ nodes:
       - evals/fixtures/runtime-operation/
       - tools/compile_runtime_operation.py
     updated_at: 2026-06-21
+  - id: spec.memory-promotion-contracts
+    type: spec
+    label: Memory Promotion Contracts
+    status: active
+    summary: Structured claim, provenance, retention, permission, evidence, conflict, review, lifecycle, and promotion contracts for file-based durable memory.
+    owners:
+      - dom.core
+    evidence:
+      - specs/memory-and-atlas.md
+      - schemas/memory/memory-proposal.schema.json
+      - schemas/memory/memory-record.schema.json
+      - schemas/memory/memory-promotion-decision.schema.json
+    updated_at: 2026-06-21
+  - id: ctx.canonical-memory-store
+    type: context
+    label: Canonical File Memory Store
+    status: active
+    summary: Explicit versioned v0 durable-memory store; empty until reviewed promotion decisions are separately applied.
+    owners:
+      - dom.core
+    evidence:
+      - cognition/memory.yaml
+      - schemas/memory/memory-store.schema.json
+      - docs/architecture.md
+    updated_at: 2026-06-21
+  - id: tool.memory-proposal-evaluator
+    type: tool
+    label: Memory Proposal Evaluator
+    status: active
+    summary: Evaluates typed memory and Atlas proposals against source trust, structured conflicts, supersession, authorization, review, support, and benchmark gates without mutating canonical state.
+    owners:
+      - dom.core
+    evidence:
+      - tools/evaluate_memory_proposal.py
+      - evals/fixtures/memory-promotion/
+      - tools/README.md
+    updated_at: 2026-06-21
+  - id: eval.memory-promotion-v0
+    type: eval
+    label: Memory Promotion V0 Fixtures
+    status: active
+    summary: Covers quarantine, episodic retention, permission, conflict, review failure, semantic support, procedural evidence, user preference, and Atlas mutation decisions.
+    owners:
+      - dom.core
+    evidence:
+      - evals/fixtures/memory-promotion/
+      - tools/evaluate_memory_proposal.py
+    updated_at: 2026-06-21
 edges:
+  - id: edge.core.owns.memory-proposal-evaluator
+    type: owns
+    source: dom.core
+    target: tool.memory-proposal-evaluator
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/evaluate_memory_proposal.py
+      - specs/memory-and-atlas.md
+    updated_at: 2026-06-21
+  - id: edge.memory-proposal-evaluator.uses.promotion-contracts
+    type: uses
+    source: tool.memory-proposal-evaluator
+    target: spec.memory-promotion-contracts
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/evaluate_memory_proposal.py
+      - schemas/memory/memory-promotion-decision.schema.json
+    updated_at: 2026-06-21
+  - id: edge.memory-proposal-evaluator.uses.memory-store
+    type: uses
+    source: tool.memory-proposal-evaluator
+    target: ctx.canonical-memory-store
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/evaluate_memory_proposal.py
+      - cognition/memory.yaml
+    updated_at: 2026-06-21
+  - id: edge.memory-promotion-v0.evaluates.evaluator
+    type: evaluates
+    source: eval.memory-promotion-v0
+    target: tool.memory-proposal-evaluator
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - evals/fixtures/memory-promotion/
+      - tools/evaluate_memory_proposal.py
+    updated_at: 2026-06-21
+  - id: edge.self-check.uses.memory-proposal-evaluator
+    type: uses
+    source: tool.self-check
+    target: tool.memory-proposal-evaluator
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - tools/self_check.py
+      - tools/evaluate_memory_proposal.py
+    updated_at: 2026-06-21
   - id: edge.core.owns.runtime-operation-compiler
     type: owns
     source: dom.core
