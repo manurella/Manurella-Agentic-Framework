@@ -1,0 +1,14 @@
+fixture_id: kilo-session-projection.direct
+runtime_session_fixture: evals/fixtures/runtime-session/conversation-with-memory.yaml
+expected:
+  projection_status: ready_for_interactive_cli
+  steps: 16
+  read: deny
+  edit: deny
+  bash: deny
+  webfetch: deny
+  websearch: deny
+  task_targets: []
+  narrowed_actions: []
+  argv_has_auto: false
+  executed: false

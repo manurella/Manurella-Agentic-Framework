@@ -1480,6 +1480,51 @@ nodes:
       - evals/fixtures/runtime-session/
       - tools/compile_runtime_session.py
     updated_at: 2026-06-22
+  - id: ctx.kilo-runtime-projection-research
+    type: context
+    label: Kilo Runtime Projection Research
+    status: active
+    summary: Conservative evidence synthesis for Kilo agent locations, permissions, interactive CLI invocation, and unresolved runtime semantics.
+    owners:
+      - dom.core
+    evidence:
+      - research/synthesis/kilo-runtime-projection-synthesis.md
+      - specs/kilo-adapter.md
+    updated_at: 2026-06-22
+  - id: spec.kilo-session-projection
+    type: spec
+    label: Kilo Session Projection
+    status: active
+    summary: Fail-closed adapter contract for projecting validated runtime sessions into per-session Kilo agents without execution.
+    owners:
+      - dom.core
+    evidence:
+      - specs/kilo-adapter.md
+      - schemas/adapters/kilo-session-projection.schema.json
+    updated_at: 2026-06-22
+  - id: tool.kilo-session-projector
+    type: tool
+    label: Kilo Session Projector
+    status: active
+    summary: Projects runtime sessions into permission-narrowed Kilo agents and suggested interactive CLI argv without invoking Kilo.
+    owners:
+      - dom.core
+    evidence:
+      - adapters/kilo/project_runtime_session.py
+      - schemas/adapters/kilo-session-projection.schema.json
+      - research/synthesis/kilo-runtime-projection-synthesis.md
+    updated_at: 2026-06-22
+  - id: eval.kilo-session-projection-v0
+    type: eval
+    label: Kilo Session Projection V0 Fixtures
+    status: active
+    summary: Covers direct, blocked, delegation, injection-quarantine, and unscoped-authority narrowing projections without runtime execution.
+    owners:
+      - dom.core
+    evidence:
+      - evals/fixtures/kilo-session-projection/
+      - adapters/kilo/project_runtime_session.py
+    updated_at: 2026-06-22
 edges:
   - id: edge.core.owns.memory-proposal-evaluator
     type: owns
@@ -3365,3 +3410,69 @@ edges:
       - tools/self_check.py
       - tools/compile_core_packet.py
     updated_at: 2026-06-18
+  - id: edge.core.owns.kilo-session-projector
+    type: owns
+    source: dom.core
+    target: tool.kilo-session-projector
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - adapters/kilo/project_runtime_session.py
+      - specs/kilo-adapter.md
+    updated_at: 2026-06-22
+  - id: edge.kilo-session-projector.uses.runtime-session-compiler
+    type: uses
+    source: tool.kilo-session-projector
+    target: tool.runtime-session-compiler
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - adapters/kilo/project_runtime_session.py
+      - tools/compile_runtime_session.py
+    updated_at: 2026-06-22
+  - id: edge.kilo-session-projector.uses.kilo-projection-research
+    type: uses
+    source: tool.kilo-session-projector
+    target: ctx.kilo-runtime-projection-research
+    status: active
+    confidence: 0.9
+    weight: 0.9
+    evidence:
+      - adapters/kilo/project_runtime_session.py
+      - research/synthesis/kilo-runtime-projection-synthesis.md
+    updated_at: 2026-06-22
+  - id: edge.kilo-session-projector.uses.kilo-projection-spec
+    type: uses
+    source: tool.kilo-session-projector
+    target: spec.kilo-session-projection
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - adapters/kilo/project_runtime_session.py
+      - schemas/adapters/kilo-session-projection.schema.json
+    updated_at: 2026-06-22
+  - id: edge.kilo-session-projection-v0.evaluates.projector
+    type: evaluates
+    source: eval.kilo-session-projection-v0
+    target: tool.kilo-session-projector
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - evals/fixtures/kilo-session-projection/
+      - adapters/kilo/project_runtime_session.py
+    updated_at: 2026-06-22
+  - id: edge.self-check.uses.kilo-session-projector
+    type: uses
+    source: tool.self-check
+    target: tool.kilo-session-projector
+    status: active
+    confidence: 0.95
+    weight: 0.8
+    evidence:
+      - tools/self_check.py
+      - adapters/kilo/project_runtime_session.py
+    updated_at: 2026-06-22

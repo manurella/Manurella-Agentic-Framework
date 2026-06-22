@@ -1,0 +1,14 @@
+fixture_id: kilo-session-projection.project-delegation
+runtime_session_fixture: evals/fixtures/runtime-session/project-delegation.yaml
+expected:
+  projection_status: ready_for_interactive_cli
+  steps: 40
+  read: allow
+  edit: deny
+  bash: deny
+  webfetch: deny
+  websearch: deny
+  task_targets: [critic, editor, localizer, verifier]
+  narrowed_actions: []
+  argv_has_auto: false
+  executed: false

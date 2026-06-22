@@ -118,6 +118,8 @@ Phase 4 is complete at v0. Claim-structured proposals pass deterministic trust, 
 
 Phase 5's first slice is implemented. Trusted task intake now compiles end to end through Interpreter, Core routing, Brain workspace/control, principal-filtered memory retrieval, and permission-bounded operation policy into one runtime-neutral session bundle. The bundle excludes raw transcript and reasoning fields, marks provider/native controls as unenforced, and performs no runtime side effect. Integration also corrected permission semantics so `ask` actions remain blocked and normalized the obsolete `sentient` effort label to canonical `extra-high`. The next slice is Kilo operation-packet projection and validation.
 
+Phase 5's Kilo projection slice is implemented from two compared research reports and a conservative official-source synthesis. Runtime sessions project into per-session `.kilo/agents/` definitions plus suggested interactive argv without invoking a model. Only sufficiently bounded `allow` capabilities survive; `ask`, `deny`, generic edit/shell/browser authority, external directories, todo tools, autonomous flags, native effort mapping, direct packet ingestion, and stable JSON-result claims remain denied or unsupported. The next slice is typed execution-observation ingestion.
+
 ## Experimental Frontend Slice
 
 The frontend nodes are draft graph candidates only. They are not accepted agents, not exported runtime agents, and not official routing targets until benchmark evidence supports promotion.

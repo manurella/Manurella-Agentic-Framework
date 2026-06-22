@@ -11,6 +11,8 @@ Sources checked:
 - <https://kilo.ai/docs/customize/custom-modes>
 - <https://kilo.ai/docs/customize/custom-subagents>
 
+The 2026-06-22 runtime-projection research synthesis is `research/synthesis/kilo-runtime-projection-synthesis.md`. Direct access to official Kilo pages was blocked by HTTP 403 in the implementation environment, so current behavior was adopted only where two user-provided research reports converged on official-source citations. Unattended `--auto` semantics remain unverified.
+
 ## Target Path
 
 Project-local generated agents should be written to:
@@ -125,6 +127,27 @@ Before writing exported Kilo agents, validate:
 - Test Kilo's exact behavior for generated `permission.task` maps in real sessions.
 - Test whether Kilo uses `description` strongly enough for delegation or whether prompt body trigger text matters more.
 - Decide whether generated `.kilo/agents` should be committed, ignored, or treated as release artifacts after v0 experiments.
+
+## Runtime Session Projection
+
+`adapters/kilo/project_runtime_session.py` projects a validated `runtime-session-bundle.v0` into two deterministic artifacts:
+
+1. a per-session agent definition under `.kilo/agents/manurella-runtime-<digest>.md`
+2. a suggested interactive `kilo run --agent <id> --format json <message>` argv
+
+The projector performs no Kilo invocation and spends no model quota. It never emits `--auto` or `--dangerously-skip-permissions`, and it records `executed: false`.
+
+Strict permission lowering rules:
+
+- Manurella `allow` may become Kilo `allow` only when Kilo has a sufficiently bounded representation.
+- Manurella `ask` and `deny` always become Kilo `deny`.
+- Read maps to `read`, `glob`, and `grep`.
+- Web maps to `webfetch` and `websearch`.
+- Delegation maps to a name-scoped `task` map with `"*": deny` first.
+- Generic edit, shell, and browser capabilities are narrowed to deny because the v0 Operation Packet does not carry path, command, or browser-origin allowlists.
+- External-directory and todo capabilities remain denied because they are absent from the runtime-neutral action contract.
+
+The rendered prompt contains bounded objective, action policy, governed-memory statements, expected outputs, evidence requirements, and stop conditions. It does not restore the excluded Interpreter transcript or untrusted content.
 
 ## Exporter
 

@@ -1,0 +1,14 @@
+fixture_id: kilo-session-projection.confirmation-blocked
+runtime_session_fixture: evals/fixtures/runtime-session/confirmation-blocked.yaml
+expected:
+  projection_status: blocked_response_only
+  steps: 16
+  read: deny
+  edit: deny
+  bash: deny
+  webfetch: deny
+  websearch: deny
+  task_targets: []
+  narrowed_actions: []
+  argv_has_auto: false
+  executed: false

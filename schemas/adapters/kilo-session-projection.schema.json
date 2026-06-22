@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.dev/schemas/adapters/kilo-session-projection.v0.json",
+  "title": "Manurella Kilo Session Projection",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "projection_id", "source_session_id", "source_packet_id", "research_ref", "projection_status", "narrowed_actions", "agent", "invocation", "unsupported_controls"],
+  "properties": {
+    "schema_version": { "const": "kilo-session-projection.v0" },
+    "projection_id": { "type": "string", "minLength": 1 },
+    "source_session_id": { "type": "string", "minLength": 1 },
+    "source_packet_id": { "type": "string", "minLength": 1 },
+    "research_ref": { "const": "research/synthesis/kilo-runtime-projection-synthesis.md" },
+    "projection_status": { "enum": ["ready_for_interactive_cli", "blocked_response_only", "terminal_no_run"] },
+    "narrowed_actions": { "$ref": "#/$defs/actionArray" },
+    "agent": {
+      "type": "object", "additionalProperties": false,
+      "required": ["agent_id", "path", "content_sha256", "frontmatter", "prompt_body", "agent_markdown"],
+      "properties": {
+        "agent_id": { "type": "string", "pattern": "^manurella-runtime-[0-9a-f]{12}$" },
+        "path": { "type": "string", "pattern": "^\\.kilo/agents/manurella-runtime-[0-9a-f]{12}\\.md$" },
+        "content_sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "frontmatter": { "$ref": "#/$defs/frontmatter" },
+        "prompt_body": { "type": "string", "minLength": 1 },
+        "agent_markdown": { "type": "string", "minLength": 1 }
+      }
+    },
+    "invocation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["argv", "output_format", "unattended_safe", "executed"],
+      "properties": {
+        "argv": { "type": "array", "items": { "type": "string" } },
+        "output_format": { "enum": ["raw_json_events", "not_applicable"] },
+        "unattended_safe": { "const": false },
+        "executed": { "const": false }
+      }
+    },
+    "unsupported_controls": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": { "enum": ["direct_packet_ingestion", "native_effort_mapping", "stable_json_result_schema", "autonomous_permission_semantics", "session_resume_semantics", "timeout_exit_semantics"] }
+    }
+  },
+  "$defs": {
+    "permissionValue": { "enum": ["allow", "deny"] },
+    "permissionMap": {
+      "type": "object", "minProperties": 1,
+      "additionalProperties": { "$ref": "#/$defs/permissionValue" }
+    },
+    "permission": { "oneOf": [{ "$ref": "#/$defs/permissionValue" }, { "$ref": "#/$defs/permissionMap" }] },
+    "actionArray": {
+      "type": "array",
+      "items": { "enum": ["read", "edit", "shell", "browser", "web", "delegate", "respond"] },
+      "uniqueItems": true
+    },
+    "frontmatter": {
+      "type": "object", "additionalProperties": false,
+      "required": ["description", "mode", "permission", "steps", "temperature", "hidden", "disable"],
+      "properties": {
+        "description": { "type": "string", "minLength": 1, "maxLength": 240 },
+        "mode": { "const": "primary" },
+        "permission": {
+          "type": "object", "additionalProperties": false,
+          "required": ["read", "glob", "grep", "edit", "bash", "webfetch", "websearch", "task", "external_directory", "todowrite", "todoread"],
+          "properties": {
+            "read": { "$ref": "#/$defs/permission" },
+            "glob": { "$ref": "#/$defs/permission" },
+            "grep": { "$ref": "#/$defs/permission" },
+            "edit": { "$ref": "#/$defs/permission" },
+            "bash": { "$ref": "#/$defs/permission" },
+            "webfetch": { "$ref": "#/$defs/permission" },
+            "websearch": { "$ref": "#/$defs/permission" },
+            "task": { "$ref": "#/$defs/permission" },
+            "external_directory": { "$ref": "#/$defs/permissionValue" },
+            "todowrite": { "$ref": "#/$defs/permissionValue" },
+            "todoread": { "$ref": "#/$defs/permissionValue" }
+          }
+        },
+        "steps": { "type": "integer", "minimum": 1 },
+        "temperature": { "type": "number", "minimum": 0, "maximum": 2 },
+        "hidden": { "type": "boolean" },
+        "disable": { "type": "boolean" }
+      }
+    }
+  }
+}

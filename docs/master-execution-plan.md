@@ -163,7 +163,9 @@ Goal: compile portable specs into usable Kilo behavior while preserving boundari
 Artifacts:
 
 - `adapters/kilo/export_agents.py`
+- `adapters/kilo/project_runtime_session.py`
 - `specs/kilo-adapter.md`
+- `schemas/adapters/kilo-session-projection.schema.json`
 - `.kilo/agents/` generated outputs
 - runtime packet protocol
 - runtime session bundle and compiler
@@ -174,6 +176,7 @@ Acceptance:
 - Kilo prompts are short enough to avoid runaway delegation.
 - Timeout recovery resumes from artifacts, not from scratch.
 - Provider-neutral session compilation reports unsupported controls and performs no provider action by implication.
+- Kilo session projection lowers unresolved permissions to deny, renders sanitized prompt text, avoids autonomous flags, and validates without model quota.
 
 ### W5. Eval System
 

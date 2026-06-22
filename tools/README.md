@@ -10,7 +10,7 @@ Run the full local framework smoke suite:
 python tools/self_check.py --repo .
 ```
 
-It runs the framework validator, trust-partition and Interpreter fixtures, Core/Brain/runtime packet fixtures, memory promotion/application/retrieval fixtures, Kilo exporter dry-run, result-record and Mentor helper smokes, comparator smokes, and removes its temporary records.
+It runs the framework validator, trust-partition and Interpreter fixtures, Core/Brain/runtime packet fixtures, memory promotion/application/retrieval fixtures, Kilo exporter and session-projection checks, result-record and Mentor helper smokes, comparator smokes, and removes its temporary records.
 
 ## Trusted Input Partitioner
 
@@ -221,6 +221,15 @@ python tools/compile_runtime_session.py --repo . --fixtures
 ```
 
 The runtime session bundle excludes the full Interpreter bundle and banned transcript/reasoning fields. It contains lineage IDs, a principal-filtered memory packet, the permission-bounded operation packet, and an explicit list of controls still unenforced before adapter projection. Compilation performs no provider call, runtime action, memory write, or Atlas mutation.
+
+Project validated runtime sessions into strict per-session Kilo agents without invoking Kilo:
+
+```powershell
+python adapters\kilo\project_runtime_session.py --repo . --fixtures
+python adapters\kilo\project_runtime_session.py --repo . --session path\to\runtime-session.yaml --write-agent
+```
+
+The projector lowers confirmation-required authority to denial, narrows unscoped edit/shell/browser actions, emits only canonical `.kilo/agents/` artifacts, and marks its CLI argv as interactive and unexecuted.
 
 Evaluate a typed durable-memory or Atlas proposal without mutating canonical state:
 

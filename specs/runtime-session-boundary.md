@@ -67,8 +67,8 @@ No provider-specific run may be described as executed merely because a session b
 
 ```text
 runtime-neutral session compilation [implemented]
--> Kilo operation-packet projection and validation [next]
--> execution observation ingestion
+-> Kilo operation-packet projection and validation [implemented]
+-> execution observation ingestion [next]
 -> recovery/resume integration
 -> Phase 5 end-to-end adapter evidence
 ```

@@ -94,3 +94,19 @@ Build is the first sample export because it has the cleanest verifier loop:
 architect / build-orchestrator / explorer
 localizer / editor / verifier / critic
 ```
+
+## Runtime Session Projection
+
+Validate strict session projection without invoking Kilo or spending model quota:
+
+```powershell
+python adapters/kilo/project_runtime_session.py --repo . --fixtures
+```
+
+Project a previously compiled runtime session:
+
+```powershell
+python adapters/kilo/project_runtime_session.py --repo . --session path/to/runtime-session.yaml
+```
+
+Add `--write-agent` only when the generated per-session agent should be materialized under `.kilo/agents/`. The command prints a projection record containing the agent digest and suggested interactive CLI argv. It never executes that argv, never adds `--auto`, and treats JSON output as unversioned raw events.

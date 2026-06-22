@@ -1,0 +1,15 @@
+fixture_id: kilo-session-projection.unscoped-actions-narrowed
+runtime_session_fixture: evals/fixtures/runtime-session/project-delegation.yaml
+operation_allowed_actions: [read, edit, shell, browser, web, delegate]
+expected:
+  projection_status: ready_for_interactive_cli
+  steps: 40
+  read: allow
+  edit: deny
+  bash: deny
+  webfetch: allow
+  websearch: allow
+  task_targets: [critic, editor, localizer, verifier]
+  narrowed_actions: [edit, shell, browser]
+  argv_has_auto: false
+  executed: false
