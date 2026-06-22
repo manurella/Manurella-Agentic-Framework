@@ -116,6 +116,8 @@ Phase 3's execution/recovery boundary is now implemented. Brain control decision
 
 Phase 4 is complete at v0. Claim-structured proposals pass deterministic trust, conflict, permission, review, support, and benchmark gates; separate idempotent writers apply reviewed memory and narrow Atlas mutations. Retrieval filters expiry, overdue review, lifecycle, scope, principal, type, limits, and contradictory claims into an auditable bounded packet. Atlas application supports only existing lifecycle and repository evidence changes, validates candidates before atomic replacement, and cannot add, delete, merge, or rewire graph entities. The next depth-first branch is Phase 5 Core runtime and adapter integration.
 
+Phase 5's first slice is implemented. Trusted task intake now compiles end to end through Interpreter, Core routing, Brain workspace/control, principal-filtered memory retrieval, and permission-bounded operation policy into one runtime-neutral session bundle. The bundle excludes raw transcript and reasoning fields, marks provider/native controls as unenforced, and performs no runtime side effect. Integration also corrected permission semantics so `ask` actions remain blocked and normalized the obsolete `sentient` effort label to canonical `extra-high`. The next slice is Kilo operation-packet projection and validation.
+
 ## Experimental Frontend Slice
 
 The frontend nodes are draft graph candidates only. They are not accepted agents, not exported runtime agents, and not official routing targets until benchmark evidence supports promotion.

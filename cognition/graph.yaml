@@ -1,5 +1,5 @@
 version: 0
-updated_at: 2026-06-21
+updated_at: 2026-06-22
 status: draft
 nodes:
   - id: dom.core
@@ -1307,14 +1307,14 @@ nodes:
     type: tool
     label: Runtime Operation Compiler
     status: active
-    summary: Compiles Brain control decisions into runtime-neutral packets using checked-in agent permissions and resumable checkpoints.
+    summary: Compiles Brain control decisions into runtime-neutral packets using checked-in agent permissions, keeping ask and deny actions blocked, and preserving resumable checkpoints.
     owners:
       - dom.core
     evidence:
       - tools/compile_runtime_operation.py
       - evals/fixtures/runtime-operation/
       - tools/README.md
-    updated_at: 2026-06-21
+    updated_at: 2026-06-22
   - id: eval.runtime-operation-v0
     type: eval
     label: Runtime Operation V0 Fixtures
@@ -1325,7 +1325,7 @@ nodes:
     evidence:
       - evals/fixtures/runtime-operation/
       - tools/compile_runtime_operation.py
-    updated_at: 2026-06-21
+    updated_at: 2026-06-22
   - id: spec.memory-promotion-contracts
     type: spec
     label: Memory Promotion Contracts
@@ -1446,6 +1446,40 @@ nodes:
       - evals/fixtures/atlas-application/
       - tools/apply_atlas_decision.py
     updated_at: 2026-06-21
+  - id: spec.runtime-session-boundary
+    type: spec
+    label: Runtime Session Boundary
+    status: active
+    summary: Provider-neutral composition contract joining trusted intake, Interpreter, Core, Brain, governed memory retrieval, and operation policy without runtime side effects.
+    owners:
+      - dom.core
+    evidence:
+      - specs/runtime-session-boundary.md
+      - schemas/runtime/runtime-session-bundle.schema.json
+    updated_at: 2026-06-22
+  - id: tool.runtime-session-compiler
+    type: tool
+    label: Runtime Session Compiler
+    status: active
+    summary: Compiles a privacy-bounded adapter handoff with lineage, principal-filtered memory, permission-bounded operation policy, and explicit unenforced controls.
+    owners:
+      - dom.core
+    evidence:
+      - tools/compile_runtime_session.py
+      - schemas/runtime/runtime-session-bundle.schema.json
+      - evals/fixtures/runtime-session/
+    updated_at: 2026-06-22
+  - id: eval.runtime-session-v0
+    type: eval
+    label: Runtime Session V0 Fixtures
+    status: active
+    summary: Covers direct response with memory, project delegation, clarification and confirmation blocking, injection quarantine, and unauthenticated rejection.
+    owners:
+      - dom.core
+    evidence:
+      - evals/fixtures/runtime-session/
+      - tools/compile_runtime_session.py
+    updated_at: 2026-06-22
 edges:
   - id: edge.core.owns.memory-proposal-evaluator
     type: owns
@@ -1644,7 +1678,62 @@ edges:
     evidence:
       - tools/compile_runtime_operation.py
       - specs/runtime-packet-protocol.md
-    updated_at: 2026-06-21
+    updated_at: 2026-06-22
+  - id: edge.core.owns.runtime-session-compiler
+    type: owns
+    source: dom.core
+    target: tool.runtime-session-compiler
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/compile_runtime_session.py
+      - specs/runtime-session-boundary.md
+    updated_at: 2026-06-22
+  - id: edge.runtime-session-compiler.uses.session-boundary
+    type: uses
+    source: tool.runtime-session-compiler
+    target: spec.runtime-session-boundary
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/compile_runtime_session.py
+      - schemas/runtime/runtime-session-bundle.schema.json
+    updated_at: 2026-06-22
+  - id: edge.runtime-session-compiler.uses.operation-compiler
+    type: uses
+    source: tool.runtime-session-compiler
+    target: tool.runtime-operation-compiler
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/compile_runtime_session.py
+      - tools/compile_runtime_operation.py
+    updated_at: 2026-06-22
+  - id: edge.runtime-session-v0.evaluates.compiler
+    type: evaluates
+    source: eval.runtime-session-v0
+    target: tool.runtime-session-compiler
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - evals/fixtures/runtime-session/
+      - tools/compile_runtime_session.py
+    updated_at: 2026-06-22
+  - id: edge.self-check.uses.runtime-session-compiler
+    type: uses
+    source: tool.self-check
+    target: tool.runtime-session-compiler
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - tools/self_check.py
+      - tools/compile_runtime_session.py
+    updated_at: 2026-06-22
   - id: edge.runtime-operation-compiler.uses.operation-schema
     type: uses
     source: tool.runtime-operation-compiler

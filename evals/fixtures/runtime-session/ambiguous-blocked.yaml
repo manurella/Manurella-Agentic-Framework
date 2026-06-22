@@ -1,0 +1,13 @@
+fixture_id: runtime-session.ambiguous-blocked
+source_fixture: evals/fixtures/task-frame-parser/ambiguous.yaml
+expected:
+  status: blocked
+  packet_class: clarification
+  strategy: clarify
+  domain: core
+  agent: manurella-orchestrator
+  allowed_actions: [respond]
+  blocked_actions: []
+  memory_scope: {kind: task, ref: "task://tf.parser.ambiguous@1"}
+  selected_memory_count: 0
+  principal_ref: user.1

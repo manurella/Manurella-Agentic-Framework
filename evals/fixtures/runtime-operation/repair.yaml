@@ -4,7 +4,7 @@ prior_packet_ref: packet://project/initial
 expected:
   packet_class: repair
   strategy: reactive_tool
-  allowed_actions: [read, browser, web]
-  blocked_actions: [edit, shell]
+  allowed_actions: [read]
+  blocked_actions: [edit, shell, browser, web]
   retry_count: 1
   max_retries: 1

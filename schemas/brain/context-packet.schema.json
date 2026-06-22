@@ -24,7 +24,7 @@
         "agent": { "type": "string", "minLength": 1 },
         "secondary_domains": { "$ref": "#/$defs/stringArray" },
         "mode": { "enum": ["fast", "standard"] },
-        "effort": { "enum": ["low", "medium", "high", "max", "ultra", "sentient"] }
+        "effort": { "enum": ["low", "medium", "high", "extra-high", "max", "ultra"] }
       }
     },
     "budgets": {

@@ -211,7 +211,16 @@ python tools/compile_runtime_operation.py --repo . --cycle-result path/to/brain-
 python tools/compile_runtime_operation.py --repo . --fixtures
 ```
 
-The compiler reads the selected agent's checked-in permissions and intersects them with packet class and mode. It never promotes model-inferred tool hints into authority. Denied actions are retained as explicit `blocked_actions`; recovery packets resume from checkpoint and artifact references rather than restarting.
+The compiler reads the selected agent's checked-in permissions and intersects them with packet class and mode. It never promotes model-inferred tool hints into authority. Only `allow` actions are executable; both approval-required (`ask`) and denied actions remain explicit in `blocked_actions`, with their exact status preserved in `action_policy`. Recovery packets resume from checkpoint and artifact references rather than restarting.
+
+Compile trusted task intake through Interpreter, Core, Brain, memory retrieval, and the operation boundary:
+
+```powershell
+python tools/compile_runtime_session.py --repo . --input path/to/trusted-envelope.yaml --compiled-at 2026-06-22T10:00:00Z
+python tools/compile_runtime_session.py --repo . --fixtures
+```
+
+The runtime session bundle excludes the full Interpreter bundle and banned transcript/reasoning fields. It contains lineage IDs, a principal-filtered memory packet, the permission-bounded operation packet, and an explicit list of controls still unenforced before adapter projection. Compilation performs no provider call, runtime action, memory write, or Atlas mutation.
 
 Evaluate a typed durable-memory or Atlas proposal without mutating canonical state:
 

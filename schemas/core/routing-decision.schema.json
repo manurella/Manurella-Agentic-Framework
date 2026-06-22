@@ -42,7 +42,7 @@
       "items": { "enum": ["build", "muse", "pixel", "mentor"] }
     },
     "mode": { "enum": ["fast", "standard"] },
-    "effort": { "enum": ["low", "medium", "high", "max", "ultra", "sentient"] },
+    "effort": { "enum": ["low", "medium", "high", "extra-high", "max", "ultra"] },
     "required_references": { "$ref": "#/$defs/stringArray" },
     "quality_gate": {
       "type": "object",
@@ -167,7 +167,7 @@
         "assigned_agent": { "$ref": "#/$defs/nonEmptyString" },
         "class": { "enum": ["A", "B", "C"] },
         "mode": { "enum": ["fast", "standard"] },
-        "effort": { "enum": ["low", "medium", "high", "max", "ultra", "sentient"] },
+        "effort": { "enum": ["low", "medium", "high", "extra-high", "max", "ultra"] },
         "mission": { "$ref": "#/$defs/nonEmptyString" },
         "focus_in": {
           "type": "array",

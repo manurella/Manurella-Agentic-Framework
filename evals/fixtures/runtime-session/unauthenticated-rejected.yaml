@@ -1,0 +1,3 @@
+fixture_id: runtime-session.unauthenticated-rejected
+source_fixture: evals/fixtures/task-frame-parser/blocked-unauthenticated.yaml
+expected_error: trust.missing_authenticated_user_instruction

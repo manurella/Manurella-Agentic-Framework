@@ -72,6 +72,9 @@ Artifacts:
 - `tools/advance_brain_cycle.py`
 - `schemas/runtime/operation-packet.schema.json`
 - `tools/compile_runtime_operation.py`
+- `specs/runtime-session-boundary.md`
+- `schemas/runtime/runtime-session-bundle.schema.json`
+- `tools/compile_runtime_session.py`
 - `specs/core-operating-protocol.md`
 - `specs/agent-schema.md`
 - `specs/runtime-control.md`
@@ -102,6 +105,8 @@ Acceptance:
 - Brain compiles validated Interpreter/Core artifacts into typed task/world/user/self/uncertainty state, a volatile active workspace, and a bounded privileged context packet.
 - Brain revises state only through typed trust-classified observations, quarantines untrusted content, selects a bounded cognitive strategy, and stops, repairs, replans, or escalates from measurable verification and budget state.
 - Brain control decisions compile into permission-bounded runtime operation packets with explicit blocked actions, evidence requirements, stops, and resumable recovery state.
+- Trusted task intake compiles through Interpreter, Core, Brain, governed memory retrieval, and operation policy into one privacy-bounded runtime session bundle.
+- Approval-required actions never appear executable; only explicit `allow` permissions enter `allowed_actions`.
 
 ### W2. Cognitive Graph
 
@@ -161,12 +166,14 @@ Artifacts:
 - `specs/kilo-adapter.md`
 - `.kilo/agents/` generated outputs
 - runtime packet protocol
+- runtime session bundle and compiler
 
 Acceptance:
 
 - Adapter records unsupported controls instead of pretending they are enforceable.
 - Kilo prompts are short enough to avoid runaway delegation.
 - Timeout recovery resumes from artifacts, not from scratch.
+- Provider-neutral session compilation reports unsupported controls and performs no provider action by implication.
 
 ### W5. Eval System
 

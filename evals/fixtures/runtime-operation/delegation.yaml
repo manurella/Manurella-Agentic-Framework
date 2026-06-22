@@ -3,7 +3,7 @@ brain_cycle_fixture: evals/fixtures/brain-cycle/delegate-initial.yaml
 expected:
   packet_class: delegation
   strategy: reactive_tool
-  allowed_actions: [read, browser, web]
-  blocked_actions: [edit, shell, delegate]
+  allowed_actions: [read]
+  blocked_actions: [edit, shell, browser, web, delegate]
   retry_count: 0
   max_retries: 0

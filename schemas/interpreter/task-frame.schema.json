@@ -159,7 +159,7 @@
         "requested_mode": { "type": ["string", "null"], "enum": ["fast", "standard", null] },
         "requested_effort": {
           "type": ["string", "null"],
-          "enum": ["low", "medium", "high", "max", "ultra", "sentient", null]
+          "enum": ["low", "medium", "high", "extra-high", "max", "ultra", null]
         },
         "latency_preference": { "$ref": "#/$defs/nullableString" },
         "cost_preference": { "$ref": "#/$defs/nullableString" }

@@ -1,0 +1,13 @@
+fixture_id: runtime-session.project-delegation
+source_fixture: evals/fixtures/task-frame-parser/project.yaml
+expected:
+  status: ready_for_adapter
+  packet_class: delegation
+  strategy: hierarchical_decomposition
+  domain: build
+  agent: build-orchestrator
+  allowed_actions: [read, delegate]
+  blocked_actions: [edit, shell, browser, web]
+  memory_scope: {kind: project, ref: project.parser.project}
+  selected_memory_count: 0
+  principal_ref: user.1

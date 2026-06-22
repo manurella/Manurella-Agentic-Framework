@@ -135,8 +135,8 @@ def compile_packet(
         context["routing"]["mode"],
     )
     requested = requested_actions(kind)
-    actions = [action for action in requested if policy[action] != "deny"]
-    blocked_actions = [action for action in requested if policy[action] == "deny"]
+    actions = [action for action in requested if policy[action] == "allow"]
+    blocked_actions = [action for action in requested if policy[action] != "allow"]
     last_step = workspace["observations"][-1]["id"] if workspace["observations"] else None
     original_repairs = context["budgets"]["repairs"]
     retry_count = max(0, original_repairs - workspace["budgets"]["repairs_remaining"])

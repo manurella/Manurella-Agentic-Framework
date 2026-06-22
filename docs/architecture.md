@@ -123,6 +123,8 @@ V0 control dimensions:
 
 Runtime packets in `specs/runtime-packet-protocol.md` are the execution boundary for unstable or weak runtimes. They split scout, design, implementation, verification, and research work into small resumable units with explicit evidence and stop conditions.
 
+The provider-neutral session compiler in `tools/compile_runtime_session.py` joins trusted intake, Interpreter, Core, Brain, governed memory retrieval, and one operation packet into the bounded handoff defined by `specs/runtime-session-boundary.md`. It is a compiler, not a provider runner, and reports unsupported controls rather than implying execution.
+
 ### 9. Runtime Adapters
 
 Adapters compile the portable specs into runtime-specific formats.

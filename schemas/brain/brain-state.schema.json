@@ -50,7 +50,7 @@
       "required": ["mode", "effort", "selected_domain", "selected_agent", "cycle_budget", "repair_budget"],
       "properties": {
         "mode": { "enum": ["fast", "standard"] },
-        "effort": { "enum": ["low", "medium", "high", "max", "ultra", "sentient"] },
+        "effort": { "enum": ["low", "medium", "high", "extra-high", "max", "ultra"] },
         "selected_domain": { "type": "string", "minLength": 1 },
         "selected_agent": { "type": "string", "minLength": 1 },
         "cycle_budget": { "type": "integer", "minimum": 1 },

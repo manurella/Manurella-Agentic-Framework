@@ -52,9 +52,11 @@ The machine packet adds:
 - expected outputs, evidence requirements, and stop conditions
 - resumable checkpoint, artifact references, last completed step, and retry count
 
-Interpreter-inferred tool hints never grant runtime permissions. The compiler reads `domains/<domain>/agents/<agent>.md`, validates every permission field, applies the Fast no-nested-delegation ceiling, and exposes denied actions as `blocked_actions`. A runtime adapter must preserve or narrow this policy; it cannot broaden it.
+Interpreter-inferred tool hints never grant runtime permissions. The compiler reads `domains/<domain>/agents/<agent>.md`, validates every permission field, applies the Fast no-nested-delegation ceiling, and permits only actions marked `allow`. Both `ask` and `deny` actions remain in `blocked_actions`, while `action_policy` preserves the distinction. A runtime adapter must preserve or narrow this policy; it cannot broaden it.
 
 Budget or runtime exhaustion compiles to a `recovery` packet that reads the existing checkpoint and emits a narrower next packet. It does not restart the original workflow. Successful or unsafe terminal decisions compile to a `stop` packet with no allowed runtime actions.
+
+`schemas/runtime/runtime-session-bundle.schema.json` is the adapter handoff wrapper around the operation packet. `tools/compile_runtime_session.py` composes trusted intake, Interpreter, Core, Brain, governed memory retrieval, and the initial operation packet without performing a provider call or runtime side effect.
 
 ## Packet Classes
 

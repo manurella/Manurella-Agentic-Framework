@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.dev/schemas/runtime/runtime-session-bundle.v0.json",
+  "title": "Manurella Runtime Session Bundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "session_id", "compiled_at", "source", "lineage", "execution", "memory_context", "operation_packet", "adapter_boundary"],
+  "properties": {
+    "schema_version": { "const": "runtime-session-bundle.v0" },
+    "session_id": { "type": "string", "minLength": 1 },
+    "compiled_at": { "type": "string", "format": "date-time" },
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["envelope_id", "session_ref", "received_at", "principal_ref"],
+      "properties": {
+        "envelope_id": { "type": "string", "minLength": 1 },
+        "session_ref": { "type": ["string", "null"] },
+        "received_at": { "type": "string", "format": "date-time" },
+        "principal_ref": { "type": "string", "minLength": 1 }
+      }
+    },
+    "lineage": {
+      "type": "object", "additionalProperties": false,
+      "required": ["task_frame_ref", "acceptance_contract_ref", "routing_decision_id", "brain_state_ref", "control_decision_id"],
+      "properties": {
+        "task_frame_ref": { "type": "string", "minLength": 1 },
+        "acceptance_contract_ref": { "type": "string", "minLength": 1 },
+        "routing_decision_id": { "type": "string", "minLength": 1 },
+        "brain_state_ref": { "type": "string", "minLength": 1 },
+        "control_decision_id": { "type": "string", "minLength": 1 }
+      }
+    },
+    "execution": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "packet_class", "selected_domain", "selected_agent", "memory_scope", "selected_memory_count"],
+      "properties": {
+        "status": { "enum": ["ready_for_adapter", "blocked", "terminal"] },
+        "packet_class": { "enum": ["direct", "clarification", "confirmation", "refusal", "delegation", "verification", "repair", "replan", "recovery", "escalation", "stop"] },
+        "selected_domain": { "type": "string", "minLength": 1 },
+        "selected_agent": { "type": "string", "minLength": 1 },
+        "memory_scope": { "$ref": "https://manurella.dev/schemas/memory/memory-record.v0.json#/$defs/scope" },
+        "selected_memory_count": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "memory_context": { "$ref": "https://manurella.dev/schemas/memory/memory-retrieval-packet.v0.json" },
+    "operation_packet": { "$ref": "operation-packet.v0.json" },
+    "adapter_boundary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["target", "status", "unenforced_controls"],
+      "properties": {
+        "target": { "const": "runtime_neutral" },
+        "status": { "const": "pending_projection" },
+        "unenforced_controls": {
+          "type": "array", "minItems": 1, "uniqueItems": true,
+          "items": { "enum": ["provider_execution", "model_selection", "native_effort", "token_accounting", "cost_accounting"] }
+        }
+      }
+    }
+  }
+}

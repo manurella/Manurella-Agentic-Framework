@@ -24,7 +24,7 @@
       }
     },
     "mode": { "enum": ["fast", "standard"] },
-    "effort": { "enum": ["low", "medium", "high", "max", "ultra", "sentient"] },
+    "effort": { "enum": ["low", "medium", "high", "extra-high", "max", "ultra"] },
     "timebox_minutes": { "type": "integer", "minimum": 1, "maximum": 30 },
     "action_policy": {
       "type": "object",

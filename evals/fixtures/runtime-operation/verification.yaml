@@ -3,7 +3,7 @@ brain_cycle_fixture: evals/fixtures/brain-cycle/trusted-progress.yaml
 expected:
   packet_class: verification
   strategy: hierarchical_decomposition
-  allowed_actions: [read, browser, web]
-  blocked_actions: [shell]
+  allowed_actions: [read]
+  blocked_actions: [shell, browser, web]
   retry_count: 0
   max_retries: 1
