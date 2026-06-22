@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.dev/schemas/runtime/execution-capture.v0.json",
+  "title": "Manurella Runtime Execution Capture",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "capture_id", "captured_at", "adapter", "lineage", "invocation", "stream", "model_output", "observed_artifact_refs", "verification"],
+  "properties": {
+    "schema_version": { "const": "execution-capture.v0" },
+    "capture_id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$" },
+    "captured_at": { "type": "string", "format": "date-time" },
+    "adapter": { "type": "string", "pattern": "^[a-z][a-z0-9_-]*$" },
+    "lineage": {
+      "type": "object", "additionalProperties": false,
+      "required": ["session_id", "packet_id", "projection_id"],
+      "properties": {
+        "session_id": { "type": "string", "minLength": 1 },
+        "packet_id": { "type": "string", "minLength": 1 },
+        "projection_id": { "type": "string", "minLength": 1 }
+      }
+    },
+    "invocation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["started_at", "ended_at", "status", "timeout_status", "exit_code"],
+      "properties": {
+        "started_at": { "type": "string", "format": "date-time" },
+        "ended_at": { "type": "string", "format": "date-time" },
+        "status": { "enum": ["completed", "failed", "timeout", "cancelled", "policy_blocked", "unknown"] },
+        "timeout_status": { "enum": ["none", "upstream_idle_timeout", "user_stopped", "unknown"] },
+        "exit_code": { "type": ["integer", "null"] }
+      }
+    },
+    "stream": {
+      "type": "object", "additionalProperties": false,
+      "required": ["output_format", "event_count", "raw_events_sha256"],
+      "properties": {
+        "output_format": { "enum": ["raw_json_events", "not_available"] },
+        "event_count": { "type": "integer", "minimum": 0 },
+        "raw_events_sha256": { "$ref": "#/$defs/nullableDigest" }
+      }
+    },
+    "model_output": {
+      "type": "object", "additionalProperties": false,
+      "required": ["present", "sha256"],
+      "properties": {
+        "present": { "type": "boolean" },
+        "sha256": { "$ref": "#/$defs/nullableDigest" }
+      }
+    },
+    "observed_artifact_refs": { "$ref": "#/$defs/refArray" },
+    "verification": { "$ref": "#/$defs/verification" }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "nullableDigest": { "oneOf": [{ "$ref": "#/$defs/digest" }, { "type": "null" }] },
+    "stringArray": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "refArray": { "type": "array", "items": { "type": "string", "pattern": "^[a-z][a-z0-9+.-]*://\\S{1,480}$" }, "uniqueItems": true },
+    "verification": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "acceptance_status", "check_ids"],
+      "properties": {
+        "status": { "enum": ["not_run", "pass", "fail", "partial"] },
+        "acceptance_status": { "enum": ["not_evaluated", "partial", "complete", "failed"] },
+        "check_ids": { "$ref": "#/$defs/stringArray" }
+      }
+    }
+  }
+}

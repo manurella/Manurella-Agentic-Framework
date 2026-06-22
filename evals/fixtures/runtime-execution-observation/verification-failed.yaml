@@ -1,0 +1,13 @@
+fixture_id: runtime-execution-observation.verification-failed
+runtime_session_fixture: evals/fixtures/runtime-session/project-delegation.yaml
+capture:
+  schema_version: execution-capture.v0
+  capture_id: capture.verification-failed
+  captured_at: "2026-06-22T10:03:01Z"
+  adapter: kilo
+  invocation: {started_at: "2026-06-22T10:01:00Z", ended_at: "2026-06-22T10:03:00Z", status: completed, timeout_status: none, exit_code: 0}
+  stream: {output_format: raw_json_events, event_count: 8, raw_events_sha256: "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}
+  model_output: {present: true, sha256: "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}
+  observed_artifact_refs: [eval://runtime/acceptance-failure]
+  verification: {status: fail, acceptance_status: failed, check_ids: [check.runtime-acceptance]}
+expected: {effect: failure, trust: trusted_runtime, kind: verification_result, verification_status: fail, acceptance_status: failed, evidence_count: 1, recovery_required: false, recovery_reason: none, raw_payload_embedded: false, model_output_embedded: false}

@@ -1,0 +1,13 @@
+fixture_id: runtime-execution-observation.policy-blocked
+runtime_session_fixture: evals/fixtures/runtime-session/project-delegation.yaml
+capture:
+  schema_version: execution-capture.v0
+  capture_id: capture.policy-blocked
+  captured_at: "2026-06-22T10:01:02Z"
+  adapter: kilo
+  invocation: {started_at: "2026-06-22T10:01:00Z", ended_at: "2026-06-22T10:01:01Z", status: policy_blocked, timeout_status: none, exit_code: null}
+  stream: {output_format: not_available, event_count: 0, raw_events_sha256: null}
+  model_output: {present: false, sha256: null}
+  observed_artifact_refs: []
+  verification: {status: not_run, acceptance_status: not_evaluated, check_ids: []}
+expected: {effect: unsafe, trust: trusted_runtime, kind: runtime_event, verification_status: not_run, acceptance_status: not_evaluated, evidence_count: 0, recovery_required: false, recovery_reason: none, raw_payload_embedded: false, model_output_embedded: false}

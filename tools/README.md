@@ -10,7 +10,7 @@ Run the full local framework smoke suite:
 python tools/self_check.py --repo .
 ```
 
-It runs the framework validator, trust-partition and Interpreter fixtures, Core/Brain/runtime packet fixtures, memory promotion/application/retrieval fixtures, Kilo exporter and session-projection checks, result-record and Mentor helper smokes, comparator smokes, and removes its temporary records.
+It runs the framework validator, trust-partition and Interpreter fixtures, Core/Brain/runtime packet fixtures, memory promotion/application/retrieval fixtures, Kilo exporter/session-projection and execution-observation checks, result-record and Mentor helper smokes, comparator smokes, and removes its temporary records.
 
 ## Trusted Input Partitioner
 
@@ -230,6 +230,15 @@ python adapters\kilo\project_runtime_session.py --repo . --session path\to\runti
 ```
 
 The projector lowers confirmation-required authority to denial, narrows unscoped edit/shell/browser actions, emits only canonical `.kilo/agents/` artifacts, and marks its CLI argv as interactive and unexecuted.
+
+Ingest normalized adapter execution metadata into typed Brain observations:
+
+```powershell
+python tools\ingest_runtime_observation.py --repo . --fixtures
+python tools\ingest_runtime_observation.py --repo . --session path\to\session.yaml --projection path\to\projection.yaml --capture path\to\capture.yaml
+```
+
+Unattested captures are quarantined as model-inferred no-change events. Adapter-attested captures retain lifecycle, verifier, artifact, and recovery evidence while storing raw streams and model output only by digest.
 
 Evaluate a typed durable-memory or Atlas proposal without mutating canonical state:
 

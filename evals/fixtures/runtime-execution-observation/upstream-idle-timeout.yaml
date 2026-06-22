@@ -1,0 +1,13 @@
+fixture_id: runtime-execution-observation.upstream-idle-timeout
+runtime_session_fixture: evals/fixtures/runtime-session/project-delegation.yaml
+capture:
+  schema_version: execution-capture.v0
+  capture_id: capture.upstream-idle-timeout
+  captured_at: "2026-06-22T10:07:01Z"
+  adapter: kilo
+  invocation: {started_at: "2026-06-22T10:01:00Z", ended_at: "2026-06-22T10:07:00Z", status: timeout, timeout_status: upstream_idle_timeout, exit_code: null}
+  stream: {output_format: raw_json_events, event_count: 4, raw_events_sha256: "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}
+  model_output: {present: true, sha256: "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}
+  observed_artifact_refs: [artifact://project/partial-output]
+  verification: {status: not_run, acceptance_status: not_evaluated, check_ids: []}
+expected: {effect: blocked, trust: trusted_runtime, kind: runtime_event, verification_status: not_run, acceptance_status: not_evaluated, evidence_count: 1, recovery_required: true, recovery_reason: upstream_idle_timeout, raw_payload_embedded: false, model_output_embedded: false}

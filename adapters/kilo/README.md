@@ -110,3 +110,11 @@ python adapters/kilo/project_runtime_session.py --repo . --session path/to/runti
 ```
 
 Add `--write-agent` only when the generated per-session agent should be materialized under `.kilo/agents/`. The command prints a projection record containing the agent digest and suggested interactive CLI argv. It never executes that argv, never adds `--auto`, and treats JSON output as unversioned raw events.
+
+After an adapter-runner normalizes the process lifecycle and hashes the raw event stream, ingest its capture without embedding model output:
+
+```powershell
+python tools/ingest_runtime_observation.py --repo . --session path/to/session.yaml --projection path/to/projection.yaml --capture path/to/capture.yaml
+```
+
+This direct form is deliberately unattested and produces quarantined evidence. `--attest-runtime-capture` is reserved for the adapter process that observed the invocation metadata and artifacts itself; it must never be set from model-authored output.

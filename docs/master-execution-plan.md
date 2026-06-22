@@ -164,8 +164,11 @@ Artifacts:
 
 - `adapters/kilo/export_agents.py`
 - `adapters/kilo/project_runtime_session.py`
+- `tools/ingest_runtime_observation.py`
 - `specs/kilo-adapter.md`
 - `schemas/adapters/kilo-session-projection.schema.json`
+- `schemas/runtime/execution-capture.schema.json`
+- `schemas/runtime/execution-observation-bundle.schema.json`
 - `.kilo/agents/` generated outputs
 - runtime packet protocol
 - runtime session bundle and compiler
@@ -177,6 +180,7 @@ Acceptance:
 - Timeout recovery resumes from artifacts, not from scratch.
 - Provider-neutral session compilation reports unsupported controls and performs no provider action by implication.
 - Kilo session projection lowers unresolved permissions to deny, renders sanitized prompt text, avoids autonomous flags, and validates without model quota.
+- Execution observation ingestion preserves lineage and digests without promoting raw model output or unattested completion claims to trusted evidence.
 
 ### W5. Eval System
 

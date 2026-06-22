@@ -1,0 +1,13 @@
+fixture_id: runtime-execution-observation.contradictory-timeout
+runtime_session_fixture: evals/fixtures/runtime-session/project-delegation.yaml
+capture:
+  schema_version: execution-capture.v0
+  capture_id: capture.contradictory-timeout
+  captured_at: "2026-06-22T10:02:01Z"
+  adapter: kilo
+  invocation: {started_at: "2026-06-22T10:01:00Z", ended_at: "2026-06-22T10:02:00Z", status: completed, timeout_status: upstream_idle_timeout, exit_code: 0}
+  stream: {output_format: raw_json_events, event_count: 1, raw_events_sha256: "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}
+  model_output: {present: false, sha256: null}
+  observed_artifact_refs: []
+  verification: {status: not_run, acceptance_status: not_evaluated, check_ids: []}
+expected_error: inconsistent with timeout_status

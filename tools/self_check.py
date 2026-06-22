@@ -129,6 +129,7 @@ def main(argv: list[str]) -> int:
         [python, "tools/apply_atlas_decision.py", "--repo", ".", "--fixtures"],
         [python, "tools/compile_runtime_session.py", "--repo", ".", "--fixtures"],
         [python, "adapters/kilo/project_runtime_session.py", "--repo", ".", "--fixtures"],
+        [python, "tools/ingest_runtime_observation.py", "--repo", ".", "--fixtures"],
         [
             python,
             "adapters/kilo/export_agents.py",

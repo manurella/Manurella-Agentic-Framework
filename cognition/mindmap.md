@@ -120,6 +120,8 @@ Phase 5's first slice is implemented. Trusted task intake now compiles end to en
 
 Phase 5's Kilo projection slice is implemented from two compared research reports and a conservative official-source synthesis. Runtime sessions project into per-session `.kilo/agents/` definitions plus suggested interactive argv without invoking a model. Only sufficiently bounded `allow` capabilities survive; `ask`, `deny`, generic edit/shell/browser authority, external directories, todo tools, autonomous flags, native effort mapping, direct packet ingestion, and stable JSON-result claims remain denied or unsupported. The next slice is typed execution-observation ingestion.
 
+Phase 5's execution-observation slice is implemented. Normalized adapter captures now validate exact session/packet/projection lineage, lifecycle and timeout consistency, typed verification, observed artifacts, stream digests, and model-output digests. Raw events and model text never enter Brain observations. Direct capture files cannot self-assert runtime trust: unattested claims become model-inferred no-change events with no evidence or recovery authority. Adapter-attested upstream-idle timeout produces an explicit recovery signal anchored to the existing checkpoint. Recovery/resume integration is next.
+
 ## Experimental Frontend Slice
 
 The frontend nodes are draft graph candidates only. They are not accepted agents, not exported runtime agents, and not official routing targets until benchmark evidence supports promotion.

@@ -1,0 +1,13 @@
+fixture_id: runtime-execution-observation.verified-complete
+runtime_session_fixture: evals/fixtures/runtime-session/project-delegation.yaml
+capture:
+  schema_version: execution-capture.v0
+  capture_id: capture.verified-complete
+  captured_at: "2026-06-22T10:03:01Z"
+  adapter: kilo
+  invocation: {started_at: "2026-06-22T10:01:00Z", ended_at: "2026-06-22T10:03:00Z", status: completed, timeout_status: none, exit_code: 0}
+  stream: {output_format: raw_json_events, event_count: 8, raw_events_sha256: "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}
+  model_output: {present: true, sha256: "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}
+  observed_artifact_refs: [eval://runtime/acceptance-pass]
+  verification: {status: pass, acceptance_status: complete, check_ids: [check.runtime-acceptance]}
+expected: {effect: acceptance_evidence, trust: trusted_runtime, kind: verification_result, verification_status: pass, acceptance_status: complete, evidence_count: 1, recovery_required: false, recovery_reason: none, raw_payload_embedded: false, model_output_embedded: false}

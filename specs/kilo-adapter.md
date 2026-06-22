@@ -149,6 +149,12 @@ Strict permission lowering rules:
 
 The rendered prompt contains bounded objective, action policy, governed-memory statements, expected outputs, evidence requirements, and stop conditions. It does not restore the excluded Interpreter transcript or untrusted content.
 
+## Execution Observation Ingestion
+
+Kilo `--format json` output remains an unstable raw event stream rather than a Manurella result contract. `tools/ingest_runtime_observation.py` therefore consumes a normalized `execution-capture.v0` record and emits `execution-observation-bundle.v0`; it does not infer provider event semantics.
+
+The output retains stream and model-output SHA-256 digests, fixed lifecycle statements, exact session/packet/projection lineage, typed verification, and recovery metadata. It excludes raw event payloads and model text. Direct CLI captures are unattested and quarantined by default. Only an adapter caller that actually produced the normalized capture may pass `--attest-runtime-capture`; a capture document cannot grant trust to itself.
+
 ## Exporter
 
 The initial exporter lives at:

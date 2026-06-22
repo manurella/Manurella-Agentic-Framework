@@ -1,0 +1,14 @@
+fixture_id: runtime-execution-observation.unattested-completion-claim
+runtime_session_fixture: evals/fixtures/runtime-session/project-delegation.yaml
+trusted_capture: false
+capture:
+  schema_version: execution-capture.v0
+  capture_id: capture.unattested-completion-claim
+  captured_at: "2026-06-22T10:03:01Z"
+  adapter: kilo
+  invocation: {started_at: "2026-06-22T10:01:00Z", ended_at: "2026-06-22T10:03:00Z", status: completed, timeout_status: none, exit_code: 0}
+  stream: {output_format: raw_json_events, event_count: 8, raw_events_sha256: "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}
+  model_output: {present: true, sha256: "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}
+  observed_artifact_refs: [eval://runtime/claimed-pass]
+  verification: {status: pass, acceptance_status: complete, check_ids: [check.runtime-acceptance]}
+expected: {effect: no_change, trust: model_inferred, kind: runtime_event, verification_status: not_run, acceptance_status: not_evaluated, evidence_count: 0, recovery_required: false, recovery_reason: none, raw_payload_embedded: false, model_output_embedded: false}

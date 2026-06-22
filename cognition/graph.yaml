@@ -1525,6 +1525,40 @@ nodes:
       - evals/fixtures/kilo-session-projection/
       - adapters/kilo/project_runtime_session.py
     updated_at: 2026-06-22
+  - id: spec.execution-observation-boundary
+    type: spec
+    label: Execution Observation Boundary
+    status: active
+    summary: Provider-neutral capture and observation contract that preserves runtime lineage and digests without trusting raw model output.
+    owners:
+      - dom.core
+    evidence:
+      - specs/execution-observation-boundary.md
+      - schemas/runtime/execution-capture.schema.json
+      - schemas/runtime/execution-observation-bundle.schema.json
+    updated_at: 2026-06-22
+  - id: tool.runtime-observation-ingester
+    type: tool
+    label: Runtime Observation Ingester
+    status: active
+    summary: Validates normalized execution captures and emits fixed-text, privacy-bounded Brain observations with explicit capture trust and recovery signals.
+    owners:
+      - dom.core
+    evidence:
+      - tools/ingest_runtime_observation.py
+      - specs/execution-observation-boundary.md
+    updated_at: 2026-06-22
+  - id: eval.runtime-execution-observation-v0
+    type: eval
+    label: Runtime Execution Observation V0 Fixtures
+    status: active
+    summary: Covers verified and unverified completion, artifacts, failures, timeout recovery, policy blocking, lineage and projection-integrity rejection, semantic contradiction, and unattested-claim quarantine.
+    owners:
+      - dom.core
+    evidence:
+      - evals/fixtures/runtime-execution-observation/
+      - tools/ingest_runtime_observation.py
+    updated_at: 2026-06-22
 edges:
   - id: edge.core.owns.memory-proposal-evaluator
     type: owns
@@ -3475,4 +3509,81 @@ edges:
     evidence:
       - tools/self_check.py
       - adapters/kilo/project_runtime_session.py
+    updated_at: 2026-06-22
+  - id: edge.core.owns.runtime-observation-ingester
+    type: owns
+    source: dom.core
+    target: tool.runtime-observation-ingester
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/ingest_runtime_observation.py
+      - specs/execution-observation-boundary.md
+    updated_at: 2026-06-22
+  - id: edge.runtime-observation-ingester.uses.execution-observation-spec
+    type: uses
+    source: tool.runtime-observation-ingester
+    target: spec.execution-observation-boundary
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/ingest_runtime_observation.py
+      - schemas/runtime/execution-observation-bundle.schema.json
+    updated_at: 2026-06-22
+  - id: edge.runtime-observation-ingester.uses.runtime-session-compiler
+    type: uses
+    source: tool.runtime-observation-ingester
+    target: tool.runtime-session-compiler
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/ingest_runtime_observation.py
+      - tools/compile_runtime_session.py
+    updated_at: 2026-06-22
+  - id: edge.runtime-observation-ingester.uses.kilo-session-projector
+    type: uses
+    source: tool.runtime-observation-ingester
+    target: tool.kilo-session-projector
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/ingest_runtime_observation.py
+      - adapters/kilo/project_runtime_session.py
+    updated_at: 2026-06-22
+  - id: edge.runtime-observation-ingester.emits.brain-observation-events
+    type: emits
+    source: tool.runtime-observation-ingester
+    target: spec.brain-observation-event-schema
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/ingest_runtime_observation.py
+      - schemas/brain/observation-event.schema.json
+    updated_at: 2026-06-22
+  - id: edge.runtime-execution-observation-v0.evaluates.ingester
+    type: evaluates
+    source: eval.runtime-execution-observation-v0
+    target: tool.runtime-observation-ingester
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - evals/fixtures/runtime-execution-observation/
+      - tools/ingest_runtime_observation.py
+    updated_at: 2026-06-22
+  - id: edge.self-check.uses.runtime-observation-ingester
+    type: uses
+    source: tool.self-check
+    target: tool.runtime-observation-ingester
+    status: active
+    confidence: 0.95
+    weight: 0.8
+    evidence:
+      - tools/self_check.py
+      - tools/ingest_runtime_observation.py
     updated_at: 2026-06-22
