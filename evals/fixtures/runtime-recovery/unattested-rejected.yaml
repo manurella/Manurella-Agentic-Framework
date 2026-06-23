@@ -1,0 +1,3 @@
+fixture_id: runtime-recovery.unattested-rejected
+execution_observation_fixture: evals/fixtures/runtime-execution-observation/unattested-completion-claim.yaml
+expected_error: observation bundle does not require recovery

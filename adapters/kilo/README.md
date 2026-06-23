@@ -118,3 +118,11 @@ python tools/ingest_runtime_observation.py --repo . --session path/to/session.ya
 ```
 
 This direct form is deliberately unattested and produces quarantined evidence. `--attest-runtime-capture` is reserved for the adapter process that observed the invocation metadata and artifacts itself; it must never be set from model-authored output.
+
+When an adapter-attested observation reports a recoverable runtime blockage, compile the next bounded recovery projection without rerunning the full workflow:
+
+```powershell
+python tools/compile_runtime_recovery.py --repo . --workspace path/to/workspace-bundle.yaml --session path/to/session.yaml --projection path/to/projection.yaml --observation-bundle path/to/execution-observation-bundle.yaml
+```
+
+The recovery compiler requires the checkpoint workspace named by the prior packet, verifies prior projection integrity, rejects unattested or non-recovery observations, and emits a new runtime session plus Kilo projection. It still does not invoke Kilo.

@@ -1,0 +1,4 @@
+fixture_id: runtime-recovery.lineage-tampered
+execution_observation_fixture: evals/fixtures/runtime-execution-observation/upstream-idle-timeout.yaml
+tamper_lineage: true
+expected_error: observation lineage packet_id mismatch

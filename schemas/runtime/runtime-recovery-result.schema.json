@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.dev/schemas/runtime/runtime-recovery-result.v0.json",
+  "title": "Manurella Runtime Recovery Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "recovery_id", "recovered_at", "prior", "observation_bundle_id", "recovery_reason", "privacy", "brain_cycle_result", "recovery_session", "adapter_projection"],
+  "properties": {
+    "schema_version": { "const": "runtime-recovery-result.v0" },
+    "recovery_id": { "type": "string", "minLength": 1 },
+    "recovered_at": { "type": "string", "format": "date-time" },
+    "prior": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["session_id", "packet_id", "projection_id"],
+      "properties": {
+        "session_id": { "type": "string", "minLength": 1 },
+        "packet_id": { "type": "string", "minLength": 1 },
+        "projection_id": { "type": "string", "minLength": 1 }
+      }
+    },
+    "observation_bundle_id": { "type": "string", "minLength": 1 },
+    "recovery_reason": { "enum": ["upstream_idle_timeout", "user_stopped", "runtime_status_unknown"] },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["raw_event_payload_embedded", "model_output_embedded", "digest_only"],
+      "properties": {
+        "raw_event_payload_embedded": { "const": false },
+        "model_output_embedded": { "const": false },
+        "digest_only": { "const": true }
+      }
+    },
+    "brain_cycle_result": { "$ref": "https://manurella.dev/schemas/brain/brain-cycle-result.v0.json" },
+    "recovery_session": { "$ref": "runtime-session-bundle.v0.json" },
+    "adapter_projection": { "$ref": "https://manurella.dev/schemas/adapters/kilo-session-projection.v0.json" }
+  }
+}

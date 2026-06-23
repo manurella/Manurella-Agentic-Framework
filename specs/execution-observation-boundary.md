@@ -45,6 +45,6 @@ The emitted statement is selected from fixed framework text. Raw stream and mode
 runtime-neutral session compilation [implemented]
 -> Kilo operation-packet projection and validation [implemented]
 -> execution observation ingestion [implemented]
--> recovery/resume integration [next]
--> Phase 5 end-to-end adapter evidence
+-> recovery/resume integration [implemented]
+-> Phase 5 end-to-end adapter evidence [next]
 ```

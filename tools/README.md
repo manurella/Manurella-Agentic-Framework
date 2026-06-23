@@ -10,7 +10,7 @@ Run the full local framework smoke suite:
 python tools/self_check.py --repo .
 ```
 
-It runs the framework validator, trust-partition and Interpreter fixtures, Core/Brain/runtime packet fixtures, memory promotion/application/retrieval fixtures, Kilo exporter/session-projection and execution-observation checks, result-record and Mentor helper smokes, comparator smokes, and removes its temporary records.
+It runs the framework validator, trust-partition and Interpreter fixtures, Core/Brain/runtime packet fixtures, memory promotion/application/retrieval fixtures, Kilo exporter/session-projection, execution-observation, and recovery checks, result-record and Mentor helper smokes, comparator smokes, and removes its temporary records.
 
 ## Trusted Input Partitioner
 
@@ -239,6 +239,15 @@ python tools\ingest_runtime_observation.py --repo . --session path\to\session.ya
 ```
 
 Unattested captures are quarantined as model-inferred no-change events. Adapter-attested captures retain lifecycle, verifier, artifact, and recovery evidence while storing raw streams and model output only by digest.
+
+Compile a blocked runtime observation into a recovery session and adapter projection:
+
+```powershell
+python tools\compile_runtime_recovery.py --repo . --fixtures
+python tools\compile_runtime_recovery.py --repo . --workspace path\to\workspace-bundle.yaml --session path\to\session.yaml --projection path\to\projection.yaml --observation-bundle path\to\execution-observation-bundle.yaml
+```
+
+Recovery requires the durable Brain workspace checkpoint referenced by the prior operation packet. The compiler rejects non-recovery outcomes, unattested captures, tampered lineage, and schema-valid projection substitution before emitting a new `recovery` operation packet.
 
 Evaluate a typed durable-memory or Atlas proposal without mutating canonical state:
 

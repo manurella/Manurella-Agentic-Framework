@@ -1559,6 +1559,40 @@ nodes:
       - evals/fixtures/runtime-execution-observation/
       - tools/ingest_runtime_observation.py
     updated_at: 2026-06-22
+  - id: spec.runtime-recovery-boundary
+    type: spec
+    label: Runtime Recovery Boundary
+    status: active
+    summary: Provider-neutral recovery contract that resumes from a durable Brain checkpoint after trusted runtime blockage instead of restarting the workflow.
+    owners:
+      - dom.core
+    evidence:
+      - specs/runtime-recovery-boundary.md
+      - schemas/runtime/runtime-recovery-result.schema.json
+    updated_at: 2026-06-23
+  - id: tool.runtime-recovery-compiler
+    type: tool
+    label: Runtime Recovery Compiler
+    status: active
+    summary: Consumes checkpoint workspace, prior session, prior projection, and typed execution observation to emit a recovery runtime session and Kilo projection without execution.
+    owners:
+      - dom.core
+    evidence:
+      - tools/compile_runtime_recovery.py
+      - specs/runtime-recovery-boundary.md
+      - schemas/runtime/runtime-recovery-result.schema.json
+    updated_at: 2026-06-23
+  - id: eval.runtime-recovery-v0
+    type: eval
+    label: Runtime Recovery V0 Fixtures
+    status: active
+    summary: Covers upstream-idle recovery projection plus rejection of non-recovery observations, unattested captures, and tampered lineage.
+    owners:
+      - dom.core
+    evidence:
+      - evals/fixtures/runtime-recovery/
+      - tools/compile_runtime_recovery.py
+    updated_at: 2026-06-23
 edges:
   - id: edge.core.owns.memory-proposal-evaluator
     type: owns
@@ -3587,3 +3621,91 @@ edges:
       - tools/self_check.py
       - tools/ingest_runtime_observation.py
     updated_at: 2026-06-22
+  - id: edge.core.owns.runtime-recovery-compiler
+    type: owns
+    source: dom.core
+    target: tool.runtime-recovery-compiler
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/compile_runtime_recovery.py
+      - specs/runtime-recovery-boundary.md
+    updated_at: 2026-06-23
+  - id: edge.runtime-recovery-compiler.uses.recovery-boundary
+    type: uses
+    source: tool.runtime-recovery-compiler
+    target: spec.runtime-recovery-boundary
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/compile_runtime_recovery.py
+      - schemas/runtime/runtime-recovery-result.schema.json
+    updated_at: 2026-06-23
+  - id: edge.runtime-recovery-compiler.uses.observation-ingester
+    type: uses
+    source: tool.runtime-recovery-compiler
+    target: tool.runtime-observation-ingester
+    status: active
+    confidence: 0.9
+    weight: 0.8
+    evidence:
+      - tools/compile_runtime_recovery.py
+      - schemas/runtime/execution-observation-bundle.schema.json
+    updated_at: 2026-06-23
+  - id: edge.runtime-recovery-compiler.uses.brain-cycle-controller
+    type: uses
+    source: tool.runtime-recovery-compiler
+    target: tool.brain-cycle-controller
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/compile_runtime_recovery.py
+      - tools/advance_brain_cycle.py
+    updated_at: 2026-06-23
+  - id: edge.runtime-recovery-compiler.uses.operation-compiler
+    type: uses
+    source: tool.runtime-recovery-compiler
+    target: tool.runtime-operation-compiler
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/compile_runtime_recovery.py
+      - tools/compile_runtime_operation.py
+    updated_at: 2026-06-23
+  - id: edge.runtime-recovery-compiler.uses.kilo-session-projector
+    type: uses
+    source: tool.runtime-recovery-compiler
+    target: tool.kilo-session-projector
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/compile_runtime_recovery.py
+      - adapters/kilo/project_runtime_session.py
+    updated_at: 2026-06-23
+  - id: edge.runtime-recovery-v0.evaluates.compiler
+    type: evaluates
+    source: eval.runtime-recovery-v0
+    target: tool.runtime-recovery-compiler
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - evals/fixtures/runtime-recovery/
+      - tools/compile_runtime_recovery.py
+    updated_at: 2026-06-23
+  - id: edge.self-check.uses.runtime-recovery-compiler
+    type: uses
+    source: tool.self-check
+    target: tool.runtime-recovery-compiler
+    status: active
+    confidence: 0.95
+    weight: 0.8
+    evidence:
+      - tools/self_check.py
+      - tools/compile_runtime_recovery.py
+    updated_at: 2026-06-23

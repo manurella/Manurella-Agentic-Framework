@@ -130,6 +130,7 @@ def main(argv: list[str]) -> int:
         [python, "tools/compile_runtime_session.py", "--repo", ".", "--fixtures"],
         [python, "adapters/kilo/project_runtime_session.py", "--repo", ".", "--fixtures"],
         [python, "tools/ingest_runtime_observation.py", "--repo", ".", "--fixtures"],
+        [python, "tools/compile_runtime_recovery.py", "--repo", ".", "--fixtures"],
         [
             python,
             "adapters/kilo/export_agents.py",

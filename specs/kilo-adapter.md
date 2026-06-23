@@ -155,6 +155,12 @@ Kilo `--format json` output remains an unstable raw event stream rather than a M
 
 The output retains stream and model-output SHA-256 digests, fixed lifecycle statements, exact session/packet/projection lineage, typed verification, and recovery metadata. It excludes raw event payloads and model text. Direct CLI captures are unattested and quarantined by default. Only an adapter caller that actually produced the normalized capture may pass `--attest-runtime-capture`; a capture document cannot grant trust to itself.
 
+## Runtime Recovery Projection
+
+`tools/compile_runtime_recovery.py` consumes a durable Brain workspace checkpoint, prior runtime session, prior Kilo projection, and typed execution-observation bundle. It rejects projection substitution, tampered lineage, unattested captures, and non-recovery outcomes before advancing Brain and compiling a new `recovery` operation packet.
+
+The output is a `runtime-recovery-result.v0` bundle containing the Brain cycle result, recovery runtime session, and next Kilo projection. The Kilo projection remains non-executing (`executed: false`) and normally lowers to read-only recovery behavior so the next runtime packet can preserve the blocker, checkpoint, and narrower next action instead of restarting.
+
 ## Exporter
 
 The initial exporter lives at:

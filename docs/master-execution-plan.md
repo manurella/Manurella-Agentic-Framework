@@ -75,6 +75,9 @@ Artifacts:
 - `specs/runtime-session-boundary.md`
 - `schemas/runtime/runtime-session-bundle.schema.json`
 - `tools/compile_runtime_session.py`
+- `specs/runtime-recovery-boundary.md`
+- `schemas/runtime/runtime-recovery-result.schema.json`
+- `tools/compile_runtime_recovery.py`
 - `specs/core-operating-protocol.md`
 - `specs/agent-schema.md`
 - `specs/runtime-control.md`
@@ -106,6 +109,7 @@ Acceptance:
 - Brain revises state only through typed trust-classified observations, quarantines untrusted content, selects a bounded cognitive strategy, and stops, repairs, replans, or escalates from measurable verification and budget state.
 - Brain control decisions compile into permission-bounded runtime operation packets with explicit blocked actions, evidence requirements, stops, and resumable recovery state.
 - Trusted task intake compiles through Interpreter, Core, Brain, governed memory retrieval, and operation policy into one privacy-bounded runtime session bundle.
+- Runtime-blocked execution observations compile into recovery session bundles and adapter projections only after checkpoint, lineage, projection-integrity, and trusted-runtime checks pass.
 - Approval-required actions never appear executable; only explicit `allow` permissions enter `allowed_actions`.
 
 ### W2. Cognitive Graph
@@ -165,10 +169,12 @@ Artifacts:
 - `adapters/kilo/export_agents.py`
 - `adapters/kilo/project_runtime_session.py`
 - `tools/ingest_runtime_observation.py`
+- `tools/compile_runtime_recovery.py`
 - `specs/kilo-adapter.md`
 - `schemas/adapters/kilo-session-projection.schema.json`
 - `schemas/runtime/execution-capture.schema.json`
 - `schemas/runtime/execution-observation-bundle.schema.json`
+- `schemas/runtime/runtime-recovery-result.schema.json`
 - `.kilo/agents/` generated outputs
 - runtime packet protocol
 - runtime session bundle and compiler
@@ -181,6 +187,7 @@ Acceptance:
 - Provider-neutral session compilation reports unsupported controls and performs no provider action by implication.
 - Kilo session projection lowers unresolved permissions to deny, renders sanitized prompt text, avoids autonomous flags, and validates without model quota.
 - Execution observation ingestion preserves lineage and digests without promoting raw model output or unattested completion claims to trusted evidence.
+- Runtime recovery consumes only adapter-attested blocked observations and emits a narrower recovery projection from the durable checkpoint instead of restarting the full workflow.
 
 ### W5. Eval System
 

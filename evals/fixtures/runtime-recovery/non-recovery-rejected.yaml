@@ -1,0 +1,3 @@
+fixture_id: runtime-recovery.non-recovery-rejected
+execution_observation_fixture: evals/fixtures/runtime-execution-observation/verified-complete.yaml
+expected_error: observation bundle does not require recovery

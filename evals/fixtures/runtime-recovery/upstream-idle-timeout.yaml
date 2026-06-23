@@ -1,0 +1,14 @@
+fixture_id: runtime-recovery.upstream-idle-timeout
+execution_observation_fixture: evals/fixtures/runtime-execution-observation/upstream-idle-timeout.yaml
+expected:
+  recovery_reason: upstream_idle_timeout
+  disposition: stop_blocked
+  next_operation: stop
+  packet_class: recovery
+  execution_status: blocked
+  projection_status: blocked_response_only
+  allowed_actions: [read]
+  blocked_actions: []
+  prior_packet_ref: packet.control.state.tf.parser.project@1#1
+  raw_payload_embedded: false
+  model_output_embedded: false
