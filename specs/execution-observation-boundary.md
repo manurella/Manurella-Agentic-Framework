@@ -46,5 +46,6 @@ runtime-neutral session compilation [implemented]
 -> Kilo operation-packet projection and validation [implemented]
 -> execution observation ingestion [implemented]
 -> recovery/resume integration [implemented]
--> Phase 5 end-to-end adapter evidence [next]
+-> Phase 5 end-to-end adapter evidence [implemented]
+-> Phase 5 live Kilo evidence capture and result records [next]
 ```

@@ -1,0 +1,20 @@
+fixture_id: runtime-adapter-evidence.verified-complete
+execution_observation_fixture: evals/fixtures/runtime-execution-observation/verified-complete.yaml
+run:
+  runtime: Kilo Code
+  model: fixture/free-model-v1
+  mode: standard
+  effort: high
+  adapter_version: fixture-adapter.v0
+  prompt_version: runtime-session-projection.v0
+expected:
+  status: pass
+  capture_trust: trusted_runtime
+  observation_effect: acceptance_evidence
+  accepted: true
+  recovery_required: false
+  recovery_reason: none
+  recovery_packet_class: null
+  projection_status: ready_for_interactive_cli
+  raw_payload_embedded: false
+  model_output_embedded: false

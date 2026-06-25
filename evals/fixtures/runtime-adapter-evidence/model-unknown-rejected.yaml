@@ -1,0 +1,10 @@
+fixture_id: runtime-adapter-evidence.model-unknown-rejected
+execution_observation_fixture: evals/fixtures/runtime-execution-observation/verified-complete.yaml
+run:
+  runtime: Kilo Code
+  model: unknown
+  mode: standard
+  effort: high
+  adapter_version: fixture-adapter.v0
+  prompt_version: runtime-session-projection.v0
+expected_error: exact model is required for adapter evidence

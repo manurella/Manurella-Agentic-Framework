@@ -25,6 +25,7 @@ Expected:
 - Run baseline and guided outputs in separate Kilo threads.
 - Do not ask the same run to create result records.
 - Capture exact model, runtime, mode, effort, elapsed time, timeout status, and changed artifacts.
+- For runtime-session projection runs, compile a `runtime-adapter-evidence-bundle.v0` after normalizing the Kilo capture.
 - If the previous run looked generic, shallow, or confused, add `specs/weak-runtime-compensation.md` to the prompt and require evidence, assumptions, narrow target, output, and self-check.
 - Stop at packet boundaries. Do not let Kilo continue into repairs or documentation unless the packet asks for it.
 
@@ -86,6 +87,25 @@ python tools/create_result_record.py --repo . --task-id guided-mentor-interview-
 ```
 
 Then fill missing fields from the saved Kilo outputs.
+
+## Runtime Adapter Evidence
+
+For typed runtime-session tests, keep these artifacts separate:
+
+1. Brain workspace checkpoint.
+2. Runtime session bundle.
+3. Kilo session projection.
+4. Normalized execution capture with stream/model digests.
+5. Runtime adapter evidence bundle.
+6. Human-readable result record under `evals/results/`.
+
+After the Kilo run is normalized into `execution-capture.v0`, compile the evidence bundle:
+
+```powershell
+python tools/compile_adapter_evidence.py --repo . --workspace path/to/workspace-bundle.yaml --session path/to/session.yaml --projection path/to/projection.yaml --capture path/to/capture.yaml --attest-runtime-capture --model "exact-model-name" --mode standard --effort high --adapter-version runtime-session-projection.v0 --prompt-version runtime-session-projection.v0
+```
+
+Do not use `model: unknown` for new live evidence. If the exact model is unavailable, record the run as diagnostic prose only, not promotion evidence.
 
 ## Comparison
 

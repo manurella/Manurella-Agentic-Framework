@@ -1593,6 +1593,40 @@ nodes:
       - evals/fixtures/runtime-recovery/
       - tools/compile_runtime_recovery.py
     updated_at: 2026-06-23
+  - id: spec.runtime-adapter-evidence-boundary
+    type: spec
+    label: Runtime Adapter Evidence Boundary
+    status: active
+    summary: Provider-neutral evidence contract for validating checkpoint, session, projection, capture, observation, and optional recovery as one privacy-bounded adapter run chain.
+    owners:
+      - dom.core
+    evidence:
+      - specs/runtime-adapter-evidence-boundary.md
+      - schemas/runtime/runtime-adapter-evidence-bundle.schema.json
+    updated_at: 2026-06-25
+  - id: tool.runtime-adapter-evidence-compiler
+    type: tool
+    label: Runtime Adapter Evidence Compiler
+    status: active
+    summary: Compiles typed adapter evidence from a checkpoint workspace, runtime session, deterministic Kilo projection, and normalized capture, rejecting unknown model metadata by default.
+    owners:
+      - dom.core
+    evidence:
+      - tools/compile_adapter_evidence.py
+      - schemas/runtime/runtime-adapter-evidence-bundle.schema.json
+      - specs/runtime-adapter-evidence-boundary.md
+    updated_at: 2026-06-25
+  - id: eval.runtime-adapter-evidence-v0
+    type: eval
+    label: Runtime Adapter Evidence V0 Fixtures
+    status: active
+    summary: Covers accepted completion, timeout recovery, unattested no-change, projection tamper rejection, and unknown-model rejection.
+    owners:
+      - dom.core
+    evidence:
+      - evals/fixtures/runtime-adapter-evidence/
+      - tools/compile_adapter_evidence.py
+    updated_at: 2026-06-25
 edges:
   - id: edge.core.owns.memory-proposal-evaluator
     type: owns
@@ -3709,3 +3743,80 @@ edges:
       - tools/self_check.py
       - tools/compile_runtime_recovery.py
     updated_at: 2026-06-23
+  - id: edge.core.owns.runtime-adapter-evidence-compiler
+    type: owns
+    source: dom.core
+    target: tool.runtime-adapter-evidence-compiler
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/compile_adapter_evidence.py
+      - specs/runtime-adapter-evidence-boundary.md
+    updated_at: 2026-06-25
+  - id: edge.runtime-adapter-evidence-compiler.uses.evidence-boundary
+    type: uses
+    source: tool.runtime-adapter-evidence-compiler
+    target: spec.runtime-adapter-evidence-boundary
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/compile_adapter_evidence.py
+      - schemas/runtime/runtime-adapter-evidence-bundle.schema.json
+    updated_at: 2026-06-25
+  - id: edge.runtime-adapter-evidence-compiler.uses.observation-ingester
+    type: uses
+    source: tool.runtime-adapter-evidence-compiler
+    target: tool.runtime-observation-ingester
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/compile_adapter_evidence.py
+      - tools/ingest_runtime_observation.py
+    updated_at: 2026-06-25
+  - id: edge.runtime-adapter-evidence-compiler.uses.recovery-compiler
+    type: uses
+    source: tool.runtime-adapter-evidence-compiler
+    target: tool.runtime-recovery-compiler
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/compile_adapter_evidence.py
+      - tools/compile_runtime_recovery.py
+    updated_at: 2026-06-25
+  - id: edge.runtime-adapter-evidence-compiler.uses.kilo-projector
+    type: uses
+    source: tool.runtime-adapter-evidence-compiler
+    target: tool.kilo-session-projector
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - tools/compile_adapter_evidence.py
+      - adapters/kilo/project_runtime_session.py
+    updated_at: 2026-06-25
+  - id: edge.runtime-adapter-evidence-v0.evaluates.compiler
+    type: evaluates
+    source: eval.runtime-adapter-evidence-v0
+    target: tool.runtime-adapter-evidence-compiler
+    status: active
+    confidence: 0.95
+    weight: 0.9
+    evidence:
+      - evals/fixtures/runtime-adapter-evidence/
+      - tools/compile_adapter_evidence.py
+    updated_at: 2026-06-25
+  - id: edge.self-check.uses.runtime-adapter-evidence-compiler
+    type: uses
+    source: tool.self-check
+    target: tool.runtime-adapter-evidence-compiler
+    status: active
+    confidence: 0.95
+    weight: 0.8
+    evidence:
+      - tools/self_check.py
+      - tools/compile_adapter_evidence.py
+    updated_at: 2026-06-25

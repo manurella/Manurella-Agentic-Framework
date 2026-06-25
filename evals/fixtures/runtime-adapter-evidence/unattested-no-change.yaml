@@ -1,0 +1,20 @@
+fixture_id: runtime-adapter-evidence.unattested-no-change
+execution_observation_fixture: evals/fixtures/runtime-execution-observation/unattested-completion-claim.yaml
+run:
+  runtime: Kilo Code
+  model: fixture/free-model-v1
+  mode: standard
+  effort: high
+  adapter_version: fixture-adapter.v0
+  prompt_version: runtime-session-projection.v0
+expected:
+  status: no_change
+  capture_trust: unverified
+  observation_effect: no_change
+  accepted: false
+  recovery_required: false
+  recovery_reason: none
+  recovery_packet_class: null
+  projection_status: ready_for_interactive_cli
+  raw_payload_embedded: false
+  model_output_embedded: false

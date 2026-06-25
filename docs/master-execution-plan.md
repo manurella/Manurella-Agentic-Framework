@@ -78,6 +78,9 @@ Artifacts:
 - `specs/runtime-recovery-boundary.md`
 - `schemas/runtime/runtime-recovery-result.schema.json`
 - `tools/compile_runtime_recovery.py`
+- `specs/runtime-adapter-evidence-boundary.md`
+- `schemas/runtime/runtime-adapter-evidence-bundle.schema.json`
+- `tools/compile_adapter_evidence.py`
 - `specs/core-operating-protocol.md`
 - `specs/agent-schema.md`
 - `specs/runtime-control.md`
@@ -110,6 +113,7 @@ Acceptance:
 - Brain control decisions compile into permission-bounded runtime operation packets with explicit blocked actions, evidence requirements, stops, and resumable recovery state.
 - Trusted task intake compiles through Interpreter, Core, Brain, governed memory retrieval, and operation policy into one privacy-bounded runtime session bundle.
 - Runtime-blocked execution observations compile into recovery session bundles and adapter projections only after checkpoint, lineage, projection-integrity, and trusted-runtime checks pass.
+- Runtime adapter evidence compiles the checkpoint, session, projection, capture, observation, and optional recovery chain into one privacy-bounded evidence bundle with exact model metadata required by default.
 - Approval-required actions never appear executable; only explicit `allow` permissions enter `allowed_actions`.
 
 ### W2. Cognitive Graph
@@ -170,11 +174,13 @@ Artifacts:
 - `adapters/kilo/project_runtime_session.py`
 - `tools/ingest_runtime_observation.py`
 - `tools/compile_runtime_recovery.py`
+- `tools/compile_adapter_evidence.py`
 - `specs/kilo-adapter.md`
 - `schemas/adapters/kilo-session-projection.schema.json`
 - `schemas/runtime/execution-capture.schema.json`
 - `schemas/runtime/execution-observation-bundle.schema.json`
 - `schemas/runtime/runtime-recovery-result.schema.json`
+- `schemas/runtime/runtime-adapter-evidence-bundle.schema.json`
 - `.kilo/agents/` generated outputs
 - runtime packet protocol
 - runtime session bundle and compiler
@@ -188,6 +194,7 @@ Acceptance:
 - Kilo session projection lowers unresolved permissions to deny, renders sanitized prompt text, avoids autonomous flags, and validates without model quota.
 - Execution observation ingestion preserves lineage and digests without promoting raw model output or unattested completion claims to trusted evidence.
 - Runtime recovery consumes only adapter-attested blocked observations and emits a narrower recovery projection from the durable checkpoint instead of restarting the full workflow.
+- Adapter evidence bundles validate the full Kilo chain, reject unknown model metadata by default, and keep raw streams/model output outside durable evidence.
 
 ### W5. Eval System
 

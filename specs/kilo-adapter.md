@@ -161,6 +161,12 @@ The output retains stream and model-output SHA-256 digests, fixed lifecycle stat
 
 The output is a `runtime-recovery-result.v0` bundle containing the Brain cycle result, recovery runtime session, and next Kilo projection. The Kilo projection remains non-executing (`executed: false`) and normally lowers to read-only recovery behavior so the next runtime packet can preserve the blocker, checkpoint, and narrower next action instead of restarting.
 
+## Adapter Evidence Bundle
+
+`tools/compile_adapter_evidence.py` validates the complete Kilo evidence chain: durable Brain workspace checkpoint, runtime session, deterministic Kilo projection, normalized execution capture, execution-observation ingestion, and optional recovery compilation. Its output is `runtime-adapter-evidence-bundle.v0`.
+
+New live evidence must record exact model metadata. The compiler rejects `model: unknown` by default because previous Kilo smoke records showed that unknown model identity makes promotion evidence weak. The bundle stores only IDs, lifecycle metadata, artifact refs, verification status, and SHA-256 digests; raw Kilo JSON events and model output text remain outside the framework evidence object.
+
 ## Exporter
 
 The initial exporter lives at:

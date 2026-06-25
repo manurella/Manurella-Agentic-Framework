@@ -1,0 +1,20 @@
+fixture_id: runtime-adapter-evidence.upstream-idle-recovery
+execution_observation_fixture: evals/fixtures/runtime-execution-observation/upstream-idle-timeout.yaml
+run:
+  runtime: Kilo Code
+  model: fixture/free-model-v1
+  mode: standard
+  effort: high
+  adapter_version: fixture-adapter.v0
+  prompt_version: runtime-session-projection.v0
+expected:
+  status: timeout
+  capture_trust: trusted_runtime
+  observation_effect: blocked
+  accepted: false
+  recovery_required: true
+  recovery_reason: upstream_idle_timeout
+  recovery_packet_class: recovery
+  projection_status: ready_for_interactive_cli
+  raw_payload_embedded: false
+  model_output_embedded: false

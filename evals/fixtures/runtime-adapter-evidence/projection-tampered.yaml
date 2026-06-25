@@ -1,0 +1,11 @@
+fixture_id: runtime-adapter-evidence.projection-tampered
+execution_observation_fixture: evals/fixtures/runtime-execution-observation/verified-complete.yaml
+projection_override: {projection_id: kilo-projection.tampered}
+run:
+  runtime: Kilo Code
+  model: fixture/free-model-v1
+  mode: standard
+  effort: high
+  adapter_version: fixture-adapter.v0
+  prompt_version: runtime-session-projection.v0
+expected_error: projection does not match the deterministic session projection

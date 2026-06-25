@@ -126,3 +126,11 @@ python tools/compile_runtime_recovery.py --repo . --workspace path/to/workspace-
 ```
 
 The recovery compiler requires the checkpoint workspace named by the prior packet, verifies prior projection integrity, rejects unattested or non-recovery observations, and emits a new runtime session plus Kilo projection. It still does not invoke Kilo.
+
+For an actual Kilo run, compile one privacy-bounded evidence bundle after capture normalization:
+
+```powershell
+python tools/compile_adapter_evidence.py --repo . --workspace path/to/workspace-bundle.yaml --session path/to/session.yaml --projection path/to/projection.yaml --capture path/to/capture.yaml --attest-runtime-capture --model "exact-model-name" --mode standard --effort high --adapter-version runtime-session-projection.v0 --prompt-version runtime-session-projection.v0
+```
+
+This validates the runtime session, deterministic projection, normalized capture, observation ingestion, and optional recovery result as one chain. It rejects `model: unknown` by default and stores raw Kilo streams only by SHA-256 digest.

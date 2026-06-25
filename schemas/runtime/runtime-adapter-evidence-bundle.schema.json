@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manurella.dev/schemas/runtime/runtime-adapter-evidence-bundle.v0.json",
+  "title": "Manurella Runtime Adapter Evidence Bundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "evidence_id", "recorded_at", "run", "lineage", "projection", "capture", "observation_bundle", "recovery_result", "outcome", "privacy"],
+  "properties": {
+    "schema_version": { "const": "runtime-adapter-evidence-bundle.v0" },
+    "evidence_id": { "type": "string", "minLength": 1 },
+    "recorded_at": { "type": "string", "format": "date-time" },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["adapter", "runtime", "model", "mode", "effort", "adapter_version", "prompt_version"],
+      "properties": {
+        "adapter": { "const": "kilo" },
+        "runtime": { "type": "string", "minLength": 1 },
+        "model": { "type": "string", "minLength": 1 },
+        "mode": { "enum": ["fast", "standard", "unknown"] },
+        "effort": { "enum": ["low", "medium", "high", "extra-high", "max", "ultra", "unknown"] },
+        "adapter_version": { "type": "string", "minLength": 1 },
+        "prompt_version": { "type": "string", "minLength": 1 }
+      }
+    },
+    "lineage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["session_id", "packet_id", "projection_id", "capture_id"],
+      "properties": {
+        "session_id": { "type": "string", "minLength": 1 },
+        "packet_id": { "type": "string", "minLength": 1 },
+        "projection_id": { "type": "string", "minLength": 1 },
+        "capture_id": { "type": "string", "minLength": 1 }
+      }
+    },
+    "projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["projection_status", "agent_id", "agent_path", "content_sha256", "invocation_output_format", "invocation_executed", "unsupported_controls"],
+      "properties": {
+        "projection_status": { "enum": ["ready_for_interactive_cli", "blocked_response_only", "terminal_no_run"] },
+        "agent_id": { "type": "string", "minLength": 1 },
+        "agent_path": { "type": "string", "minLength": 1 },
+        "content_sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "invocation_output_format": { "enum": ["raw_json_events", "not_applicable"] },
+        "invocation_executed": { "const": false },
+        "unsupported_controls": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+      }
+    },
+    "capture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["capture_id", "capture_trust", "invocation_status", "timeout_status", "exit_code", "event_count", "raw_events_sha256", "model_output_sha256"],
+      "properties": {
+        "capture_id": { "type": "string", "minLength": 1 },
+        "capture_trust": { "enum": ["unverified", "trusted_runtime"] },
+        "invocation_status": { "enum": ["completed", "failed", "timeout", "cancelled", "policy_blocked", "unknown"] },
+        "timeout_status": { "enum": ["none", "upstream_idle_timeout", "user_stopped", "unknown"] },
+        "exit_code": { "type": ["integer", "null"] },
+        "event_count": { "type": "integer", "minimum": 0 },
+        "raw_events_sha256": { "$ref": "#/$defs/nullableDigest" },
+        "model_output_sha256": { "$ref": "#/$defs/nullableDigest" }
+      }
+    },
+    "observation_bundle": { "$ref": "https://manurella.dev/schemas/runtime/execution-observation-bundle.v0.json" },
+    "recovery_result": {
+      "oneOf": [
+        { "$ref": "https://manurella.dev/schemas/runtime/runtime-recovery-result.v0.json" },
+        { "type": "null" }
+      ]
+    },
+    "outcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "observation_effect", "verification_status", "acceptance_status", "accepted", "recovery_required", "recovery_reason", "evidence_refs"],
+      "properties": {
+        "status": { "enum": ["pass", "partial", "fail", "timeout", "blocked", "unsafe", "no_change"] },
+        "observation_effect": { "enum": ["progress", "acceptance_evidence", "no_change", "failure", "blocked", "unsafe"] },
+        "verification_status": { "enum": ["not_run", "pass", "fail", "partial"] },
+        "acceptance_status": { "enum": ["not_evaluated", "partial", "complete", "failed"] },
+        "accepted": { "type": "boolean" },
+        "recovery_required": { "type": "boolean" },
+        "recovery_reason": { "enum": ["none", "upstream_idle_timeout", "user_stopped", "runtime_status_unknown"] },
+        "evidence_refs": { "$ref": "#/$defs/refArray" }
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["raw_event_payload_embedded", "model_output_embedded", "digest_only"],
+      "properties": {
+        "raw_event_payload_embedded": { "const": false },
+        "model_output_embedded": { "const": false },
+        "digest_only": { "const": true }
+      }
+    }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "nullableDigest": { "oneOf": [{ "$ref": "#/$defs/digest" }, { "type": "null" }] },
+    "refArray": { "type": "array", "items": { "type": "string", "pattern": "^[a-z][a-z0-9+.-]*://\\S{1,480}$" }, "uniqueItems": true }
+  }
+}
